@@ -1,0 +1,168 @@
+:root {
+    --color-btn-logout: #2e00fd;
+    --color-hover-navbar: #120742;
+    --font-size-custom: 14px;
+    --width-sidebar-open: 250px;
+    --width-sidebar-close: 60px;
+}
+
+/* Styles btn de update password */
+
+.custom-btn {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Styles active item SideBar */
+
+.nav-pills li a.active {
+    background-color: red !important;
+    /* Cambia el color de fondo a rojo */
+}
+
+/* Styles btn de logout */
+
+.btn_logout:hover {
+    background-color: var(--color-hover-navbar);
+
+}
+
+.btn_logout {
+    background-color: var(--color-btn-logout);
+}
+
+/* Styles SideBar */
+.nav-pills li a:hover {
+    background-color: var(--color-hover-navbar);
+}
+
+.button_open_close:hover {
+    background-color: var(--color-hover-navbar);
+}
+
+/* Styles Login */
+
+.container-login {
+    background-color: #F6F6F6;
+    padding: 20px;
+    /* Ajusta el padding según tus necesidades */
+}
+
+.fs-16px-login {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    /* El peso de la fuente para SemiBold suele ser 600 */
+    color: #000066;
+}
+
+.fs-24px {
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000066;
+}
+
+.fs_custom {
+    /* font-size: var(--font-size-custom); */
+    /* Tamaño de fuente personalizado */
+    text-justify: center;
+    text-align: center;
+}
+
+
+/* Styles to Modal Windows */
+
+.abrir-modal {
+    background-color: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.animacion {
+    animation-duration: 2s;
+    animation-fill-mode: both;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-fill-mode: both;
+}
+
+.fadeIn {
+    animation-name: fadeIn;
+    -webkit-animation-name: fadeIn;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0
+    }
+
+    to {
+        opacity: 1
+    }
+}
+
+/* Styles for LoginPage */
+.form_container_login {
+    width: 35%;
+}
+
+/* Styles for sidebar open-close */
+
+.custom-sidebar-open {
+    width: var(--width-sidebar-open);
+}
+
+.custom-main-content-open {
+    width: calc(100% - var(--width-sidebar-open));
+}
+
+.custom-sidebar-close {
+    width: var(--width-sidebar-close);
+}
+
+.custom-main-content-close {
+    width: calc(100% - var(--width-sidebar-close));
+}
+
+/* Responsive desing */
+
+@media screen and (max-width: 1000px) {
+    .form_container_login {
+        width: 45%;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .form_container_login {
+        width: 60%;
+    }
+
+    .center_component {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 2px;
+    }
+
+    .custom-sidebar-open {
+        width: var(--width-sidebar-close);
+    }
+
+    .custom-main-content-open {
+        width: calc(100% - var(--width-sidebar-close));
+    }
+}
