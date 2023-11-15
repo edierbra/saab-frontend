@@ -43,8 +43,6 @@ export const useUsers = () => {
 
         let response;
 
-        console.log(response);
-
         try {
 
             if (user.id === 0) {

@@ -1,10 +1,19 @@
 :root {
     --color-btn-logout: #2e00fd;
-    --color-hover-navbar: #120742;
+    --color-hover-navbar: #000066;
+    --color-input: #454444;
+    --color-label: #000066;
+    --color-bg-form: #F6F6F6;
     --font-size-custom: 14px;
     --width-sidebar-open: 250px;
     --width-sidebar-close: 60px;
 }
+
+.shadow {
+    box-shadow: 3px 3px 5px 0 rgba(255, 255, 255, 01);
+    /* Sombra en la parte inferior derecha */
+}
+
 
 /* Styles btn de update password */
 
@@ -42,25 +51,59 @@
 
 /* Styles Login */
 
-.container-login {
-    background-color: #F6F6F6;
-    padding: 20px;
-    /* Ajusta el padding según tus necesidades */
+.bg-login {
+    background-color: var(--color-bg-form);
 }
 
-.fs-16px-login {
+.bg-blue {
+    background-color: var(--color-label);
+}
+
+.fs-16px-login-label {
     font-family: 'Open Sans', sans-serif;
     font-size: 16px;
     font-weight: 600;
     /* El peso de la fuente para SemiBold suele ser 600 */
-    color: #000066;
+    color: var(--color-label);
 }
+
+.fs-16px-login-input {
+    background-color: var(--color-bg-form);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    color: var(--color-input)
+}
+
 
 .fs-24px {
     font-family: 'Titillium Web', sans-serif;
     font-size: 24px;
     font-weight: bold;
-    color: #000066;
+    color: var(--color-label);
+}
+
+.btn-login {
+    /* Estilos generales para el botón */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    /* SemiBold */
+    text-transform: uppercase;
+    letter-spacing: 1.25px;
+    color: white;
+    /* Color inicial de la letra */
+    background-color: var(--color-label);
+    /* Color de fondo */
+    padding: 8px 16px;
+    /* Ajusta el padding según sea necesario */
+}
+
+.btn-login:hover {
+    /* Cambio de color al pasar el cursor sobre el botón */
+    background-color: white;
+    border: 1px solid var(--color-label);
+    /* Color del borde */
+    color: var(--color-label);
 }
 
 .fs_custom {
@@ -74,7 +117,7 @@
 /* Styles to Modal Windows */
 
 .abrir-modal {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
     position: fixed;
     top: 0px;
     left: 0px;

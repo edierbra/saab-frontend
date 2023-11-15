@@ -2,10 +2,35 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export const initialUserForm = {
     id: 0,
-    username: '',
-    password: '',
-    email: '',
-    admin: false,
+    fechaSolicitud: "",
+    fechaViabilidad: "",
+    resolucion: "",
+    fechaResolucion: "",
+    rdp: "",
+    fechaRdp: "",
+    valor: 0,
+    valorTransporteRegreso: 0,
+    diasDesplazamiento: 0,
+    lugarDesplazamiento: "",
+    fechaRenuncia: "",
+    fechaAceptacionRenuncia: "",
+    fechaInicioIncapacidad: "",
+    fechaFinIncapacidad: "",
+    valorMatricula: 0,
+    promedio: 0,
+    fechaReciboMatricula: "",
+    referenciaReciboMatricula: "",
+    observacion: "",
+    funcionario: {},
+    motivoJubilacion: {},
+    motivoIncapacidad: {},
+    semestre: {},
+    estadoAuxilio: {},
+    parentesco: {},
+    estudioFormal: {},
+    programa: {},
+    sindicato: {},
+    tipoAuxilioIndividual: {}
 }
 
 const initialErrors = {
@@ -14,18 +39,36 @@ const initialErrors = {
     email: '',
 }
 
+export const initialFuncionarioSearch = {
+    activo: '',
+    cargo: '',
+    correo: '',
+    dependencia: { id: '', nombre: ''},
+    fechaVinculacion: '',
+    genero: {id: '', nombre: ''},
+    id: '',
+    nombre: '',
+    salario: '',
+    vinculacion: {id: '', nombre: ''},
+}
+
 export const auxiliosIndividualesSlices = createSlice({
     name: 'auxiliosindividuales',
     initialState: {
         users: [],
         paginator: {},
         userSelected: initialUserForm,
+        funcionarioSearch: initialFuncionarioSearch,
         visibleForm: false,
         errors: initialErrors,
         isLoading: true,
     },
 
     reducers: {
+        onFuncionarioSearch: (state, action) => {
+            console.log(action.payload)
+            state.funcionarioSearch = action.payload;
+        },
         addUser: (state, action) => {
             state.users = [
                 ...state.users,
@@ -57,7 +100,7 @@ export const auxiliosIndividualesSlices = createSlice({
         loadingUsers: (state, action) => {
             state.users = action.payload.content; // action.payload
             state.paginator = action.payload;
-            state.isLoading = false ;
+            state.isLoading = false;
         },
         onUserSelectedForm: (state, action) => {
             state.userSelected = action.payload;
@@ -68,7 +111,11 @@ export const auxiliosIndividualesSlices = createSlice({
         },
         onCloseForm: (state) => {
             state.visibleForm = false;
-            state.userSelected = initialUserForm; 
+            state.userSelected = initialUserForm;
+            state.funcionarioSearch = initialFuncionarioSearch;
+        },
+        onClearFuncionarioSearch: (state) => {
+            state.funcionarioSearch = initialFuncionarioSearch;
         },
         loadingError: (state, { payload }) => {
             state.errors = payload
@@ -77,6 +124,8 @@ export const auxiliosIndividualesSlices = createSlice({
 });
 
 export const {
+    onFuncionarioSearch,
+    onClearFuncionarioSearch,
     addUser,
     removeUser,
     updateUser,

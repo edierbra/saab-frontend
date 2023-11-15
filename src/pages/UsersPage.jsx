@@ -46,13 +46,16 @@ export const UsersPage = () => {
             }
             <div className="">
 
-                <h2 >Users App</h2>
+                <h2 >USUARIOS</h2>
 
                 {(visibleForm || !login.isAdmin) ||
                     <button
-                        className="btn btn-primary my-2"
+                        className="btn btn-login my-2 py-0"
                         onClick={handlerOpenForm}>
-                        {'Add user'}
+                        <i className="bi bi-plus-circle-fill"
+                            typeof="button">
+                            <label className="ms-1">Agregar</label>
+                        </i>
                     </button>
                 }
 
@@ -61,9 +64,9 @@ export const UsersPage = () => {
                     (
                         <>
                             <UsersList />
-                            <Paginator 
-                            url="/users/page"
-                            paginator={paginator}
+                            <Paginator
+                                url="/users/page"
+                                paginator={paginator}
                             />
                         </>
                     )

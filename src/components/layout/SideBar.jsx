@@ -80,13 +80,6 @@ export const SideBar = ({ handlerHideSideBar }) => {
                                             <span className={openSideBar ? "ms-2 d-none d-md-inline text-white fs-7  fs_custom nav-link p-0" : "d-none"}>Gestionar Funcionarios</span>
                                         </NavLink>
                                     </li>
-
-                                    <li className="nav-item text-white rounded-3 mb-1">
-                                        <NavLink to='/auxilios-individuales' className="nav-link text-white py-1 px-2 d-flex align-items-center justify-content-center justify-content-md-start" activeclassname="active">
-                                            <i className="bi bi-collection-fill text-white fs-4 "></i>
-                                            <span className={openSideBar ? "ms-2 d-none d-md-inline text-white fs-7  fs_custom nav-link p-0" : "d-none"}>Auxilios Individuales</span>
-                                        </NavLink>
-                                    </li>
                                 </>
                             }
 

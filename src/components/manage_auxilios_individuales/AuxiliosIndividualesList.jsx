@@ -11,11 +11,10 @@ export const AuxiliosIndividualesList = () => {
         <>
             <table className="table table-hover table-striped">
                 <thead>
-                    <tr>
+                    <tr className="fs-16px-login-label">
                         <th>Id</th>
                         <th>Nombre</th>
                         <th>Cedula</th>
-                        <th>Viabilidad</th>
                         <th>Fecha viabilidad</th>
                         <th>Fecha solicitud</th>
                         <th>Valor</th>
@@ -26,12 +25,20 @@ export const AuxiliosIndividualesList = () => {
 
                 <tbody>
                     {
-                        users.map(({ id, funcionario, viabilidad, fechaViabilidad, fechaSolicitud, valor }) => (
+                        users.map(({ id, fechaSolicitud, fechaViabilidad,
+                            resolucion, fechaResolucion, rdp, fechaRdp, valor,
+                            valorTransporteRegreso, diasDesplazamiento,
+                            lugarDesplazamiento, fechaRenuncia, fechaAceptacionRenuncia,
+                            fechaInicioIncapacidad, fechaFinIncapacidad, valorMatricula,
+                            promedio, fechaReciboMatricula, referenciaReciboMatricula,
+                            observacion, funcionario, motivoJubilacion, motivoIncapacidad,
+                            semestre, estadoAuxilio, parentesco, estudioFormal, programa,
+                            sindicato, tipoAuxilioIndividual }
+                        ) => (
                             <AuxiliosIndividualesRow
                                 key={id}
                                 id={id}
                                 funcionario={funcionario}
-                                viabilidad={viabilidad}
                                 fechaViabilidad={fechaViabilidad}
                                 fechaSolicitud={fechaSolicitud}
                                 valor={valor}

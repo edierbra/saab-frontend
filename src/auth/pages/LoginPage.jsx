@@ -13,6 +13,8 @@ export const LoginPage = () => {
 
     const [loginForm, setLoginForm] = useState(initialLoginForm);
 
+    const [showPassword, setShowPassword] = useState(false);
+
     const { username, password } = loginForm;
 
     const onInputChange = ({ target }) => {
@@ -43,38 +45,53 @@ export const LoginPage = () => {
         setLoginForm(initialLoginForm);
     }
 
+    const togglePassword = () => {
+        setShowPassword(!showPassword);
+    }
+
     return (
         <>
-            <div className='login tempalte d-flex justify-content-center align-items-center w-100 vh-100 bg-primary'>
-                <div className="p-5 rounded bg-white form_container_login">
+            <div className='login tempalte d-flex justify-content-center align-items-center w-100 vh-100 bg-blue'>
+                <div className="px-5 py-3 rounded bg-login form_container_login">
+                    <p className="text-center mb-4 fs-24px">{'SAAB'}</p>
+                    
                     <form onSubmit={onSubmit}>
 
-                        <h3 className="text-center mb-4 fs-24px">{'SAAB'}</h3>
+                        <p className="text-center mb-3 text-black fw-bold fs-4">{'Sing In '}</p>
 
-                        <h3 className="text-center mb-3">{'Sing In '}</h3>
-
-                        <div className="input-group mb-3">
-                            <label className="input-group-text">Username</label>
+                        <div class="mb-2">
+                            <label className="form-label fs-16px-login-label ">Usuario:</label>
                             <input
-                                type="text" className="form-control"
-                                placeholder="Username" name='username' value={username}
+                                type="text" className="form-control rounded-pill fs-16px-login-input"
+                                placeholder="Ingresa tu usuario" name='username' value={username}
                                 onChange={onInputChange}
                             />
                         </div>
 
-                        <div className="input-group mb-4">
-                            <label className="input-group-text">Password</label>
-                            <input
-                                type="password" className="form-control"
-                                placeholder="Password" name='password' value={password}
-                                onChange={onInputChange}
-                            />
+                        <div class="mb-3">
+                            <label for="password" class="form-label fs-16px-login-label">Contraseña: </label>
+                            <div class="input-group">
+                                <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    className="form-control rounded-end rounded-pill fs-16px-login-input"
+                                    placeholder="Ingresa tu contraseña" name='password' value={password}
+                                    onChange={onInputChange}
+                                />
+                                <button
+                                    className="btn btn-outline-secondary rounded-pill rounded-start"
+                                    disabled={password ? false : true}
+                                    type="button"
+                                    onClick={togglePassword}>
+                                    <i class="bi bi-eye-fill"></i>
+                                </button>
+                            </div>
                         </div>
 
-                        <div className="d-grid ">
+                        <div className="d-flex align-content-center justify-content-center">
                             <button
                                 type="submit"
-                                className="btn btn-primary">
+                                disabled={isLoginLoading? true : false}
+                                className="btn btn-login rounded-pill">
                                 {
                                     isLoginLoading ? (
                                         <>

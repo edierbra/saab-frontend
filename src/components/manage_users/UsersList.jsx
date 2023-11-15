@@ -11,7 +11,7 @@ export const UsersList = () => {
         <>
             <table className="table table-hover table-striped">
                 <thead>
-                    <tr>
+                    <tr className="fs-16px-login-label">
                         <th>id</th>
                         <th>username</th>
                         <th>email</th>

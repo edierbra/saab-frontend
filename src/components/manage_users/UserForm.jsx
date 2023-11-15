@@ -12,7 +12,6 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
     useEffect(() => {
         setUserForm({
             ...userSelected,
-            password: '',
         })
     }, [userSelected])
 
@@ -25,6 +24,7 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
                 [name]: value
             }
         )
+        console.log(userForm);
     }
 
     const onCheckboxChange = () => {

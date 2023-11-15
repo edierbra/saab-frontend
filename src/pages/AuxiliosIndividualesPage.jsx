@@ -1,11 +1,11 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { UserModalForm } from "../components/manage_users/UserModalForm";
-import { UsersList } from "../components/manage_users/UsersList"
 import { useAuth } from "../auth/hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { Paginator } from "../components/layout/Paginator";
 import { useAuxiliosIndividuales } from "../hooks/useAuxiliosIndividuales";
 import { AuxiliosIndividualesList } from "../components/manage_auxilios_individuales/AuxiliosIndividualesList";
+import { AuxilioIndividualModalForm } from "../components/manage_auxilios_individuales/AuxilioIndividualModalForm";
 
 export const AuxiliosIndividualesPage = () => {
 
@@ -43,17 +43,20 @@ export const AuxiliosIndividualesPage = () => {
     return (
         <>
             {!visibleForm ||
-                <UserModalForm />
+                <AuxilioIndividualModalForm/>
             }
             <div className="">
 
-                <h2 >Users App</h2>
+                <h2 >AUXILIOS INDIVIDUALES</h2>
 
                 {(visibleForm || !login.isAdmin) ||
                     <button
-                        className="btn btn-primary my-2"
+                        className="btn btn-login my-2 py-1"
                         onClick={handlerOpenForm}>
-                        {'Add user'}
+                        <i className="bi bi-plus-circle-fill"
+                            typeof="button">
+                            <label className="ms-1">Agregar</label>
+                        </i>
                     </button>
                 }
 
@@ -62,9 +65,9 @@ export const AuxiliosIndividualesPage = () => {
                     (
                         <>
                             <AuxiliosIndividualesList />
-                            <Paginator 
-                            url="/auxilios-individuales/page"
-                            paginator={paginator}
+                            <Paginator
+                                url="/auxilios-individuales/page"
+                                paginator={paginator}
                             />
                         </>
                     )
