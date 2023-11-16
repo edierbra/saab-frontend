@@ -1,10 +1,20 @@
+import { useEffect } from "react";
 import { useAuxiliosIndividuales } from "../../hooks/useAuxiliosIndividuales";
+import { useFuncionarios } from "../../hooks/useFuncionarios";
+import { useTiposAuxiliosIndividuales } from "../../hooks/useTiposAuxiliosIndividuales";
 import { Search } from "../layout/Search";
 import { AuxilioIndividualForm } from "./AuxilioIndividualForm";
 
 export const AuxilioIndividualModalForm = () => {
 
-    const { userSelected, handlerCloseForm, funcionarioSearch } = useAuxiliosIndividuales();
+    const { userSelected, handlerCloseForm } = useAuxiliosIndividuales(); 
+    const { funcionarioSearch } = useFuncionarios();
+    const { getTiposAuxiliosIndividuales, tiposAuxiliosIndividuales } = useTiposAuxiliosIndividuales();
+
+    useEffect(() => {
+        getTiposAuxiliosIndividuales();
+        console.log(tiposAuxiliosIndividuales)
+    }, [])
 
     return (
         <>

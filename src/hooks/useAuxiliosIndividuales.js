@@ -2,11 +2,11 @@ import Swal from "sweetalert2"
 import { useNavigate } from "react-router-dom"
 import { findAllUsersPageable} from "../services/AuxilioIndividualService"
 import { useDispatch, useSelector } from "react-redux"
-import { initialUserForm, initialFuncionarioSearch, addUser, removeUser, updateUser, loadingUsers, onUserSelectedForm, onOpenForm, onCloseForm, loadingError, loadingUsersPage, onFuncionarioSearch } from "../store/slices/auxiliosindividuales/auxiliosIndividualesSlice"
+import { initialUserForm, addUser, removeUser, updateUser, loadingUsers, onUserSelectedForm, onOpenForm, onCloseForm, loadingError} from "../store/slices/auxiliosindividuales/auxiliosIndividualesSlice"
 import { useAuth } from "../auth/hooks/useAuth"
 
 export const useAuxiliosIndividuales = () => {
-    const { initialErrors, users, userSelected, visibleForm, errors, isLoading, paginator, funcionarioSearch } = useSelector(state => state.auxiliosindividuales);
+    const { initialErrors, users, userSelected, visibleForm, errors, isLoading, paginator } = useSelector(state => state.auxiliosindividuales);
 
     const dispatch = useDispatch();
 
@@ -159,12 +159,10 @@ export const useAuxiliosIndividuales = () => {
         users,
         userSelected,
         initialUserForm,
-        initialFuncionarioSearch,
         visibleForm,
         errors,
         isLoading,
         paginator,
-        funcionarioSearch,
 
         handlerAddUser,
         handlerRemoveUser,

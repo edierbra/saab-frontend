@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react"
 import { useAuxiliosIndividuales } from "../../hooks/useAuxiliosIndividuales";
 import { Divider } from "../layout/divider";
-import { Search } from "../layout/Search";
+import { useFuncionarios } from "../../hooks/useFuncionarios";
+import { useTiposAuxiliosIndividuales } from "../../hooks/useTiposAuxiliosIndividuales";
+import { FuncionarioForm } from "./FuncionarioForm";
+import { TipoAuxilioForm } from "./TipoAuxilioForm";
 
 export const AuxilioIndividualForm = ({ userSelected, handlerCloseForm, funcionarioSearch }) => {
 
-    const { initialUserForm, handlerAddUser, errors, initialFuncionarioSearch } = useAuxiliosIndividuales();
+    const { initialUserForm, handlerAddUser } = useAuxiliosIndividuales();
+    const { initialFuncionarioForm } = useFuncionarios();
+    const { tiposAuxiliosIndividuales } = useTiposAuxiliosIndividuales();
 
     const [userForm, setUserForm] = useState(initialUserForm);
-
-    const [funcionarioForm, setFuncionarioForm] = useState(initialFuncionarioSearch);
+    const [funcionarioForm, setFuncionarioForm] = useState(initialFuncionarioForm);
 
     const { id, fechaSolicitud, fechaViabilidad,
         resolucion, fechaResolucion, rdp, fechaRdp, valor,
@@ -61,6 +65,33 @@ export const AuxilioIndividualForm = ({ userSelected, handlerCloseForm, funciona
         console.log(userForm)
     }
 
+    const onOptionsSelect = (objetoIdNombre, defaultOption) => {
+
+        if (!objetoIdNombre) return null // Manejar el caso en que funcionarioForm es null o undefined
+
+        const options = (
+            <>
+                <option value='0'>{defaultOption}</option>
+                {objetoIdNombre?.length > 1 ? (
+                    objetoIdNombre.map(({ id, nombre }) => (
+                        <option key={id} value={id}>{nombre}</option>
+                    ))
+                ) : (
+                    (objetoIdNombre?.nombre && objetoIdNombre?.id) && (
+                        <option
+                            selected={id == 0 || "true"}
+                            key={objetoIdNombre.id}
+                            value={objetoIdNombre.id}>
+                            {objetoIdNombre.nombre}
+                        </option>
+                    )
+                )}
+            </>
+        );
+
+        return options;
+    };
+
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -69,7 +100,7 @@ export const AuxilioIndividualForm = ({ userSelected, handlerCloseForm, funciona
 
     const onCloseForm = () => {
         setUserForm(initialUserForm);
-        setFuncionarioForm(initialFuncionarioSearch)
+        setFuncionarioForm(initialFuncionarioForm)
         handlerCloseForm();
     }
 
@@ -88,126 +119,15 @@ export const AuxilioIndividualForm = ({ userSelected, handlerCloseForm, funciona
                 <div className="row mb-3 overflow-auto " style={{ height: '60vh' }}>
                     <div className="col">
 
-                        <Divider content={'Datos del Funcionario'} />
-
-                        <div className="mb-1">
-                            <label className="form-label fs-16px-login-label mb-0">Identificacion</label>
-                            <input
-                                type="text" className="form-control date rounded-pill fs-16px-login-input py-0"
-                                placeholder="Identificacion del Funcionario" name='id' value={funcionarioForm?.id}
-                                disabled
-                            />
-                        </div>
-
-                        <div className="mb-1 ">
-                            <label className="form-label fs-16px-login-label mb-0">Nombre</label>
-                            <input
-                                type="text" className="form-control date rounded-pill fs-16px-login-input py-0"
-                                placeholder="Nombre del Funcionario" name='nombre' value={funcionarioForm?.nombre}
-                                disabled
-                            />
-                        </div>
-
-                        <div className="mb-1">
-                            <label className="form-label fs-16px-login-label mb-0">Correo</label>
-                            <input
-                                type="text" className="form-control date rounded-pill fs-16px-login-input py-0"
-                                placeholder="Correo del Funcionario" name='correo' value={funcionarioForm?.correo}
-                                disabled
-                            />
-                        </div>
-
-                        <select
-                            className="form-select form-select-sm"
-                            placeholder="De"
-                        >
-                            <option value='0' selected>Dependencia del Funcionario</option>
-                            {funcionarioForm.dependencia?.length > 1 ?
-                                funcionarioForm?.dependencia.map(({ id, nombre }) => (
-                                    <option value={id}>{nombre}</option>
-                                ))
-                                :
-                                funcionarioForm.dependencia?.nombre != '' && (
-                                    <option
-                                        value={funcionarioForm.dependencia?.nombre}>
-                                        {funcionarioForm?.dependencia.nombre}
-                                    </option>
-                                )
-                            }
-                        </select>
-
-                        <div className="mb-1">
-                            <label className="form-label fs-16px-login-label mb-0">Dependencia</label>
-                            <input
-                                type="select" className="form-control date rounded-pill fs-16px-login-input py-0"
-                                placeholder="Dependencia del Funcionario" name='dependencia' value={funcionarioForm.dependencia.nombre}
-                                disabled
-                            />
-                        </div>
-
-                        <div className="mb-1">
-                            <label className="form-label fs-16px-login-label mb-0">Genero</label>
-                            <input
-                                type="text" className="form-control date rounded-pill fs-16px-login-input py-0"
-                                placeholder="Genero del Funcionario" name='genero' value={funcionarioForm.genero.nombre}
-                                disabled
-                            />
-                        </div>
-
-                        <div className="mb-1">
-                            <label className="form-label fs-16px-login-label mb-0">Salario</label>
-                            <input
-                                type="text" className="form-control date rounded-pill fs-16px-login-input py-0"
-                                placeholder="Salario del Funcionario" name='salario' value={funcionarioForm?.salario}
-                                disabled
-                            />
-                        </div>
-
-                        <div className="mb-1">
-                            <label className="form-label fs-16px-login-label mb-0">Tipo de Vinculacion</label>
-                            <input
-                                type="text" className="form-control date rounded-pill fs-16px-login-input py-0"
-                                placeholder="Tipo de Vinculacion del Funcionario" name='vinculacionnombre' value={funcionarioForm.vinculacion?.nombre}
-                                disabled
-                            />
-                        </div>
-
-                        <div className="mb-1">
-                            <label className="form-label fs-16px-login-label mb-0">Fecha de Vinculacion</label>
-                            <input
-                                type="text" className="form-control date rounded-pill fs-16px-login-input py-0"
-                                placeholder="Fecha de Vinculacion del Funcionario" name='fechaVinculacion' value={funcionarioForm?.fechaVinculacion}
-                                disabled
-                            />
-                        </div>
-
-                        <div className="mb-1">
-                            <label className="form-label fs-16px-login-label mb-0">Cargo</label>
-                            <input
-                                type="text" className="form-control date rounded-pill fs-16px-login-input py-0"
-                                placeholder="Cargo del Funcionario" name='cargo' value={funcionarioForm?.cargo}
-                                disabled
-                            />
-                        </div>
-
-                        <div className="mb-1">
-                            <label className="form-label fs-16px-login-label mb-0">Activo</label>
-                            <input
-                                type="text" className="form-control date rounded-pill fs-16px-login-input py-0"
-                                placeholder="Estado del Funcionario" name='activo' value={funcionarioForm?.activo}
-                                disabled
-                            />
-                        </div>
-
-
-
+                        <FuncionarioForm
+                            funcionarioForm={funcionarioForm}
+                            onOptionsSelect={onOptionsSelect} />
                     </div>
                     <div className="col">
 
-                        <Divider content={'Tipo de Auxilio'} />
-
-
-
+                        <TipoAuxilioForm
+                            tiposAuxiliosIndividuales={tiposAuxiliosIndividuales}
+                            onOptionsSelect={onOptionsSelect} />
                         <Divider content={'Datos del Auxilio'} />
 
                     </div>

@@ -22,7 +22,7 @@ export const Search = ({ placeholder }) => {
     return (
         <>
          <form onSubmit={onSubmit}>
-            <div class="input-group">
+            <div className="input-group">
                 <input type="text" className="form-control rounded-pill rounded-end"
                     placeholder={placeholder} aria-describedby="basic-addon2"
                     name="id"

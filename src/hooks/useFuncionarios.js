@@ -1,12 +1,12 @@
 import Swal from "sweetalert2"
-import { useNavigate } from "react-router-dom"
 import { findFuncionarioById } from "../services/FuncionarioService"
 import { useDispatch, useSelector } from "react-redux"
-// import { initialUserForm, addUser, removeUser, updateUser, loadingUsers, onUserSelectedForm, onOpenForm, onCloseForm, loadingError, loadingUsersPage } from "../store/slices/users/usersSlice"
 import { useAuth } from "../auth/hooks/useAuth"
-import {  onFuncionarioSearch, onClearFuncionarioSearch } from "../store/slices/auxiliosindividuales/auxiliosIndividualesSlice"
+import {  onFuncionarioSearch, onClearFuncionarioSearch, initialFuncionarioForm } from "../store/slices/funcionarios/funcionariosSlice"
 
 export const useFuncionarios = () => {
+
+    const { funcionarioSearch } =  useSelector(state => state.funcionarios);
 
     const dispatch = useDispatch();
 
@@ -17,7 +17,7 @@ export const useFuncionarios = () => {
         try {
             const result = await findFuncionarioById(id); // findAllUsers()
             dispatch(onFuncionarioSearch(result.data));
-            return result.data;
+            // return result.data;
         } catch (error) {
             if (error.response && error.response?.status == 401) {
                 Swal.fire({
@@ -45,8 +45,11 @@ export const useFuncionarios = () => {
         }
     }
 
-
     return {
-        getFuncionarioById
+        getFuncionarioById,
+        funcionarioSearch,
+        onFuncionarioSearch, 
+        onClearFuncionarioSearch, 
+        initialFuncionarioForm,
     }
 }

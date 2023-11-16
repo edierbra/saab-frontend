@@ -21,16 +21,16 @@ export const initialUserForm = {
     fechaReciboMatricula: "",
     referenciaReciboMatricula: "",
     observacion: "",
-    funcionario: {},
-    motivoJubilacion: {},
-    motivoIncapacidad: {},
-    semestre: {},
-    estadoAuxilio: {},
-    parentesco: {},
-    estudioFormal: {},
-    programa: {},
-    sindicato: {},
-    tipoAuxilioIndividual: {}
+    idFuncionario: 0,
+    idMotivoJubilacion: 0,
+    idMotivoIncapacidad: 0,
+    idSemestre: 0,
+    idEstadoAuxilio: 0,
+    idParentesco: 0,
+    idEstudioFormal: 0,
+    idPrograma: 0,
+    idSindicato: 0,
+    idTipoAuxilioIndividual: 0
 }
 
 const initialErrors = {
@@ -40,16 +40,16 @@ const initialErrors = {
 }
 
 export const initialFuncionarioSearch = {
+    id: 0,
     activo: '',
     cargo: '',
     correo: '',
-    dependencia: { id: '', nombre: ''},
+    dependencia: { id: 0, nombre: ''},
     fechaVinculacion: '',
-    genero: {id: '', nombre: ''},
-    id: '',
+    genero: {id: 0, nombre: ''},
     nombre: '',
-    salario: '',
-    vinculacion: {id: '', nombre: ''},
+    salario: 0,
+    vinculacion: {id: 0, nombre: ''},
 }
 
 export const auxiliosIndividualesSlices = createSlice({
