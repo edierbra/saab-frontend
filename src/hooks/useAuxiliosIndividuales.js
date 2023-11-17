@@ -138,10 +138,6 @@ export const useAuxiliosIndividuales = () => {
         })
     }
 
-    const handlerFuncionarioSearch = (funcionario) => {
-        dispatch(onFuncionarioSearch({ ...funcionario }))
-    }
-
     const handlerUserSelectedForm = (user) => {
         dispatch(onUserSelectedForm({ ...user }))
     }

@@ -1,19 +1,27 @@
 import { useEffect } from "react";
 import { useAuxiliosIndividuales } from "../../hooks/useAuxiliosIndividuales";
 import { useFuncionarios } from "../../hooks/useFuncionarios";
-import { useTiposAuxiliosIndividuales } from "../../hooks/useTiposAuxiliosIndividuales";
+import { useOthersEntities } from "../../hooks/useOthersEntities";
 import { Search } from "../layout/Search";
 import { AuxilioIndividualForm } from "./AuxilioIndividualForm";
 
 export const AuxilioIndividualModalForm = () => {
 
-    const { userSelected, handlerCloseForm } = useAuxiliosIndividuales(); 
-    const { funcionarioSearch } = useFuncionarios();
-    const { getTiposAuxiliosIndividuales, tiposAuxiliosIndividuales } = useTiposAuxiliosIndividuales();
+    const { userSelected, handlerCloseForm } = useAuxiliosIndividuales();
+    const { funcionarioSearch, handlerRemoveUserSearch } = useFuncionarios();
+    const { getTiposAuxiliosIndividuales, getSindicatos, getSemestres,
+        getMotivosIncapacidades, getMotivosJubilaciones, getParentescos,
+        getEstudioFormales, getBeneficiariosEstudio } = useOthersEntities();
 
     useEffect(() => {
         getTiposAuxiliosIndividuales();
-        console.log(tiposAuxiliosIndividuales)
+        getSindicatos();
+        getSemestres();
+        getMotivosIncapacidades();
+        getMotivosJubilaciones();
+        getParentescos();
+        getEstudioFormales();
+        getBeneficiariosEstudio();
     }, [])
 
     return (
@@ -29,17 +37,18 @@ export const AuxilioIndividualModalForm = () => {
                                     </h5>
                                 </div>
                                 <div className="w-50">
-                                <Search
-                                    placeholder={"Identificacion del funcionario"}
-                                />
+                                    <Search
+                                        placeholder={"Identificacion del funcionario"}
+                                    />
                                 </div>
-                               
+
                             </div>
                             <div className="modal-body p-3">
                                 <AuxilioIndividualForm
                                     userSelected={userSelected}
                                     funcionarioSearch={funcionarioSearch}
                                     handlerCloseForm={handlerCloseForm}
+                                    handlerRemoveUserSearch={handlerRemoveUserSearch}
                                 />
                             </div>
                         </div>

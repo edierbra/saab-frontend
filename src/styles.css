@@ -106,6 +106,30 @@
     color: var(--color-label);
 }
 
+.btn-calcular {
+    /* Estilos generales para el botón */
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    /* SemiBold */
+    text-transform: uppercase;
+    letter-spacing: 1.25px;
+    color: white;
+    /* Color inicial de la letra */
+    background-color: gray;
+    /* Color de fondo */
+    padding: 8px 16px;
+    /* Ajusta el padding según sea necesario */
+}
+
+.btn-calcular:hover {
+    /* Cambio de color al pasar el cursor sobre el botón */
+    background-color: white;
+    border: 1px solid var(--color-label);
+    /* Color del borde */
+    color: var(--color-label);
+}
+
 .fs_custom {
     /* font-size: var(--font-size-custom); */
     /* Tamaño de fuente personalizado */

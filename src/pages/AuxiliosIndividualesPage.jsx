@@ -61,7 +61,7 @@ export const AuxiliosIndividualesPage = () => {
                 }
 
                 {users.length < 1 ?
-                    <div className="alert alert-warning">{'No hay usuarios en el sistema'}</div> :
+                    <div className="alert alert-warning">{'No hay Datos registrados en el sistema'}</div> :
                     (
                         <>
                             <AuxiliosIndividualesList />

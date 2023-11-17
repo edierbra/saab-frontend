@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { useOthersEntities } from "../../../hooks/useOthersEntities";
 
 export const initialUserForm = {
     id: 0,
@@ -8,16 +9,16 @@ export const initialUserForm = {
     fechaResolucion: "",
     rdp: "",
     fechaRdp: "",
-    valor: 0,
-    valorTransporteRegreso: 0,
-    diasDesplazamiento: 0,
+    valor: "",
+    valorTransporteRegreso: "",
+    diasDesplazamiento: "",
     lugarDesplazamiento: "",
     fechaRenuncia: "",
     fechaAceptacionRenuncia: "",
     fechaInicioIncapacidad: "",
     fechaFinIncapacidad: "",
-    valorMatricula: 0,
-    promedio: 0,
+    valorMatricula: "",
+    promedio: "",
     fechaReciboMatricula: "",
     referenciaReciboMatricula: "",
     observacion: "",
@@ -30,7 +31,8 @@ export const initialUserForm = {
     idEstudioFormal: 0,
     idPrograma: 0,
     idSindicato: 0,
-    idTipoAuxilioIndividual: 0
+    idTipoAuxilioIndividual: 0,
+    idBeneficiarioEstudio: 0
 }
 
 const initialErrors = {
@@ -39,26 +41,14 @@ const initialErrors = {
     email: '',
 }
 
-export const initialFuncionarioSearch = {
-    id: 0,
-    activo: '',
-    cargo: '',
-    correo: '',
-    dependencia: { id: 0, nombre: ''},
-    fechaVinculacion: '',
-    genero: {id: 0, nombre: ''},
-    nombre: '',
-    salario: 0,
-    vinculacion: {id: 0, nombre: ''},
-}
 
 export const auxiliosIndividualesSlices = createSlice({
+    
     name: 'auxiliosindividuales',
     initialState: {
         users: [],
         paginator: {},
         userSelected: initialUserForm,
-        funcionarioSearch: initialFuncionarioSearch,
         visibleForm: false,
         errors: initialErrors,
         isLoading: true,
@@ -112,11 +102,7 @@ export const auxiliosIndividualesSlices = createSlice({
         onCloseForm: (state) => {
             state.visibleForm = false;
             state.userSelected = initialUserForm;
-            state.funcionarioSearch = initialFuncionarioSearch;
-        },
-        onClearFuncionarioSearch: (state) => {
-            state.funcionarioSearch = initialFuncionarioSearch;
-        },
+        },  
         loadingError: (state, { payload }) => {
             state.errors = payload
         }

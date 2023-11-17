@@ -50,7 +50,7 @@ export const UsersPage = () => {
 
                 {(visibleForm || !login.isAdmin) ||
                     <button
-                        className="btn btn-login my-2 py-0"
+                        className="btn btn-login my-2 py-1"
                         onClick={handlerOpenForm}>
                         <i className="bi bi-plus-circle-fill"
                             typeof="button">
@@ -60,7 +60,7 @@ export const UsersPage = () => {
                 }
 
                 {users.length < 1 ?
-                    <div className="alert alert-warning">{'No hay usuarios en el sistema'}</div> :
+                    <div className="alert alert-warning">{'No hay Datos registrados en el sistema'}</div> :
                     (
                         <>
                             <UsersList />

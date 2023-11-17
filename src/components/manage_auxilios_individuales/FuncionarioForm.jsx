@@ -1,6 +1,18 @@
+import { useEffect } from "react"
 import { Divider } from "../layout/divider"
+import Swal from "sweetalert2"
 
-export const FuncionarioForm = ({funcionarioForm, onOptionsSelect}) => {
+export const FuncionarioForm = ({ handlerRemoveUserSearch, funcionarioForm, onOptionsSelect, onInputChange }) => {
+
+    if(funcionarioForm?.activo == "false"){
+        handlerRemoveUserSearch()
+        Swal.fire(
+            'Usuario inactivo!',
+            'El usuario se encuentra inactivo, no puede acceder a ningun auxilio!',
+            'error'
+        )
+    }
+
     return (
         <>
             <Divider content={'Datos del Funcionario'} />
@@ -9,7 +21,7 @@ export const FuncionarioForm = ({funcionarioForm, onOptionsSelect}) => {
                 <label className="form-label fs-16px-login-label mb-0">Identificacion</label>
                 <input
                     type="text" className="form-control date rounded-pill fs-16px-login-input py-0"
-                    placeholder="Identificacion del Funcionario" name='id' value={funcionarioForm?.id}
+                    placeholder="Identificacion del Funcionario" name='idFuncionario' value={funcionarioForm?.id}
                     disabled
                 />
             </div>
@@ -36,6 +48,7 @@ export const FuncionarioForm = ({funcionarioForm, onOptionsSelect}) => {
                 <label className="form-label fs-16px-login-label mb-0">Dependencia</label>
                 <select
                     className="form-select rounded-pill fs-16px-login-input py-0"
+                    name="idDependencia"
                     disabled
                 >
                     {onOptionsSelect(funcionarioForm.dependencia, 'Dependencia del Funcionario')}
@@ -46,6 +59,7 @@ export const FuncionarioForm = ({funcionarioForm, onOptionsSelect}) => {
                 <label className="form-label fs-16px-login-label mb-0">Genero</label>
                 <select
                     className="form-select rounded-pill fs-16px-login-input py-0"
+                    name="idGenero"
                     disabled
                 >
                     {onOptionsSelect(funcionarioForm.genero, 'Genero del Funcionario')}
@@ -65,6 +79,7 @@ export const FuncionarioForm = ({funcionarioForm, onOptionsSelect}) => {
                 <label className="form-label fs-16px-login-label mb-0">Tipo Vinculacion</label>
                 <select
                     className="form-select rounded-pill fs-16px-login-input py-0"
+                    name="idTipoVinculacion"
                     disabled
                 >
                     {onOptionsSelect(funcionarioForm.vinculacion, 'Tipo de Vinculacion del Funcionario')}
@@ -94,7 +109,7 @@ export const FuncionarioForm = ({funcionarioForm, onOptionsSelect}) => {
                 <input type="checkbox"
                     disabled
                     name="activo"
-                    checked={funcionarioForm?.activo}
+                    checked={funcionarioForm?.activo == "true" ? true : false}
                     className="form-check-input"
                 />
                 <label className="form-label fs-16px-login-label mb-0">Activo</label>

@@ -33,7 +33,6 @@ export const funcionariosSlices = createSlice({
 
     reducers: {
         onFuncionarioSearch: (state, action) => {
-            console.log(action.payload)
             state.funcionarioSearch = action.payload;
         },
         loadingUsers: (state, action) => {

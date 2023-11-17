@@ -15,9 +15,8 @@ export const useFuncionarios = () => {
     const getFuncionarioById = async (id = 0) => {
         
         try {
-            const result = await findFuncionarioById(id); // findAllUsers()
+            const result = await findFuncionarioById(id);
             dispatch(onFuncionarioSearch(result.data));
-            // return result.data;
         } catch (error) {
             if (error.response && error.response?.status == 401) {
                 Swal.fire({
@@ -45,11 +44,15 @@ export const useFuncionarios = () => {
         }
     }
 
+    const handlerRemoveUserSearch = () => {
+        dispatch(onClearFuncionarioSearch());
+    }
+
     return {
         getFuncionarioById,
         funcionarioSearch,
         onFuncionarioSearch, 
-        onClearFuncionarioSearch, 
         initialFuncionarioForm,
+        handlerRemoveUserSearch,
     }
 }

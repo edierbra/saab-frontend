@@ -2,68 +2,52 @@ import { useEffect, useState } from "react"
 import { useAuxiliosIndividuales } from "../../hooks/useAuxiliosIndividuales";
 import { Divider } from "../layout/divider";
 import { useFuncionarios } from "../../hooks/useFuncionarios";
-import { useTiposAuxiliosIndividuales } from "../../hooks/useTiposAuxiliosIndividuales";
+import { useOthersEntities } from "../../hooks/useOthersEntities";
 import { FuncionarioForm } from "./FuncionarioForm";
 import { TipoAuxilioForm } from "./TipoAuxilioForm";
+import { DatosTipoAuxilioForm } from "./DatosTipoAuxilioForm";
+import { ValorAuxilioForm } from "./ValorAuxilioForm";
 
-export const AuxilioIndividualForm = ({ userSelected, handlerCloseForm, funcionarioSearch }) => {
+export const AuxilioIndividualForm = ({ userSelected, handlerCloseForm, funcionarioSearch, handlerRemoveUserSearch }) => {
 
     const { initialUserForm, handlerAddUser } = useAuxiliosIndividuales();
     const { initialFuncionarioForm } = useFuncionarios();
-    const { tiposAuxiliosIndividuales } = useTiposAuxiliosIndividuales();
+    const { tiposAuxiliosIndividuales, tiposAuxiliosIndividualesBySindicatoId, sindicatos,
+        getTiposAuxiliosIndividualesBySindicatoId, getProgramasByIdEstudioFormal, initialTipoAuxilioIndividual } = useOthersEntities();
 
-    const [userForm, setUserForm] = useState(initialUserForm);
+    const [auxilioForm, setAuxilioForm] = useState(initialUserForm);
     const [funcionarioForm, setFuncionarioForm] = useState(initialFuncionarioForm);
 
-    const { id, fechaSolicitud, fechaViabilidad,
-        resolucion, fechaResolucion, rdp, fechaRdp, valor,
-        valorTransporteRegreso, diasDesplazamiento,
-        lugarDesplazamiento, fechaRenuncia, fechaAceptacionRenuncia,
-        fechaInicioIncapacidad, fechaFinIncapacidad, valorMatricula,
-        promedio, fechaReciboMatricula, referenciaReciboMatricula,
-        observacion, funcionario, motivoJubilacion, motivoIncapacidad,
-        semestre, estadoAuxilio, parentesco, estudioFormal, programa,
-        sindicato, tipoAuxilioIndividual } = userForm;
+    const { id, fechaSolicitud, fechaViabilidad, resolucion, fechaResolucion, rdp, fechaRdp, valor, valorTransporteRegreso,
+        diasDesplazamiento, lugarDesplazamiento, fechaRenuncia, fechaAceptacionRenuncia, fechaInicioIncapacidad,
+        fechaFinIncapacidad, valorMatricula, promedio, fechaReciboMatricula, referenciaReciboMatricula,
+        observacion, idFuncionario, idMotivoJubilacion, idMotivoIncapacidad, idSemestre, idEstadoAuxilio,
+        idParentesco, idEstudioFormal, idPrograma, idSindicato, idTipoAuxilioIndividual } = auxilioForm;
 
     useEffect(() => {
-        setUserForm({
-            ...userSelected,
-            password: '',
+        setAuxilioForm({
+            ...userSelected
         })
-    }, [userSelected])
+    }, [, funcionarioSearch])
+
+    useEffect(() => {
+        getTiposAuxiliosIndividualesBySindicatoId(idSindicato);
+    }, [idSindicato])
+
+    useEffect(() => {
+        getProgramasByIdEstudioFormal(idEstudioFormal);
+    }, [idEstudioFormal])
 
     useEffect(() => {
         setFuncionarioForm({
             ...funcionarioSearch
         })
+
+        setAuxilioForm({
+            ...userSelected,
+            idFuncionario: funcionarioSearch?.id,
+        })
     }, [funcionarioSearch])
-
-    const onInputChange = ({ target }) => {
-
-        const { name, value } = target;
-        setUserForm(
-            {
-                ...userForm,
-                [name]: value
-            }
-        )
-        console.log(userForm)
-    }
-
-    const onInputChangeFuncionario = ({ target }) => {
-
-        const { name, value } = target;
-        setUserForm(
-            {
-                ...userForm,
-                funcionario: {
-                    ...funcionario,
-                    [name]: value,
-                },
-            }
-        )
-        console.log(userForm)
-    }
 
     const onOptionsSelect = (objetoIdNombre, defaultOption) => {
 
@@ -71,17 +55,22 @@ export const AuxilioIndividualForm = ({ userSelected, handlerCloseForm, funciona
 
         const options = (
             <>
-                <option value='0'>{defaultOption}</option>
-                {objetoIdNombre?.length > 1 ? (
+                <option
+                    key='0'
+                    value='0'>
+                    {defaultOption}
+                </option>
+                {Array.isArray(objetoIdNombre) ? (
                     objetoIdNombre.map(({ id, nombre }) => (
                         <option key={id} value={id}>{nombre}</option>
                     ))
                 ) : (
                     (objetoIdNombre?.nombre && objetoIdNombre?.id) && (
                         <option
-                            selected={id == 0 || "true"}
                             key={objetoIdNombre.id}
-                            value={objetoIdNombre.id}>
+                            value={objetoIdNombre.id}
+                            selected //={id == 0 || "false"}
+                        >
                             {objetoIdNombre.nombre}
                         </option>
                     )
@@ -92,43 +81,73 @@ export const AuxilioIndividualForm = ({ userSelected, handlerCloseForm, funciona
         return options;
     };
 
+    const onInputChange = ({ target }) => {
+
+        const { name, value } = target;
+        setAuxilioForm(
+            {
+                ...auxilioForm,
+                [name]: value
+            }
+        )
+        console.log(auxilioForm)
+    }
 
     const onSubmit = (event) => {
         event.preventDefault();
-        handlerAddUser(userForm) // Guardar el userFrom en userList
+        console.log(auxilioForm)
+        // handlerAddUser(auxilioForm) // Guardar el userFrom en userList
     }
 
     const onCloseForm = () => {
-        setUserForm(initialUserForm);
-        setFuncionarioForm(initialFuncionarioForm)
+        setAuxilioForm(initialUserForm);
+        setFuncionarioForm(initialFuncionarioForm);
+        handlerRemoveUserSearch();
         handlerCloseForm();
     }
 
     return (
         <>
-            <form onSubmit={onSubmit}>
-                {/* <input
-                    className="form-control m-0 w-100"
-                    type="text"
-                    value={username}
-                    name="username"
-                    placeholder="username"
-                    onChange={onInputChangeText}
-                />
-                <p className="text-danger">{errors?.username}</p> */}
+            <form onSubmit={onSubmit} noValidate>
                 <div className="row mb-3 overflow-auto " style={{ height: '60vh' }}>
                     <div className="col">
 
                         <FuncionarioForm
                             funcionarioForm={funcionarioForm}
-                            onOptionsSelect={onOptionsSelect} />
+                            onOptionsSelect={onOptionsSelect}
+                            onInputChange={onInputChange}
+                            handlerRemoveUserSearch={handlerRemoveUserSearch}
+                        />
                     </div>
                     <div className="col">
-
                         <TipoAuxilioForm
                             tiposAuxiliosIndividuales={tiposAuxiliosIndividuales}
-                            onOptionsSelect={onOptionsSelect} />
-                        <Divider content={'Datos del Auxilio'} />
+                            tiposAuxiliosIndividualesBySindicatoId={tiposAuxiliosIndividualesBySindicatoId}
+                            onOptionsSelect={onOptionsSelect}
+                            onInputChange={onInputChange}
+                            sindicatos={sindicatos}
+                            idSindicato={idSindicato}
+                            idTipoAuxilioIndividual={idTipoAuxilioIndividual}
+                            auxilioForm={auxilioForm}
+                            setAuxilioForm={setAuxilioForm}
+                        />
+
+                        {idTipoAuxilioIndividual == 0 || (
+                            <>
+                                <DatosTipoAuxilioForm
+                                    auxilioForm={auxilioForm}
+                                    setAuxilioForm={setAuxilioForm}
+                                    onOptionsSelect={onOptionsSelect}
+                                    onInputChange={onInputChange}
+                                />
+
+                                <ValorAuxilioForm
+                                    onInputChange={onInputChange}
+                                    valor={valor}
+                                />
+                            </>
+                        )
+                        }
 
                     </div>
                 </div>
