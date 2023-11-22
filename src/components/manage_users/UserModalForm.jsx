@@ -11,14 +11,14 @@ export const UserModalForm = () => {
                 <div className="modal" style={{ display: 'block' }} tabIndex={'-1'}>
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
-                            <div className="modal-header">
+                            <div className="modal-header border rounded shadow-lg m-2">
                                 <div className="modal-title">
                                     <h5 className="modal-title">
-                                        {userSelected.id > 0 ? 'Edit User' : 'Add User'}
+                                        {userSelected.id == '' ? 'Agregar Usuario' : 'Editar Usuario'}
                                     </h5>
                                 </div>
                             </div>
-                            <div className="modal-body">
+                            <div className="modal-body mt-0 pt-0">
                                 <UserForm
                                     userSelected={userSelected}
                                     handlerCloseForm={handlerCloseForm}

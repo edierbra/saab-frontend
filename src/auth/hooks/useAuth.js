@@ -7,7 +7,7 @@ import { onLogin, onLogout, onStartLogin } from "../../store/slices/auth/authSli
 export const useAuth = () => {
 
     const dispatch = useDispatch();
-    const { user, isAdmin, isAuth, isLoginLoading } = useSelector(state => state.auth);
+    const { user, isAdmin, isRoot, isAuth, isLoginLoading } = useSelector(state => state.auth);
 
     const navigate = useNavigate();
 
@@ -25,12 +25,13 @@ export const useAuth = () => {
 
             const user = { username: response.data.username } // claims.sub or claims.username
 
-            dispatch(onLogin({ user, isAdmin: claims.isAdmin }));
+            dispatch(onLogin({ user, isAdmin: claims.isAdmin, isRoot: claims.isRoot  }));
 
             sessionStorage.setItem('login', JSON.stringify(
                 {
                     isAuth: true,
                     isAdmin: claims.isAdmin,
+                    isRoot: claims.isRoot,
                     user: user,
                 }
             ));
@@ -84,8 +85,9 @@ export const useAuth = () => {
     return {
         login: {
             user,
-            isAdmin, 
-            isAuth
+            isAdmin,
+            isRoot, 
+            isAuth,
         },
         isLoginLoading,
         handlerLogin,

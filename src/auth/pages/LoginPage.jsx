@@ -1,6 +1,7 @@
 import { useState } from "react"
 import Swal from "sweetalert2";
 import { useAuth } from "../hooks/useAuth";
+import logo from '../../assets/logo.png'; 
 
 const initialLoginForm = {
     username: '',
@@ -53,41 +54,43 @@ export const LoginPage = () => {
         <>
             <div className='login tempalte d-flex justify-content-center align-items-center w-100 vh-100 bg-blue'>
                 <div className="px-5 py-3 rounded bg-login form_container_login">
-                    <p className="text-center mb-4 fs-24px">{'SAAB'}</p>
+                    <img className="logo-size d-flex m-auto mb-0" src={logo} alt="Logo" />
+                    <p className="text-center mb-0 fs-24px">{'SAAB'}</p>
                     
                     <form onSubmit={onSubmit}>
 
-                        <p className="text-center mb-3 text-black fw-bold fs-4">{'Sing In '}</p>
+                        <p className="text-center mb-0 text-black fw-bold fs-5">{'Sing In '}</p>
 
-                        <div class="mb-2">
-                            <label className="form-label fs-16px-login-label ">Usuario:</label>
+                        <div className="mb-2 input-group-sm">
+                            <label className="form-label fs-16px-login-label mb-0">Usuario:</label>
                             <input
-                                type="text" className="form-control rounded-pill fs-16px-login-input"
+                                type="text" className="form-control rounded-pill fs-16px-login-input "
                                 placeholder="Ingresa tu usuario" name='username' value={username}
                                 onChange={onInputChange}
                             />
                         </div>
 
-                        <div class="mb-3">
-                            <label for="password" class="form-label fs-16px-login-label">Contraseña: </label>
-                            <div class="input-group">
+                        <div className="mb-3">
+                            <label htmlFor="password" className="form-label fs-16px-login-label mb-0">Contraseña: </label>
+                            <div className="input-group input-group-sm">
                                 <input
                                     type={showPassword ? 'text' : 'password'}
-                                    className="form-control rounded-end rounded-pill fs-16px-login-input"
+                                    className="form-control rounded-end rounded-pill fs-16px-login-input "
                                     placeholder="Ingresa tu contraseña" name='password' value={password}
                                     onChange={onInputChange}
                                 />
+
                                 <button
                                     className="btn btn-outline-secondary rounded-pill rounded-start"
                                     disabled={password ? false : true}
                                     type="button"
                                     onClick={togglePassword}>
-                                    <i class="bi bi-eye-fill"></i>
+                                    <i className="bi bi-eye-fill"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <div className="d-flex align-content-center justify-content-center">
+                        <div className="d-flex mb-2 align-content-center justify-content-center">
                             <button
                                 type="submit"
                                 disabled={isLoginLoading? true : false}

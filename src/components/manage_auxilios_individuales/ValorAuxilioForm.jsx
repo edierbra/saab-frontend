@@ -1,6 +1,6 @@
 import { Divider } from "../layout/divider"
 
-export const ValorAuxilioForm = ({ onInputChange, valor }) => {
+export const ValorAuxilioForm = ({ onlyShow, onInputChange, valor, fechaOpcionalCalculo }) => {
     return (
         <>
             <Divider
@@ -11,10 +11,11 @@ export const ValorAuxilioForm = ({ onInputChange, valor }) => {
                 <label className="form-label fs-16px-login-label mb-0">{"(Opcional) Fecha de Calculo"}</label>
                 <input
                     type="date" className="form-control date rounded-pill fs-16px-login-input py-0"
-                    placeholder="Fecha Calculo " name='valor' value={valor}
+                    placeholder="Fecha Calculo " name='fechaOpcionalCalculo' value={fechaOpcionalCalculo}
                     onChange={onInputChange}
+                    disabled={onlyShow}
                 />
-                <p className="d-flex justify-content-end c">Por defecto: Fecha de la solicitud </p>
+                <p className="d-flex justify-content-end fw-bold fs-7">Por defecto: Fecha de la solicitud </p>
             </div>
 
             <div>
@@ -23,6 +24,7 @@ export const ValorAuxilioForm = ({ onInputChange, valor }) => {
                     <button
                         className="btn btn-login btn-sm py-0"
                         type="button"
+                        disabled={onlyShow}
                     >
                         Calcular:
                     </button>
@@ -32,6 +34,7 @@ export const ValorAuxilioForm = ({ onInputChange, valor }) => {
                             type="number" className="form-control date rounded-pill fs-16px-login-input py-0"
                             placeholder="Valor del auxilo" name='valor' value={valor}
                             onChange={onInputChange}
+                            disabled={onlyShow}
                         />
                     </div>
                 </div>

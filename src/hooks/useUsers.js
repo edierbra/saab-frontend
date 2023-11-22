@@ -1,8 +1,8 @@
 import Swal from "sweetalert2"
 import { useNavigate } from "react-router-dom"
-import { create, findAllUsers, findAllUsersPageable, remove, update } from "../services/UserService"
+import { create, findAllUsersPageable, findUserByIdAndNombre, remove, update } from "../services/UserService"
 import { useDispatch, useSelector } from "react-redux"
-import { initialUserForm, addUser, removeUser, updateUser, loadingUsers, onUserSelectedForm, onOpenForm, onCloseForm, loadingError, loadingUsersPage } from "../store/slices/users/usersSlice"
+import { initialUserForm, addUser, removeUser, updateUser, loadingUsers, onUserSelectedForm, onOpenForm, onCloseForm, loadingError } from "../store/slices/users/usersSlice"
 import { useAuth } from "../auth/hooks/useAuth"
 
 export const useUsers = () => {
@@ -37,6 +37,29 @@ export const useUsers = () => {
         }
     }
 
+    const getUserByIdAndNombre = async (search = '', page=0) => {
+        try {
+            const result = await findUserByIdAndNombre(search, page);
+            dispatch(loadingUsers(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                Swal.fire({
+                    title: 'Error de autenticacion',
+                    text: "No tienes los permisos requeridos, Inicie sesion como administrador",
+                    icon: 'error',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        handlerLogout()
+                    }
+                })
+            }
+        }
+    }
+
     const handlerAddUser = async (user) => {
 
         if (!login.isAdmin) return;
@@ -45,17 +68,19 @@ export const useUsers = () => {
 
         try {
 
-            if (user.id === 0) {
+            if (userSelected?.id == '') {
+                console.log("entro a create", user)
                 response = await create(user);
                 dispatch(addUser(response.data));
             } else {
+                console.log("entro a UPDATE", user)
                 response = await update(user);
                 dispatch(updateUser(response.data));
             }
 
             Swal.fire(
-                (user.id === 0) ? 'Usuario Creado' : 'Usuario Editado',
-                (user.id === 0) ?
+                (userSelected?.id == '') ? 'Usuario Creado' : 'Usuario Editado',
+                (userSelected?.id == '') ?
                     'El usuario ha sido creado con exito' :
                     'El usuario ha sido editado con exito',
                 'success'
@@ -63,6 +88,7 @@ export const useUsers = () => {
 
             handlerCloseForm();
             navigate('/users')
+            
         } catch (error) {
             // const UK_username = 'UK_r43af9ap4edm43mmtq01oddj6'; // index de la columna de la DB
             // const UK_email = 'UK_6dotkott2kjsp8vw4d0m25fb7';
@@ -166,6 +192,6 @@ export const useUsers = () => {
         handlerOpenForm,
         handlerCloseForm,
         getUsers,
-        // getUsersPage,
+        getUserByIdAndNombre,
     }
 }

@@ -5,6 +5,7 @@ import { useUsers } from "../hooks/useUsers";
 import { useAuth } from "../auth/hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { Paginator } from "../components/layout/Paginator";
+import { Header } from "../components/layout/Header";
 
 export const UsersPage = () => {
 
@@ -18,6 +19,7 @@ export const UsersPage = () => {
 
         handlerOpenForm,
         getUsers,
+        getUserByIdAndNombre,
     } = useUsers();
 
     const {
@@ -46,20 +48,15 @@ export const UsersPage = () => {
             }
             <div className="">
 
-                <h2 >USUARIOS</h2>
+                <Header
+                    visibleForm={visibleForm}
+                    handlerOpenForm={handlerOpenForm}
+                    placeholder={"Buscar por Identificacion o Nombre"}
+                    valueDefault={""}
+                    functionSearch={getUserByIdAndNombre}
+                />
 
-                {(visibleForm || !login.isAdmin) ||
-                    <button
-                        className="btn btn-login my-2 py-1"
-                        onClick={handlerOpenForm}>
-                        <i className="bi bi-plus-circle-fill"
-                            typeof="button">
-                            <label className="ms-1">Agregar</label>
-                        </i>
-                    </button>
-                }
-
-                {users.length < 1 ?
+                {users?.length < 1 ?
                     <div className="alert alert-warning">{'No hay Datos registrados en el sistema'}</div> :
                     (
                         <>

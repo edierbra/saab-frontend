@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { useOthersEntities } from "../../../hooks/useOthersEntities";
 
-export const initialUserForm = {
+export const initialAuxiliosIndividualForm = {
     id: 0,
     fechaSolicitud: "",
     fechaViabilidad: "",
@@ -12,10 +12,13 @@ export const initialUserForm = {
     valor: "",
     valorTransporteRegreso: "",
     diasDesplazamiento: "",
+    diasIncapacidad: "",
     lugarDesplazamiento: "",
     fechaRenuncia: "",
     fechaAceptacionRenuncia: "",
     fechaInicioIncapacidad: "",
+    fechaOtorgamientoAnteojos: "",
+    fechaOpcionalCalculo: "",
     fechaFinIncapacidad: "",
     valorMatricula: "",
     promedio: "",
@@ -46,12 +49,13 @@ export const auxiliosIndividualesSlices = createSlice({
     
     name: 'auxiliosindividuales',
     initialState: {
-        users: [],
+        auxiliosIndividuales: [],
         paginator: {},
-        userSelected: initialUserForm,
+        auxiliosIndividualSelected: initialAuxiliosIndividualForm,
         visibleForm: false,
         errors: initialErrors,
         isLoading: true,
+        onlyShow: false,
     },
 
     reducers: {
@@ -59,49 +63,55 @@ export const auxiliosIndividualesSlices = createSlice({
             console.log(action.payload)
             state.funcionarioSearch = action.payload;
         },
-        addUser: (state, action) => {
-            state.users = [
-                ...state.users,
+        addAuxilioIndividual: (state, action) => {
+            state.auxiliosIndividuales = [
+                ...state.auxiliosIndividuales,
                 {
                     ...action.payload,
                 }
             ];
 
-            state.userSelected = initialUserForm;
+            state.auxiliosIndividualSelected = initialAuxiliosIndividualForm;
             state.visibleForm = false;
         },
-        removeUser: (state, action) => {
-            state.users = state.users.filter(user => user.id !== action.payload);
+        removeAuxilioIndividual: (state, action) => {
+            state.auxiliosIndividuales = state.auxiliosIndividuales.filter(auxilioIndividual => auxilioIndividual.id !== action.payload);
         },
-        updateUser: (state, action) => {
-            state.users = state.users.map(user => {
-                if (user.id === action.payload.id) {
+        updateAuxilioIndividual: (state, action) => {
+            state.isLoading = true;
+            state.auxiliosIndividuales = state.auxiliosIndividuales.map(auxilioIndividual => {
+                if (auxilioIndividual.id === action.payload.id) {
                     return {
                         ...action.payload,
                         // password: user.password, // ya no se usa
                     }
                 }
-                return user;
+                return auxilioIndividual;
             });
 
-            state.userSelected = initialUserForm;
+            state.auxiliosIndividualSelected = initialAuxiliosIndividualForm;
             state.visibleForm = false;
+            state.isLoading = false;
         },
-        loadingUsers: (state, action) => {
-            state.users = action.payload.content; // action.payload
+        loadingAuxilioIndividuales: (state, action) => {
+            state.auxiliosIndividuales = action.payload.content; // action.payload
             state.paginator = action.payload;
             state.isLoading = false;
         },
-        onUserSelectedForm: (state, action) => {
-            state.userSelected = action.payload;
+        onAuxilioIndividualSelectedForm: (state, action) => {
+            state.auxiliosIndividualSelected = {
+                ...state.auxiliosIndividuales.find(aux => aux.id==action.payload.id)
+            };
             state.visibleForm = true;
+            state.onlyShow = action.payload.onlyShow ;
         },
         onOpenForm: (state) => { // EL ACCTION SE OMITE SI NO SE USA
             state.visibleForm = true;
         },
         onCloseForm: (state) => {
             state.visibleForm = false;
-            state.userSelected = initialUserForm;
+            state.auxiliosIndividualSelected = initialAuxiliosIndividualForm;
+            state.onlyShow = false;
         },  
         loadingError: (state, { payload }) => {
             state.errors = payload
@@ -112,12 +122,12 @@ export const auxiliosIndividualesSlices = createSlice({
 export const {
     onFuncionarioSearch,
     onClearFuncionarioSearch,
-    addUser,
-    removeUser,
-    updateUser,
-    loadingUsers,
+    addAuxilioIndividual,
+    removeAuxilioIndividual,
+    updateAuxilioIndividual,
+    loadingAuxilioIndividuales,
     loadingUsersPage,
-    onUserSelectedForm,
+    onAuxilioIndividualSelectedForm,
     onOpenForm,
     onCloseForm,
     loadingError,

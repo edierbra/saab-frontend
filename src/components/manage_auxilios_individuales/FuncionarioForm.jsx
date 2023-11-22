@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { Divider } from "../layout/divider"
 import Swal from "sweetalert2"
 
-export const FuncionarioForm = ({ handlerRemoveUserSearch, funcionarioForm, onOptionsSelect, onInputChange }) => {
+export const FuncionarioForm = ({ handlerRemoveUserSearch, funcionarioForm, setAuxilioForm, auxilioForm, onOptionsSelect, onInputChange }) => {
 
     if(funcionarioForm?.activo == "false"){
         handlerRemoveUserSearch()
@@ -12,6 +12,14 @@ export const FuncionarioForm = ({ handlerRemoveUserSearch, funcionarioForm, onOp
             'error'
         )
     }
+
+    useEffect(() => {
+        console.log(funcionarioForm)
+        setAuxilioForm({ // guarda el usuario buscado
+            ...auxilioForm,
+            idFuncionario: funcionarioForm?.id,
+        })
+    }, [funcionarioForm])
 
     return (
         <>
@@ -50,8 +58,9 @@ export const FuncionarioForm = ({ handlerRemoveUserSearch, funcionarioForm, onOp
                     className="form-select rounded-pill fs-16px-login-input py-0"
                     name="idDependencia"
                     disabled
+                    value={funcionarioForm.dependencia?.id}
                 >
-                    {onOptionsSelect(funcionarioForm.dependencia, 'Dependencia del Funcionario')}
+                    {onOptionsSelect(funcionarioForm?.dependencia, 'Dependencia del Funcionario', funcionarioForm.dependencia?.id)}
                 </select>
             </div>
 
@@ -61,8 +70,9 @@ export const FuncionarioForm = ({ handlerRemoveUserSearch, funcionarioForm, onOp
                     className="form-select rounded-pill fs-16px-login-input py-0"
                     name="idGenero"
                     disabled
+                    value={funcionarioForm.genero?.id}
                 >
-                    {onOptionsSelect(funcionarioForm.genero, 'Genero del Funcionario')}
+                    {onOptionsSelect(funcionarioForm?.genero, 'Genero del Funcionario', funcionarioForm.genero?.id)}
                 </select>
             </div>
 
@@ -81,8 +91,9 @@ export const FuncionarioForm = ({ handlerRemoveUserSearch, funcionarioForm, onOp
                     className="form-select rounded-pill fs-16px-login-input py-0"
                     name="idTipoVinculacion"
                     disabled
+                    value={funcionarioForm.vinculacion?.id}
                 >
-                    {onOptionsSelect(funcionarioForm.vinculacion, 'Tipo de Vinculacion del Funcionario')}
+                    {onOptionsSelect(funcionarioForm?.vinculacion, 'Tipo de Vinculacion del Funcionario', funcionarioForm.vinculacion?.id)}
                 </select>
             </div>
 

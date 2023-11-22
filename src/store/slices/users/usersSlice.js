@@ -1,17 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export const initialUserForm = {
-    id: 0,
+    id: '',
     username: '',
     password: '',
     email: '',
+    nombre: '',
     admin: false,
+    root: false,
 }
 
 const initialErrors = {
     username: '',
     password: '',
     email: '',
+    nombre: '',
+    id: "",
 }
 
 export const usersSlice = createSlice({

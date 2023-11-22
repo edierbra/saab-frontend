@@ -1,32 +1,36 @@
 import { useEffect } from "react";
-import { UserModalForm } from "../components/manage_users/UserModalForm";
 import { useAuth } from "../auth/hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { Paginator } from "../components/layout/Paginator";
 import { useAuxiliosIndividuales } from "../hooks/useAuxiliosIndividuales";
 import { AuxiliosIndividualesList } from "../components/manage_auxilios_individuales/AuxiliosIndividualesList";
 import { AuxilioIndividualModalForm } from "../components/manage_auxilios_individuales/AuxilioIndividualModalForm";
+import { Header } from "../components/layout/Header";
+import { useFuncionarios } from "../hooks/useFuncionarios";
 
 export const AuxiliosIndividualesPage = () => {
 
     const { page } = useParams()
 
     const {
-        users,
+        auxiliosIndividuales,
         visibleForm,
         isLoading,
         paginator,
 
         handlerOpenForm,
-        getUsers,
+        getAuxiliosIndividuales,
+        getAuxiliosIndividualesByNombreOrIdOrTipoPageable
     } = useAuxiliosIndividuales();
+
+    const { getFuncionarioById } = useFuncionarios()
 
     const {
         login
     } = useAuth()
 
     useEffect(() => {
-        getUsers(page);
+        getAuxiliosIndividuales(page);
     }, [, page])
 
     if (isLoading) {
@@ -43,24 +47,19 @@ export const AuxiliosIndividualesPage = () => {
     return (
         <>
             {!visibleForm ||
-                <AuxilioIndividualModalForm/>
+                <AuxilioIndividualModalForm />
             }
             <div className="">
 
-                <h2 >AUXILIOS INDIVIDUALES</h2>
+                <Header
+                    visibleForm={visibleForm}
+                    handlerOpenForm={handlerOpenForm}
+                    placeholder={"Buscar por Identificacion, Nombre o Tipo de auxilio"}
+                    valueDefault={""}
+                    functionSearch={getAuxiliosIndividualesByNombreOrIdOrTipoPageable}
+                />
 
-                {(visibleForm || !login.isAdmin) ||
-                    <button
-                        className="btn btn-login my-2 py-1"
-                        onClick={handlerOpenForm}>
-                        <i className="bi bi-plus-circle-fill"
-                            typeof="button">
-                            <label className="ms-1">Agregar</label>
-                        </i>
-                    </button>
-                }
-
-                {users.length < 1 ?
+                {auxiliosIndividuales.length < 1 ?
                     <div className="alert alert-warning">{'No hay Datos registrados en el sistema'}</div> :
                     (
                         <>

@@ -1,12 +1,21 @@
 import Swal from "sweetalert2"
 import { useNavigate } from "react-router-dom"
-import { findAllUsersPageable} from "../services/AuxilioIndividualService"
+import {
+    findAllAuxilioIndividualesPageable, findAuxiliosIndividualesByNombreOrIdOrTipoPageable, create, update,
+    remove
+} from "../services/AuxilioIndividualService"
 import { useDispatch, useSelector } from "react-redux"
-import { initialUserForm, addUser, removeUser, updateUser, loadingUsers, onUserSelectedForm, onOpenForm, onCloseForm, loadingError} from "../store/slices/auxiliosindividuales/auxiliosIndividualesSlice"
+import {
+    initialAuxiliosIndividualForm, addAuxilioIndividual, removeAuxilioIndividual,
+    updateAuxilioIndividual, loadingAuxilioIndividuales, onAuxilioIndividualSelectedForm,
+    onOpenForm, onCloseForm, loadingError
+} from "../store/slices/auxiliosindividuales/auxiliosIndividualesSlice"
 import { useAuth } from "../auth/hooks/useAuth"
+import { useFuncionarios } from "./useFuncionarios"
 
 export const useAuxiliosIndividuales = () => {
-    const { initialErrors, users, userSelected, visibleForm, errors, isLoading, paginator } = useSelector(state => state.auxiliosindividuales);
+    const { initialErrors, auxiliosIndividuales, auxiliosIndividualSelected, visibleForm,
+        errors, isLoading, paginator, onlyShow } = useSelector(state => state.auxiliosindividuales);
 
     const dispatch = useDispatch();
 
@@ -14,10 +23,12 @@ export const useAuxiliosIndividuales = () => {
 
     const { login, handlerLogout } = useAuth();
 
-    const getUsers = async (page = 0) => {
+    const { handlerRemoveUserSearch } = useFuncionarios()
+
+    const getAuxiliosIndividuales = async (page = 0) => {
         try {
-            const result = await findAllUsersPageable(page); // findAllUsers()
-            dispatch(loadingUsers(result.data));
+            const result = await findAllAuxilioIndividualesPageable(page); // findAllUsers()
+            dispatch(loadingAuxilioIndividuales(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
                 Swal.fire({
@@ -37,7 +48,30 @@ export const useAuxiliosIndividuales = () => {
         }
     }
 
-    const handlerAddUser = async (user) => {
+    const getAuxiliosIndividualesByNombreOrIdOrTipoPageable = async (search = "", page = 0) => {
+        try {
+            const result = await findAuxiliosIndividualesByNombreOrIdOrTipoPageable(search, page); // findAllUsers()
+            dispatch(loadingAuxilioIndividuales(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                Swal.fire({
+                    title: 'Error de autenticacion',
+                    text: "No tienes los permisos requeridos, Inicie sesion como Admin o Root",
+                    icon: 'error',
+                    showCancelButton: false,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Aceptar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        handlerLogout()
+                    }
+                })
+            }
+        }
+    }
+
+    const handlerAddAuxilioIndividual = async (auxilioIndividual) => {
 
         if (!login.isAdmin) return;
 
@@ -45,24 +79,24 @@ export const useAuxiliosIndividuales = () => {
 
         try {
 
-            if (user.id === 0) {
-                response = await create(user);
-                dispatch(addUser(response.data));
+            if (auxilioIndividual.id === 0) {
+                response = await create(auxilioIndividual);
+                dispatch(addAuxilioIndividual(response.data));
             } else {
-                response = await update(user);
-                dispatch(updateUser(response.data));
+                response = await update(auxilioIndividual);
+                dispatch(updateAuxilioIndividual(response.data));
             }
 
-            Swal.fire(
-                (user.id === 0) ? 'Usuario Creado' : 'Usuario Editado',
-                (user.id === 0) ?
-                    'El usuario ha sido creado con exito' :
-                    'El usuario ha sido editado con exito',
-                'success'
-            )
-
+            Swal.fire({
+                position: 'top-end',
+                icon: 'success',
+                title: (auxilioIndividual.id === 0) ? 'Auxilio Creado' : 'Auxilio Editado',
+                width: 300,
+                showConfirmButton: false,
+                timer: 1500
+            })
             handlerCloseForm();
-            navigate('/users')
+            navigate('/auxilios-individuales')
         } catch (error) {
             // const UK_username = 'UK_r43af9ap4edm43mmtq01oddj6'; // index de la columna de la DB
             // const UK_email = 'UK_6dotkott2kjsp8vw4d0m25fb7';
@@ -92,13 +126,13 @@ export const useAuxiliosIndividuales = () => {
         }
     }
 
-    const handlerRemoveUser = (id) => {
+    const handlerRemoveAuxilioIndividual = (id) => {
 
         if (!login.isAdmin) return;
 
         Swal.fire({
-            title: 'Quieres eliminar el usuario?',
-            text: "El usuario sera eliminado!",
+            title: 'Quieres eliminar el auxilio?',
+            text: "El auxilio sera eliminado!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -109,14 +143,16 @@ export const useAuxiliosIndividuales = () => {
 
                 try {
                     await remove(id); // elimina de la base de datos
+                    dispatch(removeAuxilioIndividual(id));
 
-                    dispatch(removeUser(id));
-
-                    Swal.fire(
-                        'Usuario eliminado!',
-                        'El usuario ha sido eliminado.',
-                        'success'
-                    )
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: 'Auxilio eliminado!',
+                        width: 300,
+                        showConfirmButton: false,
+                        timer: 1500
+                    })
                 } catch (error) {
                     if (error.response && error.response?.status == 401) {
                         Swal.fire({
@@ -138,8 +174,8 @@ export const useAuxiliosIndividuales = () => {
         })
     }
 
-    const handlerUserSelectedForm = (user) => {
-        dispatch(onUserSelectedForm({ ...user }))
+    const handlerAuxilioIndividualSelectedForm = (data) => {
+        dispatch(onAuxilioIndividualSelectedForm({ ...data }))
     }
 
     const handlerOpenForm = () => {
@@ -148,24 +184,27 @@ export const useAuxiliosIndividuales = () => {
 
     const handlerCloseForm = () => {
         dispatch(onCloseForm())
+        handlerRemoveUserSearch();
         dispatch(loadingError(initialErrors)) // limpia los errors
     }
 
     return {
-        users,
-        userSelected,
-        initialUserForm,
+        auxiliosIndividuales,
+        auxiliosIndividualSelected,
+        initialAuxiliosIndividualForm,
         visibleForm,
         errors,
         isLoading,
         paginator,
+        onlyShow,
 
-        handlerAddUser,
-        handlerRemoveUser,
-        handlerUserSelectedForm,
+        handlerAddAuxilioIndividual,
+        handlerRemoveAuxilioIndividual,
+        handlerAuxilioIndividualSelectedForm,
         handlerOpenForm,
         handlerCloseForm,
-        getUsers,
+        getAuxiliosIndividuales,
+        getAuxiliosIndividualesByNombreOrIdOrTipoPageable,
         // getUsersPage,
     }
 }

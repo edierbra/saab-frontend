@@ -41,7 +41,7 @@ export const SaabRoutes = ({ handlerHideSideBar, value1, value2 }) => {
                     <Route path="/auxilios-individuales" element={<AuxiliosIndividualesPage />} />
                     <Route path="/auxilios-individuales/page/:page" element={<AuxiliosIndividualesPage />} />
                     {/* Agregamos una ruta para manejar rutas desconocidas */}
-                    <Route path="*" element={<Navigate to="auxilios-individuales" />} />
+                    <Route path="*" element={<Navigate to="/auxilios-individuales" />} />
 
                     {isAdmin && (
                         <>
@@ -49,13 +49,12 @@ export const SaabRoutes = ({ handlerHideSideBar, value1, value2 }) => {
 
                             <Route path="/users/page/:page" element={<UsersPage />} />
 
-                            <Route path="/register-user" element={<RegisterPage />} />
-
                             <Route path="/auxilios-individuales" element={<AuxiliosIndividualesPage />} />
 
                             <Route path="/funcionarios" element={<FuncionariosPage />} />
 
-                            <Route path="/users/edit/:id" element={<RegisterPage />} />
+                            {/* <Route path="/register-user" element={<RegisterPage />} /> */}
+                            {/* <Route path="/users/edit/:id" element={<RegisterPage />} /> */}
                         </>
                     )}
 

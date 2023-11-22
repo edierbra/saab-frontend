@@ -1,17 +1,17 @@
 :root {
-    --color-btn-logout: #2e00fd;
-    --color-hover-navbar: #000066;
-    --color-input: #454444;
-    --color-label: #000066;
+    --color-gray: #454444;
+    --color-red: rgb(255, 22, 22);
+    --color-blue: #000066;
+    --color-green: green;
+    --color-red-rgba: rgb(255, 22, 22, 0.7);
     --color-bg-form: #F6F6F6;
     --font-size-custom: 14px;
     --width-sidebar-open: 250px;
     --width-sidebar-close: 60px;
 }
 
-.shadow {
-    box-shadow: 3px 3px 5px 0 rgba(255, 255, 255, 01);
-    /* Sombra en la parte inferior derecha */
+.shadow-xx {
+    box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -25,38 +25,80 @@
 /* Styles active item SideBar */
 
 .nav-pills li a.active {
-    background-color: red !important;
-    /* Cambia el color de fondo a rojo */
+    background-color: var(--color-bg-form) !important;
+    color: var(--color-blue) !important;
+    border: 1px solid var(--color-red);
+    box-shadow: 2px 2px 5px var(--color-red-rgba);
 }
 
 /* Styles btn de logout */
 
 .btn_logout:hover {
-    background-color: var(--color-hover-navbar);
+    background-color: var(--color-blue);
 
 }
 
-.btn_logout {
-    background-color: var(--color-btn-logout);
+/* Progress Bar */
+.bg-red{
+    background-color: var(--color-red);
 }
+.bg-green{
+    background-color: var(--color-green);
+}
+.w-33 {
+    width: 33%;
+}
+
+.w-67 {
+    width: 67%;
+}
+
+.pading-0 {
+    padding: 0px 0px 3px 0px !important;
+}
+
+.progress {
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-bg-form);
+    /* Color de fondo de la barra */
+}
+
 
 /* Styles SideBar */
 .nav-pills li a:hover {
-    background-color: var(--color-hover-navbar);
+    background-color: var(--color-blue);
+    color: var(--color-bg-form);
 }
 
 .button_open_close:hover {
-    background-color: var(--color-hover-navbar);
+    background-color: var(--color-blue);
+    color: var(--color-bg-form);
+}
+
+.text-sidebar {
+    font-family: 'Titillium Web', sans-serif;
+    /* Nombre de la fuente */
+    font-size: 20px;
+    /* Tamaño del texto */
+    font-weight: 600;
+    /* Peso de la fuente - semi-negrita */
+    color: var(--color-blue);
+    /* Color del texto */
 }
 
 /* Styles Login */
+
+.logo-size {
+    width: 25%;
+}
 
 .bg-login {
     background-color: var(--color-bg-form);
 }
 
 .bg-blue {
-    background-color: var(--color-label);
+    background-color: var(--color-blue);
 }
 
 .fs-16px-login-label {
@@ -64,14 +106,14 @@
     font-size: 16px;
     font-weight: 600;
     /* El peso de la fuente para SemiBold suele ser 600 */
-    color: var(--color-label);
+    color: var(--color-blue);
 }
 
 .fs-16px-login-input {
     background-color: var(--color-bg-form);
     font-family: 'Open Sans', sans-serif;
     font-weight: 400;
-    color: var(--color-input)
+    color: var(--color-gray)
 }
 
 
@@ -79,7 +121,7 @@
     font-family: 'Titillium Web', sans-serif;
     font-size: 24px;
     font-weight: bold;
-    color: var(--color-label);
+    color: var(--color-blue);
 }
 
 .btn-login {
@@ -92,7 +134,7 @@
     letter-spacing: 1.25px;
     color: white;
     /* Color inicial de la letra */
-    background-color: var(--color-label);
+    background-color: var(--color-blue);
     /* Color de fondo */
     padding: 8px 16px;
     /* Ajusta el padding según sea necesario */
@@ -101,9 +143,9 @@
 .btn-login:hover {
     /* Cambio de color al pasar el cursor sobre el botón */
     background-color: white;
-    border: 1px solid var(--color-label);
+    border: 1px solid var(--color-blue);
     /* Color del borde */
-    color: var(--color-label);
+    color: var(--color-blue);
 }
 
 .btn-calcular {
@@ -125,9 +167,9 @@
 .btn-calcular:hover {
     /* Cambio de color al pasar el cursor sobre el botón */
     background-color: white;
-    border: 1px solid var(--color-label);
+    border: 1px solid var(--color-blue);
     /* Color del borde */
-    color: var(--color-label);
+    color: var(--color-blue);
 }
 
 .fs_custom {
@@ -137,6 +179,47 @@
     text-align: center;
 }
 
+/* Styles to Bottons */
+
+.btn-mybotton {
+    /* Estilos generales para el botón */
+    font-family: 'Open Sans', sans-serif;
+    margin-right: 0.25rem;
+    font-size: 14px;
+    padding: 0;
+    font-weight: 600;
+    color: var(--color-bg-form);
+    text-transform: uppercase;
+    letter-spacing: 1.25px;
+    background-color: transparent;
+}
+
+.btn-color-blue {
+    background-color: var(--color-blue);
+}
+
+.btn-color-red {
+    background-color: var(--color-red);
+}
+
+.btn-color-green {
+    background-color: green;
+}
+
+.btn-color-blue:hover {
+    border: 1px solid var(--color-blue);
+    color: var(--color-blue);
+}
+
+.btn-color-red:hover {
+    border: 1px solid var(--color-red);
+    color: var(--color-red);
+}
+
+.btn-color-green:hover {
+    border: 1px solid green;
+    color: green;
+}
 
 /* Styles to Modal Windows */
 
@@ -184,7 +267,11 @@
 
 /* Styles for LoginPage */
 .form_container_login {
-    width: 35%;
+    width: 30%;
+}
+
+.fs-7 {
+    font-size: 12px;
 }
 
 /* Styles for sidebar open-close */

@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const initialTipoAuxilioIndividual = {
+export const initialOthersEntities = {
     id: 0,
     nombre: '',
 }

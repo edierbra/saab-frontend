@@ -23,22 +23,80 @@ export const findAllUsers = async () => {
 
 export const findAllUsersPageable = async (page = 0) => {
     try {
-        const response = await saabApi.get(`${BASE_URL}/page/${page}`);
+        const response = await saabApi.get(`${BASE_URL}/page`,
+            {
+                params: {
+                    pageNum: page,
+                    pageSize: 8,
+                    orderBy: 'id',
+                    orderDir: 'desc'
+                }
+            });
         return response;
     } catch (error) {
         throw error;
     }
 }
 
-export const create = async ({ username, email, password, admin }) => {
+export const findUserByIdAndNombre = async (search = "", page=0) => {
+    const partes = String(search).split(",")
+    var params = {}
+
+    console.log(partes)
+
+    switch (partes.length) {
+        case 1:
+            var parte1 = partes[0].trim();
+            if (!isNaN(parte1)) {
+                params.id = parte1;
+            } else {
+                params.nombre = parte1;
+            }
+            break;
+
+        case 2:
+            var parte1 = partes[0].trim();
+            var parte2 = partes[1].trim();
+            if (!isNaN(parte1)) {
+                params.id = parte1;
+                params.nombre = parte2;
+            } else {
+                params.nombre = parte1;
+            }
+            break;
+
+        default:
+            params = {}
+            break;
+    }
+
+    try {
+        const response = await saabApi.get(`${BASE_URL}/idandnombre`
+            , {
+                params: {
+                    ...params,
+                    pageNum: page,
+                    pageSize: 8,
+                    orderBy: 'id',
+                    orderDir: 'desc'
+                }
+            });
+        console.log(response)
+        return response;
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const create = async (user) => {
+
+    console.log(user)
     try {
         return await saabApi.post(
             BASE_URL,
             {
-                username, // si tiene nombre diferentes colocar los 2 puntos
-                email,
-                password,
-                admin,
+                ...user
             },
             // config()
         )
@@ -48,7 +106,8 @@ export const create = async ({ username, email, password, admin }) => {
 
 }
 
-export const update = async ({ id, username, email, admin }) => {
+export const update = async ({ id, username, email, admin, root, nombre }) => {
+    console.log("id en service", id)
     try {
         return await saabApi.put(
             `${BASE_URL}/${id}`,
@@ -56,6 +115,8 @@ export const update = async ({ id, username, email, admin }) => {
                 username, // si tiene nombre diferentes colocar los 2 puntos
                 email,
                 admin,
+                nombre,
+                root,
                 // password: 'nothing',
             },
             // config()

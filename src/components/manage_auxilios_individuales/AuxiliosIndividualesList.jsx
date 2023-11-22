@@ -4,44 +4,32 @@ import { AuxiliosIndividualesRow } from "./AuxiliosIndividualesRow";
 
 export const AuxiliosIndividualesList = () => {
 
-    const { users } = useAuxiliosIndividuales();
+    const { auxiliosIndividuales } = useAuxiliosIndividuales();
     const { login } = useAuth();
 
     return (
         <>
-            <table className="table table-hover table-striped">
+            <table className="table table-hover table-striped rounded shadow-xx">
                 <thead>
                     <tr className="fs-16px-login-label">
                         <th>Id</th>
                         <th>Nombre</th>
-                        <th>Cedula</th>
+                        <th>Identificacion</th>
                         <th>Fecha viabilidad</th>
                         <th>Fecha solicitud</th>
+                        <th>Tipo Auxilio</th>
                         <th>Valor</th>
-                        <th>options</th>
-
+                        {(login.isAdmin) && <th>optiones</th>}
                     </tr>
                 </thead>
 
                 <tbody>
                     {
-                        users.map(({ id, fechaSolicitud, fechaViabilidad,
-                            resolucion, fechaResolucion, rdp, fechaRdp, valor,
-                            valorTransporteRegreso, diasDesplazamiento,
-                            lugarDesplazamiento, fechaRenuncia, fechaAceptacionRenuncia,
-                            fechaInicioIncapacidad, fechaFinIncapacidad, valorMatricula,
-                            promedio, fechaReciboMatricula, referenciaReciboMatricula,
-                            observacion, funcionario, motivoJubilacion, motivoIncapacidad,
-                            semestre, estadoAuxilio, parentesco, estudioFormal, programa,
-                            sindicato, tipoAuxilioIndividual }
-                        ) => (
+                        auxiliosIndividuales.map(auxilio =>
+                        (
                             <AuxiliosIndividualesRow
-                                key={id}
-                                id={id}
-                                funcionario={funcionario}
-                                fechaViabilidad={fechaViabilidad}
-                                fechaSolicitud={fechaSolicitud}
-                                valor={valor}
+                                key={auxilio?.id}
+                                auxilio={auxilio}
                             />
                         ))
                     }

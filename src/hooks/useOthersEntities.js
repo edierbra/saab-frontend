@@ -4,7 +4,7 @@ import { useAuth } from "../auth/hooks/useAuth"
 import {
     loadingTiposAuxiliosIndividuales, loadingTiposAuxiliosIndividualesBySindicatoId,
     loadingSindicatos, loadingSemestres, loadingMotivosIncapacidades, loadingMotivosJubilaciones,
-    initialTipoAuxilioIndividual, loadingParentescos, loadingEstudiosFormales, loadingProgramasByEstudioFormal, 
+    initialOthersEntities, loadingParentescos, loadingEstudiosFormales, loadingProgramasByEstudioFormal, 
     loadingBeneficiariosEstudio
 } from "../store/slices/othersEntities/othersEntitiesSlice"
 import {
@@ -190,6 +190,6 @@ export const useOthersEntities = () => {
         programasbyestudioformal,
         beneficiariosEstudio,
 
-        initialTipoAuxilioIndividual,
+        initialOthersEntities,
     }
 }

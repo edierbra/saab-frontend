@@ -4,10 +4,10 @@ export const Paginator = ({ url, paginator }) => {
     return (
         <>
             {paginator?.totalPages == 1 ||
-                <ul className="pagination">
+                <ul className="pagination text-sidebar rounded shadow-xx">
                     <li className={paginator.first ? 'page-item disabled' : 'page-item'}>
                         <Link className="page-link" to={`${url}/0`} aria-label="Siguiente">
-                            <i className="bi bi-chevron-bar-left"></i>
+                            <i className="bi bi-chevron-bar-left "></i>
                         </Link>
                     </li>
 
