@@ -1,8 +1,8 @@
 import saabApi from "../apis/saabApi";
 
-const BASE_URL = '/auxilios/individuales';
+const BASE_URL = '/valores/convencionales';
 
-export const findAllAuxilioIndividualesPageable = async (page = 0) => {
+export const findAllValoresConvencionalesPageable = async (page = 0) => {
     try {
         const response = await saabApi.get(`${BASE_URL}/page`
             , {
@@ -20,52 +20,29 @@ export const findAllAuxilioIndividualesPageable = async (page = 0) => {
     }
 }
 
-export const findAuxiliosIndividualesByNombreOrIdOrTipoPageable = async (search = "", page = 0) => {
+export const findValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombre = async (search = "", page = 0) => {
     const partes = search.split(",");
     var consult = {};
 
     switch (partes.length) {
         case 1:
             var parte1 = partes[0].trim();
-            if (!isNaN(parte1)) {
-                consult.id = parte1;
-            } else {
-                consult.nombre = parte1;
-            }
+            consult.tipoNegociacion = parte1;
             break;
+
         case 2:
             var parte1 = partes[0].trim();
             var parte2 = partes[1].trim();
-            if (!isNaN(parte1)) {
-                consult.id = parte1;
-                consult.tipo = parte2;
-            } else if (!isNaN(parte2)) {
-                consult.nombre = parte1;
-                consult.tipo = parte2;
-            } else {
-                consult.nombre = parte1;
-                consult.tipo = parte2;
-            }
+            consult.tipoNegociacion = parte1;
+            consult.negociacion = parte2;
             break;
-        case 3:
-            var parte1 = partes[0].trim();
-            var parte2 = partes[1].trim();
-            var parte3 = partes[2].trim();
-            if (!isNaN(parte1)) {
-                consult.id = parte1;
-                consult.nombre = parte2;
-                consult.tipo = parte3;
-            } else {
-                consult.nombre = parte2;
-                consult.tipo = parte3;
-            }
-            break;
+
         default:
             break;
     }
-    
+
     try {
-        const response = await saabApi.get(`${BASE_URL}/nombreidtipo`
+        const response = await saabApi.get(`${BASE_URL}/tiponegociacioNegociacion`
             , {
                 params: {
                     ...consult,
@@ -83,12 +60,12 @@ export const findAuxiliosIndividualesByNombreOrIdOrTipoPageable = async (search 
     }
 }
 
-export const create = async (auxilioIndividual) => {
+export const create = async (valorConvencional) => {
     try {
         return await saabApi.post(
             BASE_URL,
             {
-                ...auxilioIndividual,
+                ...valorConvencional,
                 idEstadoAuxilio: 1,
             },
         )
@@ -97,12 +74,12 @@ export const create = async (auxilioIndividual) => {
     }
 }
 
-export const update = async (auxilioIndividual) => {
+export const update = async (valorConvencional) => {
     try {
         return await saabApi.put(
-            `${BASE_URL}/${auxilioIndividual?.id}`,
+            `${BASE_URL}/${valorConvencional?.id}`,
             {
-                ...auxilioIndividual
+                ...valorConvencional
             },
             // config()
         );
@@ -117,6 +94,23 @@ export const remove = async (id) => {
             `${BASE_URL}/${id}`,
             // config()
         )
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const calcularValor = async (valuesCalculo) => {
+    const { fechaSolicitud, fechaOpcionalCalculo, concepto, factor } = valuesCalculo;
+    try {
+        return await saabApi.post(
+            `${BASE_URL}/calcularValor`, 
+            {
+                fechaSolicitud,
+                fechaOpcionalCalculo,
+                concepto: concepto?.nombre,
+                factor
+            },
+        );
     } catch (error) {
         throw error;
     }

@@ -87,10 +87,24 @@
     /* Color del texto */
 }
 
+/* Styles Table */
+.table-layout{
+    width: 100%;
+    table-layout:fixed;
+}
+
 /* Styles Login */
 
+.w-2px{
+    width: 2px;
+}
+
+.w-3px{
+    width: 3px;
+}
+
 .logo-size {
-    width: 25%;
+    width: 15%;
 }
 
 .bg-login {
@@ -123,6 +137,25 @@
     font-weight: bold;
     color: var(--color-blue);
 }
+
+.text-blue {
+    color: var(--color-blue);
+}
+
+.text-green {
+    color: var(--color-green);
+}
+
+.text-red {
+    color: var(--color-red);
+}
+
+.fs-16px{
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+}
+
 
 .btn-login {
     /* Estilos generales para el botón */
@@ -198,6 +231,10 @@
     background-color: var(--color-blue);
 }
 
+.btn-color-gray {
+    background-color: var(--color-gray);
+}
+
 .btn-color-red {
     background-color: var(--color-red);
 }
@@ -219,6 +256,11 @@
 .btn-color-green:hover {
     border: 1px solid green;
     color: green;
+}
+
+.btn-color-gray:hover {
+    border: 1px solid var(--color-gray);
+    color: var(--color-gray);
 }
 
 /* Styles to Modal Windows */
@@ -294,15 +336,15 @@
 
 /* Responsive desing */
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 991px) {
     .form_container_login {
-        width: 45%;
+        width: 40%;
     }
 }
 
 @media screen and (max-width: 767px) {
     .form_container_login {
-        width: 60%;
+        width: 50%;
     }
 
     .center_component {

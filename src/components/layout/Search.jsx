@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react"
-import { useFuncionarios } from "../../hooks/useFuncionarios";
-import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 
 
-export const Search = ({ placeholder, valueDefault, functionSearch }) => {
+export const Search = ({ placeholder, valueDefault, functionSearch, setSearch}) => {
 
     const { page } = useParams()
 
@@ -12,15 +10,7 @@ export const Search = ({ placeholder, valueDefault, functionSearch }) => {
 
     const onSubmit = (event) => {
         event.preventDefault();
-        // if (false) {
-        //     Swal.fire(
-        //         'Consulta Erronea!',
-        //         'La consulta no puede estar vacía',
-        //         'error'
-        //     )
-        //     return;
-        // }
-        functionSearch(valueSearch, page);
+        functionSearch(valueSearch, 0, 1);
     }
 
     useEffect(() => {
@@ -30,6 +20,7 @@ export const Search = ({ placeholder, valueDefault, functionSearch }) => {
     const onInputChange = ({ target }) => {
         const { value } = target;
         setValueSearch(value)
+        setSearch && setSearch(value)
     }
 
     return (
@@ -38,6 +29,7 @@ export const Search = ({ placeholder, valueDefault, functionSearch }) => {
                 <div className="input-group">
                     <input type="text" className="form-control rounded-pill rounded-end"
                         placeholder={placeholder} aria-describedby="basic-addon2"
+                        autoComplete="off"
                         name="valueSearch"
                         value={valueSearch}
                         onChange={onInputChange}

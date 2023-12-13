@@ -8,10 +8,11 @@ import { AuxilioIndividualForm } from "./AuxilioIndividualForm";
 export const AuxilioIndividualModalForm = () => {
 
     const { auxiliosIndividualSelected, handlerCloseForm, onlyShow } = useAuxiliosIndividuales();
-    const { funcionarioSearch, handlerRemoveUserSearch, getFuncionarioById, getFuncionarioByIdAndNombre} = useFuncionarios();
+    const { funcionarioSearch, handlerRemoveFuncionarioSearch, getFuncionarioById, getFuncionarioByIdAndNombre} = useFuncionarios();
     const { getTiposAuxiliosIndividuales, getSindicatos, getSemestres,
         getMotivosIncapacidades, getMotivosJubilaciones, getParentescos,
-        getEstudioFormales, getBeneficiariosEstudio } = useOthersEntities();
+        getEstudioFormales, getBeneficiariosEstudio, getGeneros, getDependencias, 
+        getVinculaciones, getCargos, getGrados, getEstadosFuncionarios, getLocalidades } = useOthersEntities();
 
     useEffect(() => {
         getTiposAuxiliosIndividuales();
@@ -22,6 +23,13 @@ export const AuxilioIndividualModalForm = () => {
         getParentescos();
         getEstudioFormales();
         getBeneficiariosEstudio();
+        getDependencias();
+        getGeneros();
+        getVinculaciones();
+        getCargos();
+        getGrados();
+        getLocalidades();
+        getEstadosFuncionarios();
     }, [])
 
     return (
@@ -49,7 +57,7 @@ export const AuxilioIndividualModalForm = () => {
                                     auxiliosIndividualSelected={auxiliosIndividualSelected}
                                     funcionarioSearch={funcionarioSearch}
                                     handlerCloseForm={handlerCloseForm}
-                                    handlerRemoveUserSearch={handlerRemoveUserSearch}
+                                    handlerRemoveFuncionarioSearch={handlerRemoveFuncionarioSearch}
                                 />
                             </div>
                         </div>

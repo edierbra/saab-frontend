@@ -15,7 +15,7 @@ export const useAuth = () => {
 
         try {
             dispatch(onStartLogin()); // muestra spiner de login
-    
+
             const response = await loginUser({ username, password })
 
             const token = response.data.token;
@@ -25,7 +25,7 @@ export const useAuth = () => {
 
             const user = { username: response.data.username } // claims.sub or claims.username
 
-            dispatch(onLogin({ user, isAdmin: claims.isAdmin, isRoot: claims.isRoot  }));
+            dispatch(onLogin({ user, isAdmin: claims.isAdmin, isRoot: claims.isRoot }));
 
             sessionStorage.setItem('login', JSON.stringify(
                 {
@@ -41,7 +41,7 @@ export const useAuth = () => {
             navigate('/users')
 
         } catch (error) {
-            
+
             dispatch(onLogout());
             if (error.response?.status == 401) {
                 Swal.fire(
@@ -66,9 +66,12 @@ export const useAuth = () => {
             title: '¿Estas seguro que quieres salir de SAAB?',
             text: "¡Perderas lo que estas haciendo!",
             icon: 'warning',
+            color: '#000066',
+            width: 400,
+            iconColor: '#FF1616',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: '#000066',
+            cancelButtonColor: '#FF1616',
             confirmButtonText: 'Si, salir!'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -86,7 +89,7 @@ export const useAuth = () => {
         login: {
             user,
             isAdmin,
-            isRoot, 
+            isRoot,
             isAuth,
         },
         isLoginLoading,

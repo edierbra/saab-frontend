@@ -8,7 +8,7 @@ export const UsersList = () => {
 
     return (
         <>
-            <table className="table table-hover table-striped rounded shadow-xx">
+            <table className="table table-hover table-striped table-bordered rounded shadow-xx">
                 <thead>
                     <tr className="fs-16px-login-label">
                         <th>id</th>

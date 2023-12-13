@@ -15,13 +15,7 @@ export const SideBar = ({ handlerHideSideBar }) => {
     const { users, getUsers } = useUsers();
 
     const onHideSideBar = () => {
-        setOpenSideBar(!openSideBar); // Actualizar el estado   
-        // console.log(login)
-    }
-
-    const findUser = () => {
-        const user =  users.find(u => u?.username == login.user?.username)
-        return user?.nombre;
+        setOpenSideBar(!openSideBar); // Actualizar el estado 
     }
 
     useEffect(() => {
@@ -35,7 +29,7 @@ export const SideBar = ({ handlerHideSideBar }) => {
 
                 <div className="container text-sidebar min-vh-100 d-flex justify-content-between flex-column pt-2">
                     <div className="">
-                        <div className={openSideBar ? "p-2 d-flex align-items-center text-decoration-none justify-content-between shadow-xx bg-body-tertiary rounded px-2" : "py-1 d-flex align-items-center text-decoration-none justify-content-center shadow-lg bg-body-tertiary rounded"}>
+                        <div className={openSideBar ? "p-2 d-flex align-items-center d-none d-md-flex text-decoration-none justify-content-between shadow-xx rounded px-2" : "py-2 d-flex d-none d-md-flex  align-items-center text-decoration-none justify-content-center shadow-xx rounded"}>
 
                             <div className={openSideBar ? "m-0 d-none d-md-inline-flex align-items-center " : "m-0 d-none"}>
                                 <img className="logo-size d-flex m-0 mb-0" src={logo} alt="Logo" />
@@ -70,17 +64,11 @@ export const SideBar = ({ handlerHideSideBar }) => {
                             {!login.isAdmin ||
                                 <>
                                     <li className="nav-item rounded-3 mb-1">
-                                        <NavLink to='/users' className="nav-link text-sidebar py-1 px-2 text-sidebar d-flex align-items-center justify-content-center justify-content-md-start" activeclassname="active">
-                                            <i className="bi bi-person-circle"></i>
-                                            <span className={openSideBar ? "ms-2 d-none d-md-inline fs-7 fs_custom p-0" : "d-none"}>Gestionar Usuarios</span>
+                                        <NavLink to='/valores-convencionales' className="nav-link text-sidebar py-1 px-2 d-flex align-items-center justify-content-center justify-content-md-start" activeclassname="active">
+                                            <i className="bi bi-ui-radios-grid"></i>
+                                            <span className={openSideBar ? "ms-2 d-none d-md-inline fs-7 p-0" : "d-none"}>Valores Convencionales</span>
                                         </NavLink>
                                     </li>
-                                    {/* <li className="nav-item rounded-3 mb-1">
-                                        <NavLink to='/register-user' className="nav-link text-sidebar py-1 px-2 d-flex align-items-center justify-content-center justify-content-md-start" activeclassname="active">
-                                            <i className="bi bi-person-add"></i>
-                                            <span className={openSideBar ? "ms-2 d-none d-md-inline fs-7 fs_custom p-0" : "d-none"}>Add customer</span>
-                                        </NavLink>
-                                    </li> */}
 
                                     <li className="nav-item rounded-3 mb-1">
                                         <NavLink to='/funcionarios' className="nav-link text-sidebar py-1 px-2 d-flex align-items-center justify-content-center justify-content-md-start" activeclassname="active">
@@ -88,6 +76,28 @@ export const SideBar = ({ handlerHideSideBar }) => {
                                             <span className={openSideBar ? "ms-2 d-none d-md-inline fs-7 p-0" : "d-none"}>Gestionar Funcionarios</span>
                                         </NavLink>
                                     </li>
+
+                                    <li className="nav-item rounded-3 mb-1">
+                                        <NavLink to='/users' className="nav-link text-sidebar py-1 px-2 text-sidebar d-flex align-items-center justify-content-center justify-content-md-start" activeclassname="active">
+                                            <i className="bi bi-person-circle"></i>
+                                            <span className={openSideBar ? "ms-2 d-none d-md-inline fs-7 fs_custom p-0" : "d-none"}>Gestionar Usuarios</span>
+                                        </NavLink>
+                                    </li>
+
+                                    <li className="nav-item rounded-3 mb-1">
+                                        <NavLink to='/upload-data' className="nav-link text-sidebar py-1 px-2 text-sidebar d-flex align-items-center justify-content-center justify-content-md-start" activeclassname="active">
+                                            <i className="bi bi-upload"></i>
+                                            <span className={openSideBar ? "ms-2 d-none d-md-inline fs-7 fs_custom p-0" : "d-none"}>Carga de Datos</span>
+                                        </NavLink>
+                                    </li>
+
+                                    {/* <li className="nav-item rounded-3 mb-1">
+                                        <NavLink to='/register-user' className="nav-link text-sidebar py-1 px-2 d-flex align-items-center justify-content-center justify-content-md-start" activeclassname="active">
+                                            <i className="bi bi-person-add"></i>
+                                            <span className={openSideBar ? "ms-2 d-none d-md-inline fs-7 fs_custom p-0" : "d-none"}>Add customer</span>
+                                        </NavLink>
+                                    </li> */}
+
                                 </>
                             }
 

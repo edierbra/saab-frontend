@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { AuxiliosIndividualesPage } from "../pages/AuxiliosIndividualesPage";
 import { FuncionariosPage } from "../pages/FuncionariosPage";
+import { ValoresConvencionalesPage } from "../pages/ValoresConvencionalesPage";
+import { UploadDataPage } from "../pages/UploadDataPage";
 
 export const SaabRoutes = ({ handlerHideSideBar, value1, value2 }) => {
     const { isAdmin } = useSelector(state => state.auth);
@@ -49,9 +51,15 @@ export const SaabRoutes = ({ handlerHideSideBar, value1, value2 }) => {
 
                             <Route path="/users/page/:page" element={<UsersPage />} />
 
-                            <Route path="/auxilios-individuales" element={<AuxiliosIndividualesPage />} />
-
                             <Route path="/funcionarios" element={<FuncionariosPage />} />
+
+                            <Route path="/funcionarios/page/:page" element={<FuncionariosPage />} />
+
+                            <Route path="/valores-convencionales" element={<ValoresConvencionalesPage />} />
+
+                            <Route path="/valores-convencionales/page/:page" element={<ValoresConvencionalesPage />} />
+
+                            <Route path="/upload-data" element={<UploadDataPage />} />
 
                             {/* <Route path="/register-user" element={<RegisterPage />} /> */}
                             {/* <Route path="/users/edit/:id" element={<RegisterPage />} /> */}

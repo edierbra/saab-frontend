@@ -1,69 +1,77 @@
-import { useContext, useEffect } from "react";
-import { UserModalForm } from "../components/manage_users/UserModalForm";
-import { UsersList } from "../components/manage_users/UsersList"
-import { useUsers } from "../hooks/useUsers";
+import { useEffect, useState } from "react";
 import { useAuth } from "../auth/hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { Paginator } from "../components/layout/Paginator";
+import { Header } from "../components/layout/Header";
+import { useFuncionarios } from "../hooks/useFuncionarios";
+import { FuncionarioList } from "../components/manage_funcionarios/FuncionarioList";
+import { FuncionarioModalForm } from "../components/manage_funcionarios/FuncionarioModalForm";
+import { Spinner } from "../components/layout/Spinner";
 
 export const FuncionariosPage = () => {
-
     const { page } = useParams()
 
     const {
-        users,
+        funcionarios,
         visibleForm,
         isLoading,
         paginator,
 
         handlerOpenForm,
-        getUsers,
-    } = useUsers();
+        getFuncionarioByIdAndNombre,
+        handlerChangeIsWithErrors,
+    } = useFuncionarios();
 
     const {
         login
     } = useAuth()
 
+    const [search, setSearch] = useState('')
+
+    // useEffect(() => {
+    //     handlerChangeIsWithErrors(false);
+    // }, [])
+
     useEffect(() => {
-        getUsers(page);
+        handlerChangeIsWithErrors(false);
+        getFuncionarioByIdAndNombre(search, page);
     }, [, page])
+
+    useEffect(() => {
+        getFuncionarioByIdAndNombre(search, 0);
+    }, [search])
 
     if (isLoading) {
         return (
-            <div className="d-flex justify-content-center align-items-center vh-100">
-                <button className="btn btn-primary" type="button" disabled>
-                    <span className="spinner-grow spinner-grow-sm me-2" aria-hidden="true"></span>
-                    <span role="status">Cargando...</span>
-                </button>
-            </div>
+            <Spinner />
         )
     }
 
     return (
         <>
             {!visibleForm ||
-                <UserModalForm />
+                <FuncionarioModalForm />
             }
+
             <div className="">
 
-                <h2 >Users App</h2>
+                <Header
+                    visibleForm={visibleForm}
+                    handlerOpenForm={handlerOpenForm}
+                    placeholder={"Buscar por Identificacion o Nombre"}
+                    valueDefault={""}
+                    setSearch={setSearch}
+                    functionSearch={getFuncionarioByIdAndNombre}
+                />
 
-                {(visibleForm || !login.isAdmin) ||
-                    <button
-                        className="btn btn-primary my-2"
-                        onClick={handlerOpenForm}>
-                        {'Add user'}
-                    </button>
-                }
-
-                {users.length < 1 ?
-                    <div className="alert alert-warning">{'No hay usuarios en el sistema'}</div> :
+                {funcionarios?.length < 1 || !funcionarios ?
+                    <div className="alert alert-warning">{'No hay Datos en el sistema'}</div> :
                     (
                         <>
-                            <UsersList />
-                            <Paginator 
-                            url="/users/page"
-                            paginator={paginator}
+                            <FuncionarioList />
+                            <Paginator
+                                url="/funcionarios/page"
+                                paginator={paginator}
                             />
                         </>
                     )

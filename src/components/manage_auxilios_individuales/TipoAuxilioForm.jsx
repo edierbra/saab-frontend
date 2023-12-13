@@ -1,7 +1,13 @@
 import { useEffect } from "react"
-import { Divider } from "../layout/divider"
+import { Divider } from "../layout/Divider"
+import { onOptionsSelect } from "../recursos/Funciones"
+import { useAuxiliosIndividuales } from "../../hooks/useAuxiliosIndividuales"
 
-export const TipoAuxilioForm = ({ onlyShow, setAuxilioForm, auxilioForm, idSindicato, idTipoAuxilioIndividual, tiposAuxiliosIndividualesBySindicatoId, onOptionsSelect, onInputChange, sindicatos }) => {
+export const TipoAuxilioForm = ({ onlyShow, setAuxilioForm, auxilioForm, idSindicato,
+    idTipoAuxilioIndividual, tiposAuxiliosIndividualesBySindicatoId, 
+    onInputChange, sindicatos }) => {
+
+    const { errors } = useAuxiliosIndividuales();
 
     useEffect(() => {
         setAuxilioForm(
@@ -25,8 +31,9 @@ export const TipoAuxilioForm = ({ onlyShow, setAuxilioForm, auxilioForm, idSindi
                     disabled={auxilioForm.id != 0 || onlyShow}
                     value={idSindicato}
                 >
-                    {onOptionsSelect(sindicatos, 'Seleccione un Sindicato', idSindicato)}
+                    {onOptionsSelect(sindicatos, 'Seleccione un Sindicato', false)}
                 </select>
+                <p className="text-danger mb-0">{errors?.idSindicato}</p>
             </div>
 
             <div className="mb-1">
@@ -38,8 +45,9 @@ export const TipoAuxilioForm = ({ onlyShow, setAuxilioForm, auxilioForm, idSindi
                     onChange={onInputChange}
                     value={idTipoAuxilioIndividual}
                 >
-                    {onOptionsSelect(tiposAuxiliosIndividualesBySindicatoId, "Tipo de Auxilio", idTipoAuxilioIndividual)}
+                    {onOptionsSelect(tiposAuxiliosIndividualesBySindicatoId, "Tipo de Auxilio", false)}
                 </select>
+                <p className="text-danger mb-0">{errors?.idTipoAuxilioIndividual}</p>
             </div>
 
         </>

@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { useOthersEntities } from "../../../hooks/useOthersEntities";
 
 export const initialAuxiliosIndividualForm = {
     id: 0,
@@ -39,13 +38,44 @@ export const initialAuxiliosIndividualForm = {
 }
 
 const initialErrors = {
-    username: '',
-    password: '',
-    email: '',
+    id: "",
+    fechaSolicitud: "",
+    fechaViabilidad: "",
+    resolucion: "",
+    fechaResolucion: "",
+    rdp: "",
+    fechaRdp: "",
+    valor: "",
+    valorTransporteRegreso: "",
+    diasDesplazamiento: "",
+    diasIncapacidad: "",
+    lugarDesplazamiento: "",
+    fechaRenuncia: "",
+    fechaAceptacionRenuncia: "",
+    fechaInicioIncapacidad: "",
+    fechaOtorgamientoAnteojos: "",
+    fechaOpcionalCalculo: "",
+    fechaFinIncapacidad: "",
+    valorMatricula: "",
+    promedio: "",
+    fechaReciboMatricula: "",
+    referenciaReciboMatricula: "",
+    observacion: "",
+    idFuncionario: "",
+    idMotivoJubilacion: "",
+    idMotivoIncapacidad: "",
+    idSemestre: "",
+    idEstadoAuxilio: "",
+    idParentesco: "",
+    idEstudioFormal: "",
+    idPrograma: "",
+    idSindicato: "",
+    idTipoAuxilioIndividual: "",
+    idBeneficiarioEstudio: ""
 }
 
 
-export const auxiliosIndividualesSlices = createSlice({
+export const auxiliosIndividualesSlice = createSlice({
     
     name: 'auxiliosindividuales',
     initialState: {
@@ -60,15 +90,14 @@ export const auxiliosIndividualesSlices = createSlice({
 
     reducers: {
         onFuncionarioSearch: (state, action) => {
-            console.log(action.payload)
             state.funcionarioSearch = action.payload;
         },
         addAuxilioIndividual: (state, action) => {
             state.auxiliosIndividuales = [
-                ...state.auxiliosIndividuales,
                 {
                     ...action.payload,
-                }
+                },
+                ...state.auxiliosIndividuales,
             ];
 
             state.auxiliosIndividualSelected = initialAuxiliosIndividualForm;
@@ -83,7 +112,6 @@ export const auxiliosIndividualesSlices = createSlice({
                 if (auxilioIndividual.id === action.payload.id) {
                     return {
                         ...action.payload,
-                        // password: user.password, // ya no se usa
                     }
                 }
                 return auxilioIndividual;
@@ -121,14 +149,12 @@ export const auxiliosIndividualesSlices = createSlice({
 
 export const {
     onFuncionarioSearch,
-    onClearFuncionarioSearch,
     addAuxilioIndividual,
     removeAuxilioIndividual,
     updateAuxilioIndividual,
     loadingAuxilioIndividuales,
-    loadingUsersPage,
     onAuxilioIndividualSelectedForm,
     onOpenForm,
     onCloseForm,
     loadingError,
-} = auxiliosIndividualesSlices.actions;
+} = auxiliosIndividualesSlice.actions;

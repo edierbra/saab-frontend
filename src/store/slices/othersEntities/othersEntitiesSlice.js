@@ -17,7 +17,19 @@ export const othersEntitiesSlice = createSlice({
         programasbyestudioformal: [],
         sindicatos: [],
         semestres: [],
-        beneficiariosEstudio: []
+        beneficiariosEstudio: [],
+        generos: [],
+        cargos:[],
+        grados:[],
+        estadosFuncionarios:[],
+        localidades: [],
+        vinculaciones: [],
+        dependencias: [],
+        tiposNegociacionesSindicales: [],
+        negociacionesSindicales: [],
+        tiposNegociacionesSindicalesBySindicatoId:[],
+        negociacionesSindicalesByTipoNegociacionSindicalId: [],
+        distinctNameSalariosConfig: [],
     },
 
     reducers: {
@@ -51,6 +63,42 @@ export const othersEntitiesSlice = createSlice({
         loadingBeneficiariosEstudio: (state, action) => {
             state.beneficiariosEstudio = action.payload;
         },
+        loadingGeneros: (state, action) => {
+            state.generos = action.payload;
+        },
+        loadingVinculaciones: (state, action) => {
+            state.vinculaciones = action.payload;
+        },
+        loadingGrados: (state, action) => {
+            state.grados = action.payload;
+        },
+        loadingCargos: (state, action) => {
+            state.cargos = action.payload;
+        },
+        loadingEstadosFuncionarios: (state, action) => {
+            state.estadosFuncionarios = action.payload;
+        },
+        loadingLocalidades: (state, action) => {
+            state.localidades = action.payload;
+        },
+        loadingDependencias: (state, action) => {
+            state.dependencias = action.payload;
+        },
+        loadingTiposNegociacionesSindicales: (state, action) => {
+            state.tiposNegociacionesSindicales = action.payload;
+        },
+        loadingNegociacionesSindicales: (state, action) => {
+            state.negociacionesSindicales = action.payload;
+        },
+        loadingTiposNegociacionesSindicalesBySindicatoId: (state, action) => {
+            state.tiposNegociacionesSindicalesBySindicatoId = action.payload;
+        },
+        loadingNegociacionesSindicalesByTipoNegociacionSindicalId: (state, action) => {
+            state.negociacionesSindicalesByTipoNegociacionSindicalId = action.payload;
+        },
+        loadingDistinctNameSalariosConfig: (state, action) => {
+            state.distinctNameSalariosConfig = action.payload;
+        },
     }
 });
 
@@ -64,5 +112,17 @@ export const {
     loadingParentescos,
     loadingEstudiosFormales,
     loadingProgramasByEstudioFormal,
-    loadingBeneficiariosEstudio
+    loadingBeneficiariosEstudio,
+    loadingDependencias,
+    loadingCargos,
+    loadingGrados,
+    loadingEstadosFuncionarios,
+    loadingLocalidades,
+    loadingGeneros,
+    loadingVinculaciones,
+    loadingTiposNegociacionesSindicales,
+    loadingNegociacionesSindicales,
+    loadingTiposNegociacionesSindicalesBySindicatoId,
+    loadingNegociacionesSindicalesByTipoNegociacionSindicalId,
+    loadingDistinctNameSalariosConfig,
 } = othersEntitiesSlice.actions;

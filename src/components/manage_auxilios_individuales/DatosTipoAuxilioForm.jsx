@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { useOthersEntities } from "../../hooks/useOthersEntities";
-import { Divider } from "../layout/divider"
+import { Divider } from "../layout/Divider"
+import { onOptionsSelect } from "../recursos/Funciones";
+import { useAuxiliosIndividuales } from "../../hooks/useAuxiliosIndividuales";
 
-export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioForm, auxilioForm, setAuxilioForm, onInputChange, initialAuxiliosIndividualForm }) => {
+export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, setAuxilioForm, onInputChange, initialAuxiliosIndividualForm }) => {
 
     const { semestres, motivosIncapacidades, motivosJubilaciones, parentescos, estudiosFormales,
         programasbyestudioformal, initialOthersEntities, tiposAuxiliosIndividualesBySindicatoId,
-        beneficiariosEstudio, getTiposAuxiliosIndividualesBySindicatoId, getProgramasByIdEstudioFormal } = useOthersEntities();
+        beneficiariosEstudio, getTiposAuxiliosIndividualesBySindicatoId, getProgramasByIdEstudioFormal 
+    } = useOthersEntities();
+
+    const { errors, clearErrors } = useAuxiliosIndividuales();
 
     const { id, fechaSolicitud, fechaViabilidad, resolucion, fechaResolucion, rdp, fechaRdp, valor, valorTransporteRegreso,
         diasDesplazamiento, lugarDesplazamiento, fechaRenuncia, fechaAceptacionRenuncia, fechaInicioIncapacidad,
@@ -15,8 +20,6 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
         idParentesco, idEstudioFormal, idPrograma, idSindicato, idTipoAuxilioIndividual, fechaOtorgamientoAnteojos,
         diasIncapacidad, fechaOpcionalCalculo, idBeneficiarioEstudio } = auxilioForm;
 
-    const [date, setDate] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
     const [tipoSelect, setTipoSelect] = useState(initialOthersEntities);
     const [diferenceInDays, setDiferenceInDays] = useState("")
 
@@ -33,6 +36,8 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
             idSindicato:idSin,
             idTipoAuxilioIndividual: idTipoAux,
         })
+
+        clearErrors()
 
     }, [idTipoAuxilioIndividual])
 
@@ -75,6 +80,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
         if (auxilioForm == 6) {
             // 1 = TRABAJADOR OFICIAL
             // 2 = EMPLEADO PUBLICO
+            // 3 = ASISTENCIAL
         }
         return tipoSelect?.id == id ? "mb-1" : "d-none";
     }
@@ -96,14 +102,25 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
         <>
             <Divider content={'Datos del Auxilio'} />
 
+            <div className="mb-1 d-none">
+                <label className="form-label fs-16px-login-label mb-0">Id</label>
+                <input
+                    type="number" className="form-control date rounded-pill fs-16px-login-input py-0"
+                    placeholder="Id" name='idFuncionario' value={funcionarioForm?.id}
+                    onChange={onInputChange}
+                    disabled={onlyShow}
+                />
+            </div>
+
             <div className="mb-1">
-                <label className="form-label fs-16px-login-label mb-0">Fecha de la Solicitud</label>
+                <label className="form-label fs-16px-login-label mb-0">Fecha de Solicitud</label>
                 <input
                     type="date" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Fecha de la Solicutud" name='fechaSolicitud' value={fechaSolicitud}
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.fechaSolicitud}</p>
             </div>
 
             <div className={selectInputs(1)}>
@@ -114,6 +131,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.valorTransporteRegreso}</p>
             </div>
 
             <div className={selectInputs(1)}>
@@ -124,6 +142,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.lugarDesplazamiento}</p>
             </div>
 
             <div className={selectInputs(1)}>
@@ -134,6 +153,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.diasDesplazamiento}</p>
             </div>
 
             <div className={selectInputs(2)}>
@@ -144,6 +164,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.fechaRenuncia}</p>
             </div>
 
             <div className={selectInputs(2)}>
@@ -154,6 +175,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.fechaAceptacionRenuncia}</p>
             </div>
 
             <div className={selectInputs(4)}>
@@ -164,6 +186,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.fechaInicioIncapacidad}</p>
             </div>
 
             <div className={selectInputs(4)}>
@@ -174,6 +197,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.fechaFinIncapacidad}</p>
             </div>
 
             <div className={selectInputs(4)}>
@@ -184,6 +208,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.diasIncapacidad}</p>
             </div>
 
             <div className={selectInputs(5)}>
@@ -194,6 +219,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.fechaOtorgamientoAnteojos}</p>
             </div>
 
             <div className={!(funcionarioForm.vinculacion?.id == 1)? selectInputs(6) : 'd-none'}>
@@ -205,8 +231,9 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     disabled={onlyShow}
                     value={idEstudioFormal}
                 >
-                    {onOptionsSelect(estudiosFormales, 'Estudio formal', idEstudioFormal)}
+                    {onOptionsSelect(estudiosFormales, 'Estudio formal', false)}
                 </select>
+                <p className="text-danger mb-0">{errors?.idEstudioFormal}</p>
             </div>
 
             <div className={!(funcionarioForm.vinculacion?.id == 1)? selectInputs(6) : 'd-none'}>
@@ -218,8 +245,9 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     value={idPrograma}
                 >
-                    {onOptionsSelect(programasbyestudioformal, "Tipo de Auxilio", idPrograma)}
+                    {onOptionsSelect(programasbyestudioformal, "Tipo de Auxilio", false)}
                 </select>
+                <p className="text-danger mb-0">{errors?.idPrograma}</p>
             </div>
 
             <div className={!(funcionarioForm.vinculacion?.id == 1)? selectInputs(6) : 'd-none'}>
@@ -231,8 +259,9 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     disabled={onlyShow}
                     value={idSemestre}
                 >
-                    {onOptionsSelect(semestres, 'Semestre', idSemestre)}
+                    {onOptionsSelect(semestres, 'Semestre', false)}
                 </select>
+                <p className="text-danger mb-0">{errors?.idSemestre}</p>
             </div>
 
             <div className={!(funcionarioForm.vinculacion?.id == 1)? selectInputs(6) : 'd-none'}>
@@ -244,8 +273,9 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     disabled={onlyShow}
                     value={idBeneficiarioEstudio}
                 >
-                    {onOptionsSelect(beneficiariosEstudio, 'Beneficiario estudio', idBeneficiarioEstudio)}
+                    {onOptionsSelect(beneficiariosEstudio, 'Beneficiario estudio', false)}
                 </select>
+                <p className="text-danger mb-0">{errors?.idBeneficiarioEstudio}</p>
             </div>
 
             <div className={!(funcionarioForm.vinculacion?.id == 1)? selectInputs(6) : 'd-none'}>
@@ -256,6 +286,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.fechaReciboMatricula}</p>
             </div>
 
             <div className={!(funcionarioForm.vinculacion?.id == 1)? selectInputs(6) : 'd-none'}>
@@ -266,6 +297,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.referenciaReciboMatricula}</p>
             </div>
 
             <div className={!(funcionarioForm.vinculacion?.id == 1)? selectInputs(6) : 'd-none'}>
@@ -276,6 +308,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.valorMatricula}</p>
             </div>
 
             <div className={!(funcionarioForm.vinculacion?.id == 1)? selectInputs(6) : 'd-none'}>
@@ -286,6 +319,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.promedio}</p>
             </div>
 
             <div className={selectInputs(2)}>
@@ -297,8 +331,9 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     disabled={onlyShow}
                     value={idMotivoJubilacion}
                 >
-                    {onOptionsSelect(motivosJubilaciones, 'Motivo jubilacion', idMotivoJubilacion)}
+                    {onOptionsSelect(motivosJubilaciones, 'Motivo jubilacion', false)}
                 </select>
+                <p className="text-danger mb-0">{errors?.idMotivoJubilacion}</p>
             </div>
 
             <div className={selectInputs(4)}>
@@ -310,8 +345,9 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     disabled={onlyShow}
                     value={idMotivoIncapacidad}
                 >
-                    {onOptionsSelect(motivosIncapacidades, 'Motivo incapacidad', idMotivoIncapacidad)}
+                    {onOptionsSelect(motivosIncapacidades, 'Motivo incapacidad', false)}
                 </select>
+                <p className="text-danger mb-0">{errors?.idMotivoIncapacidad}</p>
             </div>
 
             <div className={selectInputs(3)}>
@@ -323,8 +359,9 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     disabled={onlyShow}
                     value={idParentesco}
                 >
-                    {onOptionsSelect(parentescos, 'Parentesco', idParentesco)}
+                    {onOptionsSelect(parentescos, 'Parentesco', false)}
                 </select>
+                <p className="text-danger mb-0">{errors?.idParentesco}</p>
             </div>
 
             <div className="mb-1">
@@ -335,6 +372,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, onOptionsSelect, funcionarioFor
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
+                <p className="text-danger mb-0">{errors?.observacion}</p>
             </div>
 
 

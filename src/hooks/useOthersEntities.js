@@ -4,38 +4,47 @@ import { useAuth } from "../auth/hooks/useAuth"
 import {
     loadingTiposAuxiliosIndividuales, loadingTiposAuxiliosIndividualesBySindicatoId,
     loadingSindicatos, loadingSemestres, loadingMotivosIncapacidades, loadingMotivosJubilaciones,
-    initialOthersEntities, loadingParentescos, loadingEstudiosFormales, loadingProgramasByEstudioFormal, 
-    loadingBeneficiariosEstudio
+    initialOthersEntities, loadingParentescos, loadingEstudiosFormales, loadingProgramasByEstudioFormal,
+    loadingBeneficiariosEstudio,
+    loadingGeneros,
+    loadingVinculaciones,
+    loadingDependencias,
+    loadingCargos, 
+    loadingTiposNegociacionesSindicales,
+    loadingNegociacionesSindicales,
+    loadingTiposNegociacionesSindicalesBySindicatoId,
+    loadingNegociacionesSindicalesByTipoNegociacionSindicalId,
+    loadingGrados,
+    loadingLocalidades,
+    loadingEstadosFuncionarios,
+    loadingDistinctNameSalariosConfig
 } from "../store/slices/othersEntities/othersEntitiesSlice"
 import {
     findAllTiposAuxiliosIndividuales, findAllTiposAuxiliosIndividualesBySindicatoId,
     findAllSindicatos, findAllSemestres, findAllMotivoJubilaciones, findAllMotivoIncapacidades,
-    findAllParentescos, findAllEstudioFormales, findAllProgramasByIdEstudioFormal, findAllBeneficiariosEstudio
+    findAllParentescos, findAllEstudioFormales, findAllProgramasByIdEstudioFormal,
+    findAllBeneficiariosEstudio, findAllGeneros, findAllVinculaciones, findAllDependencias,
+    findAllTiposNegociacionesSindicales, findAllNegociacionesSindicales,
+    findAllTiposNegociacionesSindicalesBySindicatoId,
+    findAllNegociacionesSindicalesByTipoNegociacionSindicalId,
+    findAllCargos,
+    findAllGrados,
+    findAllLocalidades,
+    findAllEstadosFuncionarios,
+    findDistinctNameConfigurationsByTipo
 } from "../services/othersEntitiesService"
+import { SwalErrorAuthentication } from "../components/recursos/SweetAlerts"
 
 export const useOthersEntities = () => {
 
     const { tiposAuxiliosIndividuales, tiposAuxiliosIndividualesBySindicatoId, sindicatos, semestres,
         motivosJubilaciones, motivosIncapacidades, parentescos, estudiosFormales, programasbyestudioformal,
-        beneficiariosEstudio } = useSelector(state => state.othersEntities);
+        beneficiariosEstudio, generos, vinculaciones, dependencias, cargos, grados, localidades, estadosFuncionarios, negociacionesSindicales,
+        tiposNegociacionesSindicales, negociacionesSindicalesByTipoNegociacionSindicalId,
+        tiposNegociacionesSindicalesBySindicatoId, distinctNameSalariosConfig
+    } = useSelector(state => state.othersEntities);
     const dispatch = useDispatch();
     const { login, handlerLogout } = useAuth();
-
-    const mesageErrorAuthentication = (title, text, icon) => {
-        Swal.fire({
-            title: { title },
-            text: { text },
-            icon: { icon },
-            showCancelButton: false,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Aceptar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                handlerLogout()
-            }
-        })
-    }
 
     const getTiposAuxiliosIndividuales = async () => {
         try {
@@ -43,9 +52,7 @@ export const useOthersEntities = () => {
             dispatch(loadingTiposAuxiliosIndividuales(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
-                mesageErrorAuthentication("Error de autenticacion",
-                    "No tienes los permisos requeridos, Inicie sesion como administrador",
-                    "error");
+                SwalErrorAuthentication(handlerLogout)
             }
         }
     }
@@ -56,9 +63,7 @@ export const useOthersEntities = () => {
             dispatch(loadingBeneficiariosEstudio(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
-                mesageErrorAuthentication("Error de autenticacion",
-                    "No tienes los permisos requeridos, Inicie sesion como administrador",
-                    "error");
+                SwalErrorAuthentication(handlerLogout)
             }
         }
     }
@@ -69,9 +74,7 @@ export const useOthersEntities = () => {
             dispatch(loadingTiposAuxiliosIndividualesBySindicatoId(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
-                mesageErrorAuthentication("Error de autenticacion",
-                    "No tienes los permisos requeridos, Inicie sesion como administrador",
-                    "error");
+                SwalErrorAuthentication(handlerLogout)
             }
         }
     }
@@ -82,9 +85,18 @@ export const useOthersEntities = () => {
             dispatch(loadingProgramasByEstudioFormal(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
-                mesageErrorAuthentication("Error de autenticacion",
-                    "No tienes los permisos requeridos, Inicie sesion como administrador",
-                    "error");
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getDistinctNameConfigurationsByTipo = async (tipo = '') => {
+        try {
+            const result = await findDistinctNameConfigurationsByTipo(tipo);
+            dispatch(loadingDistinctNameSalariosConfig(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
             }
         }
     }
@@ -95,9 +107,7 @@ export const useOthersEntities = () => {
             dispatch(loadingSindicatos(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
-                mesageErrorAuthentication("Error de autenticacion",
-                    "No tienes los permisos requeridos, Inicie sesion como administrador",
-                    "error");
+                SwalErrorAuthentication(handlerLogout)
             }
         }
     }
@@ -108,9 +118,7 @@ export const useOthersEntities = () => {
             dispatch(loadingSemestres(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
-                mesageErrorAuthentication("Error de autenticacion",
-                    "No tienes los permisos requeridos, Inicie sesion como administrador",
-                    "error");
+                SwalErrorAuthentication(handlerLogout)
             }
         }
     }
@@ -121,9 +129,7 @@ export const useOthersEntities = () => {
             dispatch(loadingMotivosJubilaciones(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
-                mesageErrorAuthentication("Error de autenticacion",
-                    "No tienes los permisos requeridos, Inicie sesion como administrador",
-                    "error");
+                SwalErrorAuthentication(handlerLogout)
             }
         }
     }
@@ -134,9 +140,7 @@ export const useOthersEntities = () => {
             dispatch(loadingMotivosIncapacidades(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
-                mesageErrorAuthentication("Error de autenticacion",
-                    "No tienes los permisos requeridos, Inicie sesion como administrador",
-                    "error");
+                SwalErrorAuthentication(handlerLogout)
             }
         }
     }
@@ -147,9 +151,7 @@ export const useOthersEntities = () => {
             dispatch(loadingParentescos(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
-                mesageErrorAuthentication("Error de autenticacion",
-                    "No tienes los permisos requeridos, Inicie sesion como administrador",
-                    "error");
+                SwalErrorAuthentication(handlerLogout)
             }
         }
     }
@@ -160,9 +162,128 @@ export const useOthersEntities = () => {
             dispatch(loadingEstudiosFormales(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
-                mesageErrorAuthentication("Error de autenticacion",
-                    "No tienes los permisos requeridos, Inicie sesion como administrador",
-                    "error");
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getGeneros = async () => {
+        try {
+            const result = await findAllGeneros();
+            dispatch(loadingGeneros(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getVinculaciones = async () => {
+        try {
+            const result = await findAllVinculaciones();
+            dispatch(loadingVinculaciones(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getDependencias = async () => {
+        try {
+            const result = await findAllDependencias();
+            dispatch(loadingDependencias(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getCargos = async () => {
+        try {
+            const result = await findAllCargos();
+            dispatch(loadingCargos(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getGrados = async () => {
+        try {
+            const result = await findAllGrados();
+            dispatch(loadingGrados(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getLocalidades = async () => {
+        try {
+            const result = await findAllLocalidades();
+            dispatch(loadingLocalidades(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getEstadosFuncionarios = async () => {
+        try {
+            const result = await findAllEstadosFuncionarios();
+            dispatch(loadingEstadosFuncionarios(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getTiposNegociacionesSindicales = async () => {
+        try {
+            const result = await findAllTiposNegociacionesSindicales();
+            dispatch(loadingTiposNegociacionesSindicales(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getNegociacionesSindicales = async () => {
+        try {
+            const result = await findAllNegociacionesSindicales();
+            dispatch(loadingNegociacionesSindicales(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getAllTiposNegociacionesSindicalesBySindicatoId = async (id = 0) => {
+        try {
+            const result = await findAllTiposNegociacionesSindicalesBySindicatoId(id);
+            dispatch(loadingTiposNegociacionesSindicalesBySindicatoId(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getAllNegociacionesSindicalesByTipoNegociacionSindicalId = async (id = 0) => {
+        try {
+            const result = await findAllNegociacionesSindicalesByTipoNegociacionSindicalId(id);
+            dispatch(loadingNegociacionesSindicalesByTipoNegociacionSindicalId(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
             }
         }
     }
@@ -178,8 +299,27 @@ export const useOthersEntities = () => {
         getEstudioFormales,
         getProgramasByIdEstudioFormal,
         getBeneficiariosEstudio,
+        getGeneros,
+        getDependencias,
+        getCargos,
+        getGrados,
+        getLocalidades,
+        getEstadosFuncionarios,
+        getVinculaciones,
+        getNegociacionesSindicales,
+        getTiposNegociacionesSindicales,
+        getAllTiposNegociacionesSindicalesBySindicatoId,
+        getAllNegociacionesSindicalesByTipoNegociacionSindicalId,
+        getDistinctNameConfigurationsByTipo,
 
         tiposAuxiliosIndividuales,
+        generos,
+        vinculaciones,
+        dependencias,
+        cargos,
+        grados,
+        estadosFuncionarios,
+        localidades,
         tiposAuxiliosIndividualesBySindicatoId,
         sindicatos,
         semestres,
@@ -189,7 +329,11 @@ export const useOthersEntities = () => {
         estudiosFormales,
         programasbyestudioformal,
         beneficiariosEstudio,
-
         initialOthersEntities,
+        negociacionesSindicales,
+        tiposNegociacionesSindicales,
+        negociacionesSindicalesByTipoNegociacionSindicalId,
+        tiposNegociacionesSindicalesBySindicatoId,
+        distinctNameSalariosConfig,
     }
 }

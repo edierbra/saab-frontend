@@ -41,6 +41,7 @@ export const UserRow = ({ id ,nombre, username, email, admin, root }) => {
                                     }
                                     icon={"bi bi-pencil-square"}
                                     style={"btn btn-mybotton btn-color-blue"}
+                                    text={''}
                                 />
 
                                 {/* <NavLink
@@ -56,6 +57,7 @@ export const UserRow = ({ id ,nombre, username, email, admin, root }) => {
                                     dataOnClick={id}
                                     icon={"bi bi-trash-fill"}
                                     style={"btn btn-mybotton btn-color-red"}
+                                    text={''}
                                 />
                             </div>
                         </td>

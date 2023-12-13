@@ -2,20 +2,24 @@ import { useEffect, useState } from "react"
 import { useAuxiliosIndividuales } from "../../hooks/useAuxiliosIndividuales";
 import { useFuncionarios } from "../../hooks/useFuncionarios";
 import { useOthersEntities } from "../../hooks/useOthersEntities";
-import { FuncionarioForm } from "./FuncionarioForm";
+import { FuncionarioForm } from "../manage_funcionarios/FuncionarioForm";
 import { TipoAuxilioForm } from "./TipoAuxilioForm";
 import { DatosTipoAuxilioForm } from "./DatosTipoAuxilioForm";
 import { ValorAuxilioForm } from "./ValorAuxilioForm";
+import Swal from "sweetalert2";
+import { Divider } from "../layout/Divider";
+import { SwalToastNotFound } from "../recursos/SweetAlerts";
+import { verificarFormatoFecha } from "../recursos/Funciones";
 
-export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerCloseForm, funcionarioSearch, handlerRemoveUserSearch }) => {
+export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerCloseForm, funcionarioSearch, handlerRemoveFuncionarioSearch }) => {
 
-    const { initialAuxiliosIndividualForm, handlerAddAuxilioIndividual, onlyShow } = useAuxiliosIndividuales();
+    const { initialAuxiliosIndividualForm, handlerAddAuxilioIndividual, onlyShow, addError, errors, clearErrors } = useAuxiliosIndividuales();
     const { initialFuncionarioForm } = useFuncionarios();
     const { tiposAuxiliosIndividuales, tiposAuxiliosIndividualesBySindicatoId, sindicatos,
         getTiposAuxiliosIndividualesBySindicatoId, getProgramasByIdEstudioFormal } = useOthersEntities();
 
-    const [auxilioForm, setAuxilioForm] = useState(initialAuxiliosIndividualForm);
-    const [funcionarioForm, setFuncionarioForm] = useState(initialFuncionarioForm);
+    const [auxilioForm, setAuxilioForm] = useState({ initialAuxiliosIndividualForm });
+    const [funcionarioForm, setFuncionarioForm] = useState({ initialFuncionarioForm });
 
     const { id, fechaSolicitud, fechaViabilidad, resolucion, fechaResolucion, rdp, fechaRdp, valor, valorTransporteRegreso,
         diasDesplazamiento, lugarDesplazamiento, fechaRenuncia, fechaAceptacionRenuncia, fechaInicioIncapacidad,
@@ -24,8 +28,15 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
         idParentesco, idEstudioFormal, idPrograma, idSindicato, idTipoAuxilioIndividual, fechaOtorgamientoAnteojos,
         diasIncapacidad, fechaOpcionalCalculo } = auxilioForm;
 
+    if (funcionarioForm?.activo == "false") {
+        handlerRemoveFuncionarioSearch()
+        SwalToastNotFound("error", "Funcionario inactivo, no puede acceder a ningun auxilio")
+    }
+
     useEffect(() => {
-        setAuxilioForm({ ...auxiliosIndividualSelected });
+        setAuxilioForm({
+            ...auxiliosIndividualSelected
+        });
     }, [auxiliosIndividualSelected])
 
     useEffect(() => {
@@ -40,53 +51,20 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
         setFuncionarioForm({ // guarda el usuario buscado
             ...funcionarioSearch
         })
-    }, [funcionarioSearch])
+    }, [, funcionarioSearch])
+
+    useEffect(() => {
+        setAuxilioForm(prevState => ({
+            ...prevState,
+            idFuncionario: funcionarioForm?.id
+        }));
+    }, [funcionarioForm])
 
     useEffect(() => {
         getTiposAuxiliosIndividualesBySindicatoId(idSindicato);
     }, [, idSindicato])
 
-
-    const onOptionsSelect = (objetoIdNombre, defaultOption, identificador) => {
-
-        if (!objetoIdNombre) return null // Manejar el caso en que funcionarioForm es null o undefined
-
-        const options = (
-            <>
-                <option
-                    key='0'
-                    value='0'>
-                    {defaultOption}
-                </option>
-                {Array.isArray(objetoIdNombre) ? (
-                    objetoIdNombre.map(({ id, nombre }) => (
-                        <option
-                            key={id}
-                            value={id}
-                        // selected={identificador == id}
-                        >
-                            {nombre}
-                        </option>
-                    ))
-                ) : (
-                    (objetoIdNombre?.nombre && objetoIdNombre?.id) && (
-                        <option
-                            key={objetoIdNombre?.id}
-                            value={objetoIdNombre?.id}
-                        // selected={identificador == objetoIdNombre?.id}
-                        >
-                            {objetoIdNombre.nombre}
-                        </option>
-                    )
-                )}
-            </>
-        );
-
-        return options;
-    };
-
     const onInputChange = ({ target }) => {
-
         const { name, value } = target;
         setAuxilioForm(
             {
@@ -97,7 +75,43 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
     }
 
     const onSubmit = (event) => {
-        event.preventDefault();
+        event.preventDefault(); 
+
+        if (!verificarFormatoFecha(fechaSolicitud) && fechaSolicitud) {
+            addError({ fechaSolicitud: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            return
+        }
+
+        if (!verificarFormatoFecha(fechaOpcionalCalculo) && fechaOpcionalCalculo) {
+            addError({ fechaOpcionalCalculo: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            return
+        }
+
+        if (!verificarFormatoFecha(fechaAceptacionRenuncia) && fechaAceptacionRenuncia) {
+            addError({ fechaAceptacionRenuncia: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            return
+        }
+
+        if (!verificarFormatoFecha(fechaFinIncapacidad) && fechaFinIncapacidad) {
+            addError({ fechaFinIncapacidad: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            return
+        }
+
+        if (!verificarFormatoFecha(fechaInicioIncapacidad) && fechaInicioIncapacidad) {
+            addError({ fechaInicioIncapacidad: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            return
+        }
+
+        if (!verificarFormatoFecha(fechaOtorgamientoAnteojos) && fechaOtorgamientoAnteojos) {
+            addError({ fechaOtorgamientoAnteojos: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            return
+        }
+
+        if (!verificarFormatoFecha(fechaReciboMatricula) && fechaReciboMatricula) {
+            addError({ fechaReciboMatricula: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            return
+        }
+
         console.log(auxilioForm)
         handlerAddAuxilioIndividual(auxilioForm) // Guardar el userFrom en userList
     }
@@ -105,7 +119,6 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
     const onCloseForm = () => {
         setAuxilioForm(initialAuxiliosIndividualForm);
         setFuncionarioForm(initialFuncionarioForm);
-        handlerRemoveUserSearch();
         handlerCloseForm();
     }
 
@@ -114,14 +127,11 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
             <form onSubmit={onSubmit} noValidate disabled>
                 <div className="row ">
                     <div className="col mb-0 overflow-auto " style={{ height: '55vh' }}>
-
+                        <Divider content={'Datos del Funcionario'} />
+                        <p className="text-danger mb-0">{errors?.idFuncionario}</p>
                         <FuncionarioForm
-                            auxilioForm={auxilioForm}
-                            setAuxilioForm={setAuxilioForm}
                             funcionarioForm={funcionarioForm}
-                            onOptionsSelect={onOptionsSelect}
-                            onInputChange={onInputChange}
-                            handlerRemoveUserSearch={handlerRemoveUserSearch}
+                            disabled={true}
                         />
                     </div>
                     <div className="col mb-0 overflow-auto " style={{ height: '55vh' }}>
@@ -130,7 +140,6 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
                             setAuxilioForm={setAuxilioForm}
                             tiposAuxiliosIndividuales={tiposAuxiliosIndividuales}
                             tiposAuxiliosIndividualesBySindicatoId={tiposAuxiliosIndividualesBySindicatoId}
-                            onOptionsSelect={onOptionsSelect}
                             onInputChange={onInputChange}
                             sindicatos={sindicatos}
                             idSindicato={idSindicato}
@@ -143,7 +152,6 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
                                 <DatosTipoAuxilioForm
                                     auxilioForm={auxilioForm}
                                     setAuxilioForm={setAuxilioForm}
-                                    onOptionsSelect={onOptionsSelect}
                                     onInputChange={onInputChange}
                                     initialAuxiliosIndividualForm={initialAuxiliosIndividualForm}
                                     funcionarioForm={funcionarioForm}

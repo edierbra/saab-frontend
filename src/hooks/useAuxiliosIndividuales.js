@@ -12,18 +12,17 @@ import {
 } from "../store/slices/auxiliosindividuales/auxiliosIndividualesSlice"
 import { useAuth } from "../auth/hooks/useAuth"
 import { useFuncionarios } from "./useFuncionarios"
+import { SwalErrorAuthentication, SwalContentDelete, SwalToastDelete, SwalToastCreateOrEdit, SwalToastErrorsFound } from "../components/recursos/SweetAlerts"
 
 export const useAuxiliosIndividuales = () => {
     const { initialErrors, auxiliosIndividuales, auxiliosIndividualSelected, visibleForm,
         errors, isLoading, paginator, onlyShow } = useSelector(state => state.auxiliosindividuales);
 
-    const dispatch = useDispatch();
-
-    const navigate = useNavigate();
-
     const { login, handlerLogout } = useAuth();
+    const { handlerRemoveFuncionarioSearch } = useFuncionarios()
 
-    const { handlerRemoveUserSearch } = useFuncionarios()
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const getAuxiliosIndividuales = async (page = 0) => {
         try {
@@ -31,19 +30,7 @@ export const useAuxiliosIndividuales = () => {
             dispatch(loadingAuxilioIndividuales(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
-                Swal.fire({
-                    title: 'Error de autenticacion',
-                    text: "No tienes los permisos requeridos, Inicie sesion como administrador",
-                    icon: 'error',
-                    showCancelButton: false,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Aceptar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        handlerLogout()
-                    }
-                })
+                SwalErrorAuthentication(handlerLogout)
             }
         }
     }
@@ -54,19 +41,9 @@ export const useAuxiliosIndividuales = () => {
             dispatch(loadingAuxilioIndividuales(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
-                Swal.fire({
-                    title: 'Error de autenticacion',
-                    text: "No tienes los permisos requeridos, Inicie sesion como Admin o Root",
-                    icon: 'error',
-                    showCancelButton: false,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Aceptar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        handlerLogout()
-                    }
-                })
+                SwalErrorAuthentication(handlerLogout)
+            } else if (error.response && error.response?.status == 403) {
+                SwalErrorAuthentication(handlerLogout)
             }
         }
     }
@@ -87,14 +64,8 @@ export const useAuxiliosIndividuales = () => {
                 dispatch(updateAuxilioIndividual(response.data));
             }
 
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: (auxilioIndividual.id === 0) ? 'Auxilio Creado' : 'Auxilio Editado',
-                width: 300,
-                showConfirmButton: false,
-                timer: 1500
-            })
+            SwalToastCreateOrEdit("success", "Auxilio Individual", auxilioIndividual?.id)
+
             handlerCloseForm();
             navigate('/auxilios-individuales')
         } catch (error) {
@@ -103,23 +74,13 @@ export const useAuxiliosIndividuales = () => {
             if (error.response && error.response?.status == 400) {
                 dispatch(loadingError(error.response.data));
                 console.log(error.response.data) // imprime eerores
+                SwalToastErrorsFound("error", "Verifica los datos ingresados");
             } else if (error.response && error.response?.status == 409) { // conflictos
                 dispatch(loadingError(error.response.data));
                 console.log(error.response.data) // imprime eerores
+                SwalToastErrorsFound("error", "Verifica los datos ingresados");
             } else if (error.response && error.response?.status == 401) {
-                Swal.fire({
-                    title: 'Error de autenticacion',
-                    text: "No tienes los permisos requeridos, Inicie sesion como administrador",
-                    icon: 'error',
-                    showCancelButton: false,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Aceptar'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        handlerLogout()
-                    }
-                })
+                SwalErrorAuthentication(handlerLogout)
             } else {
                 throw error;
             }
@@ -131,13 +92,7 @@ export const useAuxiliosIndividuales = () => {
         if (!login.isAdmin) return;
 
         Swal.fire({
-            title: 'Quieres eliminar el auxilio?',
-            text: "El auxilio sera eliminado!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Si, eliminar!'
+            ...SwalContentDelete("question", "Auxilio Individual", "Auxilio Individual")
         }).then(async (result) => {
             if (result.isConfirmed) {
 
@@ -145,29 +100,10 @@ export const useAuxiliosIndividuales = () => {
                     await remove(id); // elimina de la base de datos
                     dispatch(removeAuxilioIndividual(id));
 
-                    Swal.fire({
-                        position: 'top-end',
-                        icon: 'success',
-                        title: 'Auxilio eliminado!',
-                        width: 300,
-                        showConfirmButton: false,
-                        timer: 1500
-                    })
+                    SwalToastDelete("success", "Auxilio Individual eliminado con Exito")
                 } catch (error) {
                     if (error.response && error.response?.status == 401) {
-                        Swal.fire({
-                            title: 'Error de autenticacion',
-                            text: "No tienes los permisos requeridos, Inicie sesion como administrador",
-                            icon: 'error',
-                            showCancelButton: false,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Aceptar'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                handlerLogout()
-                            }
-                        })
+                        SwalErrorAuthentication(handlerLogout)
                     }
                 }
             }
@@ -179,12 +115,25 @@ export const useAuxiliosIndividuales = () => {
     }
 
     const handlerOpenForm = () => {
+        handlerRemoveFuncionarioSearch();
         dispatch(onOpenForm())
+    }
+
+    const addError = (error) => {
+        dispatch(loadingError({
+            // ...errors,
+            ...error
+        }))
+        SwalToastErrorsFound("error", "Verifica los datos ingresados");
+    }
+
+    const clearErrors = () => {
+        dispatch(loadingError(initialErrors))
     }
 
     const handlerCloseForm = () => {
         dispatch(onCloseForm())
-        handlerRemoveUserSearch();
+        handlerRemoveFuncionarioSearch();
         dispatch(loadingError(initialErrors)) // limpia los errors
     }
 
@@ -205,6 +154,8 @@ export const useAuxiliosIndividuales = () => {
         handlerCloseForm,
         getAuxiliosIndividuales,
         getAuxiliosIndividualesByNombreOrIdOrTipoPageable,
+        addError,
+        clearErrors,
         // getUsersPage,
     }
 }

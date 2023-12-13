@@ -2,28 +2,28 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../auth/hooks/useAuth";
 import { useParams } from "react-router-dom";
 import { Paginator } from "../components/layout/Paginator";
-import { useAuxiliosIndividuales } from "../hooks/useAuxiliosIndividuales";
 import { AuxiliosIndividualesList } from "../components/manage_auxilios_individuales/AuxiliosIndividualesList";
-import { AuxilioIndividualModalForm } from "../components/manage_auxilios_individuales/AuxilioIndividualModalForm";
 import { Header } from "../components/layout/Header";
-import { useFuncionarios } from "../hooks/useFuncionarios";
+import { useValoresConvencionales } from "../hooks/useValoresConvencionales";
+import { ValoresConvencionalesList } from "../components/manage_valores_convencionales/ValoresConvencionalesList";
 import { useOthersEntities } from "../hooks/useOthersEntities";
+import { ValorConvencionalModalForm } from "../components/manage_valores_convencionales/ValorConvencionalModalForm";
 import { Spinner } from "../components/layout/Spinner";
 
-export const AuxiliosIndividualesPage = () => {
+export const ValoresConvencionalesPage = () => {
 
     const { page } = useParams()
-    const { getAllFuncionarios } = useFuncionarios()
-    const { getTiposAuxiliosIndividuales } = useOthersEntities()
+    const { getSindicatos, getNegociacionesSindicales, getTiposNegociacionesSindicales } = useOthersEntities()
     const {
-        auxiliosIndividuales,
+        valoresConvencionales,
         visibleForm,
         isLoading,
         paginator,
 
         handlerOpenForm,
-        getAuxiliosIndividualesByNombreOrIdOrTipoPageable
-    } = useAuxiliosIndividuales();
+        getValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombrePageable,
+    } = useValoresConvencionales();
+
 
     const [search, setSearch] = useState('')
 
@@ -32,17 +32,18 @@ export const AuxiliosIndividualesPage = () => {
     } = useAuth()
 
     useEffect(() => {
-        getAllFuncionarios();
-        getTiposAuxiliosIndividuales();
-        getAuxiliosIndividualesByNombreOrIdOrTipoPageable(search, page);
+        getTiposNegociacionesSindicales()
+        getNegociacionesSindicales()
+        getSindicatos()
+        getValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombrePageable(search, page);
     }, [])
 
     useEffect(() => {
-        getAuxiliosIndividualesByNombreOrIdOrTipoPageable(search, page);
+        getValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombrePageable(search, page);
     }, [page])
 
     useEffect(() => {
-        getAuxiliosIndividualesByNombreOrIdOrTipoPageable(search, 0);
+        getValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombrePageable(search, 0);
     }, [search])
 
     if (isLoading) {
@@ -54,26 +55,27 @@ export const AuxiliosIndividualesPage = () => {
     return (
         <>
             {!visibleForm ||
-                <AuxilioIndividualModalForm />
+                <ValorConvencionalModalForm />
             }
+
             <div className="">
 
                 <Header
                     visibleForm={visibleForm}
                     handlerOpenForm={handlerOpenForm}
-                    placeholder={"Buscar por Identificacion, Nombre o Tipo de auxilio"}
+                    placeholder={"Buscar por Tipo de Negociacion o Negociacion"}
                     valueDefault={""}
-                    functionSearch={getAuxiliosIndividualesByNombreOrIdOrTipoPageable}
+                    functionSearch={getValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombrePageable}
                     setSearch={setSearch}
                 />
 
-                {auxiliosIndividuales.length < 1 ?
+                {valoresConvencionales.length < 1 ?
                     <div className="alert alert-warning">{'No hay Datos registrados en el sistema'}</div> :
                     (
                         <>
-                            <AuxiliosIndividualesList />
+                            <ValoresConvencionalesList />
                             <Paginator
-                                url="/auxilios-individuales/page"
+                                url="/valores-convencionales/page"
                                 paginator={paginator}
                             />
                         </>

@@ -38,11 +38,9 @@ export const findAllUsersPageable = async (page = 0) => {
     }
 }
 
-export const findUserByIdAndNombre = async (search = "", page=0) => {
+export const findUserByIdAndNombre = async (search = "", page = 0) => {
     const partes = String(search).split(",")
     var params = {}
-
-    console.log(partes)
 
     switch (partes.length) {
         case 1:
@@ -77,11 +75,10 @@ export const findUserByIdAndNombre = async (search = "", page=0) => {
                     ...params,
                     pageNum: page,
                     pageSize: 8,
-                    orderBy: 'id',
-                    orderDir: 'desc'
+                    orderBy: 'nombre',
+                    orderDir: 'asc'
                 }
             });
-        console.log(response)
         return response;
 
     } catch (error) {
@@ -90,8 +87,6 @@ export const findUserByIdAndNombre = async (search = "", page=0) => {
 }
 
 export const create = async (user) => {
-
-    console.log(user)
     try {
         return await saabApi.post(
             BASE_URL,
@@ -107,7 +102,6 @@ export const create = async (user) => {
 }
 
 export const update = async ({ id, username, email, admin, root, nombre }) => {
-    console.log("id en service", id)
     try {
         return await saabApi.put(
             `${BASE_URL}/${id}`,

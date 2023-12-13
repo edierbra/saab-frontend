@@ -1,6 +1,10 @@
-import { Divider } from "../layout/divider"
+import { useAuxiliosIndividuales } from "../../hooks/useAuxiliosIndividuales"
+import { Divider } from "../layout/Divider"
 
 export const ValorAuxilioForm = ({ onlyShow, onInputChange, valor, fechaOpcionalCalculo }) => {
+
+    const { errors } = useAuxiliosIndividuales();
+    
     return (
         <>
             <Divider
@@ -15,14 +19,15 @@ export const ValorAuxilioForm = ({ onlyShow, onInputChange, valor, fechaOpcional
                     onChange={onInputChange}
                     disabled={onlyShow}
                 />
-                <p className="d-flex justify-content-end fw-bold fs-7">Por defecto: Fecha de la solicitud </p>
+                <p className="d-flex justify-content-end fw-bold fs-7 m-0">Por defecto: Fecha de la solicitud </p>
+                <p className="text-danger mb-0">{errors?.fechaOpcionalCalculo}</p>
             </div>
 
-            <div>
+            <div className="mb-2">
                 <label className="form-label fs-16px-login-label mb-0">Valor del auxilio</label>
-                <div className="d-flex justify-content-between align-content-center align-items-center">
+                <div className="d-flex justify-content-between align-items-start">
                     <button
-                        className="btn btn-login btn-sm py-0"
+                        className="btn btn-login btn-sm py-0 me-2"
                         type="button"
                         disabled={onlyShow}
                     >
@@ -36,10 +41,10 @@ export const ValorAuxilioForm = ({ onlyShow, onInputChange, valor, fechaOpcional
                             onChange={onInputChange}
                             disabled={onlyShow}
                         />
+                        <p className="text-danger mb-0">{errors?.valor}</p>
                     </div>
                 </div>
             </div>
-
         </>
     )
 }

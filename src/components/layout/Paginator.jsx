@@ -1,12 +1,22 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 
 export const Paginator = ({ url, paginator }) => {
+    const { page } = useParams()
+    const navigate = useNavigate()
+
+    const diference = paginator.totalPages- paginator.number;
+
+    if(paginator.number < paginator.totalPages){
+
+    } 
+
+
     return (
         <>
             {paginator?.totalPages == 1 ||
                 <ul className="pagination text-sidebar rounded shadow-xx">
-                    <li className={paginator.first ? 'page-item disabled' : 'page-item'}>
-                        <Link className="page-link" to={`${url}/0`} aria-label="Siguiente">
+                    <li className={paginator?.first ? 'page-item disabled' : 'page-item'}>
+                        <Link className="page-link" to={`${url}/0`}>
                             <i className="bi bi-chevron-bar-left "></i>
                         </Link>
                     </li>
@@ -14,7 +24,7 @@ export const Paginator = ({ url, paginator }) => {
                     {
                         paginator.number == 0 ||
                         <li className="page-item" data-toggle="popover" data-content="Este es un botón">
-                            <Link className="page-link" to={`${url}/${paginator.number - 1}`} >
+                            <Link className="page-link" to={`${url}/${paginator?.number - 1}`} >
                                 <i className="bi bi-chevron-double-left" ></i>
                             </Link>
                         </li>

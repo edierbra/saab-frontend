@@ -32,10 +32,10 @@ export const usersSlice = createSlice({
     reducers: {
         addUser: (state, action) => {
             state.users = [
-                ...state.users,
                 {
                     ...action.payload,
-                }
+                },
+                ...state.users,
             ];
 
             state.userSelected = initialUserForm;

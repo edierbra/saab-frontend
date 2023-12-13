@@ -9,17 +9,18 @@ export const AuxiliosIndividualesList = () => {
 
     return (
         <>
-            <table className="table table-hover table-striped rounded shadow-xx">
+        <div className="m-0 mb-2 overflow-auto rounded shadow-xx " style={{ width: '100%', maxHeight:'70vh' }}>
+            <table className="table mb-0 table-hover table-striped ">
                 <thead>
                     <tr className="fs-16px-login-label">
-                        <th>Id</th>
-                        <th>Nombre</th>
+                        {/* <th>Id</th> */}
                         <th>Identificacion</th>
-                        <th>Fecha viabilidad</th>
+                        <th>Nombre</th>
                         <th>Fecha solicitud</th>
+                        <th>Fecha viabilidad</th>
                         <th>Tipo Auxilio</th>
                         <th>Valor</th>
-                        {(login.isAdmin) && <th>optiones</th>}
+                        <th>Optiones</th>
                     </tr>
                 </thead>
 
@@ -35,6 +36,7 @@ export const AuxiliosIndividualesList = () => {
                     }
                 </tbody>
             </table>
+            </div>
         </>
     )
 }
