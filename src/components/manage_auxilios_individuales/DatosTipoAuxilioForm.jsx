@@ -133,7 +133,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 />
                 <p className="text-danger mb-0">{errors?.valorTransporteRegreso}</p>
             </div>
-
+            
             <div className={selectInputs(1)}>
                 <label className="form-label fs-16px-login-label mb-0">Lugar del Desplazamiento</label>
                 <input
@@ -245,7 +245,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                     onChange={onInputChange}
                     value={idPrograma}
                 >
-                    {onOptionsSelect(programasbyestudioformal, "Tipo de Auxilio", false)}
+                    {onOptionsSelect(programasbyestudioformal, "Programa", false)}
                 </select>
                 <p className="text-danger mb-0">{errors?.idPrograma}</p>
             </div>

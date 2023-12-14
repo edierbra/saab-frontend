@@ -1,5 +1,5 @@
 import Swal from "sweetalert2"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import {
     findAllAuxilioIndividualesPageable, findAuxiliosIndividualesByNombreOrIdOrTipoPageable, create, update,
     remove
@@ -23,6 +23,7 @@ export const useAuxiliosIndividuales = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { page } = useParams()
 
     const getAuxiliosIndividuales = async (page = 0) => {
         try {
@@ -38,6 +39,7 @@ export const useAuxiliosIndividuales = () => {
     const getAuxiliosIndividualesByNombreOrIdOrTipoPageable = async (search = "", page = 0) => {
         try {
             const result = await findAuxiliosIndividualesByNombreOrIdOrTipoPageable(search, page); // findAllUsers()
+            console.log("getAuxiliosIndividualesByNombreOrIdOrTipoPageable", result)
             dispatch(loadingAuxilioIndividuales(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
@@ -67,7 +69,7 @@ export const useAuxiliosIndividuales = () => {
             SwalToastCreateOrEdit("success", "Auxilio Individual", auxilioIndividual?.id)
 
             handlerCloseForm();
-            navigate('/auxilios-individuales')
+            navigate(`/auxilios-individuales/page/${page}`)
         } catch (error) {
             // const UK_username = 'UK_r43af9ap4edm43mmtq01oddj6'; // index de la columna de la DB
             // const UK_email = 'UK_6dotkott2kjsp8vw4d0m25fb7';
@@ -132,8 +134,8 @@ export const useAuxiliosIndividuales = () => {
     }
 
     const handlerCloseForm = () => {
-        dispatch(onCloseForm())
         handlerRemoveFuncionarioSearch();
+        dispatch(onCloseForm())
         dispatch(loadingError(initialErrors)) // limpia los errors
     }
 

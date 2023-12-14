@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../auth/hooks/useAuth";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Paginator } from "../components/layout/Paginator";
 import { useAuxiliosIndividuales } from "../hooks/useAuxiliosIndividuales";
 import { AuxiliosIndividualesList } from "../components/manage_auxilios_individuales/AuxiliosIndividualesList";
@@ -11,9 +11,10 @@ import { useOthersEntities } from "../hooks/useOthersEntities";
 import { Spinner } from "../components/layout/Spinner";
 
 export const AuxiliosIndividualesPage = () => {
-
     const { page } = useParams()
     const { getAllFuncionarios } = useFuncionarios()
+    const [search, setSearch] = useState('')
+    const navigate = useNavigate()
     const { getTiposAuxiliosIndividuales } = useOthersEntities()
     const {
         auxiliosIndividuales,
@@ -24,9 +25,6 @@ export const AuxiliosIndividualesPage = () => {
         handlerOpenForm,
         getAuxiliosIndividualesByNombreOrIdOrTipoPageable
     } = useAuxiliosIndividuales();
-
-    const [search, setSearch] = useState('')
-
     const {
         login
     } = useAuth()
@@ -35,19 +33,16 @@ export const AuxiliosIndividualesPage = () => {
         getAllFuncionarios();
         getTiposAuxiliosIndividuales();
         getAuxiliosIndividualesByNombreOrIdOrTipoPageable(search, page);
-    }, [])
-
-    useEffect(() => {
-        getAuxiliosIndividualesByNombreOrIdOrTipoPageable(search, page);
-    }, [page])
+    }, [, page])
 
     useEffect(() => {
         getAuxiliosIndividualesByNombreOrIdOrTipoPageable(search, 0);
+        navigate("/auxilios-individuales/page/0")
     }, [search])
 
     if (isLoading) {
         return (
-            <Spinner/>
+            <Spinner />
         )
     }
 

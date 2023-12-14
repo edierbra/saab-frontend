@@ -2,22 +2,16 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom";
 
 
-export const Search = ({ placeholder, valueDefault, functionSearch, setSearch}) => {
-
-    const { page } = useParams()
+export const Search = ({ placeholder, functionSearch, setSearch}) => {
 
     const [valueSearch, setValueSearch] = useState('');
 
     const onSubmit = (event) => {
         event.preventDefault();
-        functionSearch(valueSearch, 0, 1);
+        functionSearch(valueSearch); 
     }
 
-    useEffect(() => {
-        valueDefault && functionSearch(valueDefault, page);
-    }, [valueDefault, page])
-
-    const onInputChange = ({ target }) => {
+    const onInputChange = ({ target }) => { // Guarda el termino de busqueda para usarlo en futuras ocaciones
         const { value } = target;
         setValueSearch(value)
         setSearch && setSearch(value)

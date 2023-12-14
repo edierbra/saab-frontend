@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../auth/hooks/useAuth";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Paginator } from "../components/layout/Paginator";
 import { Header } from "../components/layout/Header";
 import { useFuncionarios } from "../hooks/useFuncionarios";
@@ -10,7 +10,8 @@ import { Spinner } from "../components/layout/Spinner";
 
 export const FuncionariosPage = () => {
     const { page } = useParams()
-
+    const [search, setSearch] = useState('')
+    const navigate = useNavigate()
     const {
         funcionarios,
         visibleForm,
@@ -21,16 +22,10 @@ export const FuncionariosPage = () => {
         getFuncionarioByIdAndNombre,
         handlerChangeIsWithErrors,
     } = useFuncionarios();
-
     const {
         login
     } = useAuth()
 
-    const [search, setSearch] = useState('')
-
-    // useEffect(() => {
-    //     handlerChangeIsWithErrors(false);
-    // }, [])
 
     useEffect(() => {
         handlerChangeIsWithErrors(false);
@@ -39,7 +34,9 @@ export const FuncionariosPage = () => {
 
     useEffect(() => {
         getFuncionarioByIdAndNombre(search, 0);
+        navigate("/funcionarios/page/0")
     }, [search])
+
 
     if (isLoading) {
         return (

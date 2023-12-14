@@ -1,19 +1,9 @@
 import { Link, useNavigate, useParams } from "react-router-dom"
 
 export const Paginator = ({ url, paginator }) => {
-    const { page } = useParams()
-    const navigate = useNavigate()
-
-    const diference = paginator.totalPages- paginator.number;
-
-    if(paginator.number < paginator.totalPages){
-
-    } 
-
-
     return (
         <>
-            {paginator?.totalPages == 1 ||
+            {paginator?.totalPages <= 1 ||
                 <ul className="pagination text-sidebar rounded shadow-xx">
                     <li className={paginator?.first ? 'page-item disabled' : 'page-item'}>
                         <Link className="page-link" to={`${url}/0`}>

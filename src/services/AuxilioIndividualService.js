@@ -70,7 +70,7 @@ export const findAuxiliosIndividualesByNombreOrIdOrTipoPageable = async (search 
                 params: {
                     ...consult,
                     pageNum: page,
-                    pageSize: 6,
+                    pageSize: 5,
                     orderBy: 'id',
                     orderDir: 'desc'
                 }

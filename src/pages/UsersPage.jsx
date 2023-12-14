@@ -3,13 +3,13 @@ import { UserModalForm } from "../components/manage_users/UserModalForm";
 import { UsersList } from "../components/manage_users/UsersList"
 import { useUsers } from "../hooks/useUsers";
 import { useAuth } from "../auth/hooks/useAuth";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Paginator } from "../components/layout/Paginator";
 import { Header } from "../components/layout/Header";
 import { Spinner } from "../components/layout/Spinner";
 
 export const UsersPage = () => {
-
+    const navigate = useNavigate()
     const { page } = useParams()
 
     const {
@@ -35,6 +35,7 @@ export const UsersPage = () => {
 
     useEffect(() => {
         getUserByIdAndNombre(search, 0);
+        navigate("/users/page/0")
     }, [search])
 
     if (isLoading) {

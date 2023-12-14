@@ -11,10 +11,10 @@ import { Divider } from "../layout/Divider";
 import { SwalToastNotFound } from "../recursos/SweetAlerts";
 import { verificarFormatoFecha } from "../recursos/Funciones";
 
-export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerCloseForm, funcionarioSearch, handlerRemoveFuncionarioSearch }) => {
+export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerCloseForm, handlerRemoveFuncionarioSearch }) => {
 
     const { initialAuxiliosIndividualForm, handlerAddAuxilioIndividual, onlyShow, addError, errors, clearErrors } = useAuxiliosIndividuales();
-    const { initialFuncionarioForm } = useFuncionarios();
+    const { initialFuncionarioForm, funcionarioSearch } = useFuncionarios();
     const { tiposAuxiliosIndividuales, tiposAuxiliosIndividualesBySindicatoId, sindicatos,
         getTiposAuxiliosIndividualesBySindicatoId, getProgramasByIdEstudioFormal } = useOthersEntities();
 
@@ -28,16 +28,11 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
         idParentesco, idEstudioFormal, idPrograma, idSindicato, idTipoAuxilioIndividual, fechaOtorgamientoAnteojos,
         diasIncapacidad, fechaOpcionalCalculo } = auxilioForm;
 
-    if (funcionarioForm?.activo == "false") {
-        handlerRemoveFuncionarioSearch()
-        SwalToastNotFound("error", "Funcionario inactivo, no puede acceder a ningun auxilio")
-    }
-
     useEffect(() => {
         setAuxilioForm({
             ...auxiliosIndividualSelected
         });
-    }, [auxiliosIndividualSelected])
+    }, [, auxiliosIndividualSelected])
 
     useEffect(() => {
         console.log(auxilioForm)
@@ -51,7 +46,7 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
         setFuncionarioForm({ // guarda el usuario buscado
             ...funcionarioSearch
         })
-    }, [, funcionarioSearch])
+    }, [funcionarioSearch])
 
     useEffect(() => {
         setAuxilioForm(prevState => ({

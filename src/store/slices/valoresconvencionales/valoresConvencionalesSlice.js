@@ -75,6 +75,7 @@ export const valoresConvencionalesSlice = createSlice({
             state.isLoading = false;
         },
         loadingValoresConvencionales: (state, action) => {
+            // if(!action.payload.content)
             state.valoresConvencionales = action.payload.content; // action.payload
             state.paginator = action.payload;
             state.isLoading = false;

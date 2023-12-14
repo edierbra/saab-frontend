@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useOthersEntities } from "../../hooks/useOthersEntities";
 import { useValoresConvencionales } from "../../hooks/useValoresConvencionales";
 import { ValorConvencionalForm } from "./ValorConvencionalForm";
+import { useAuxiliosIndividuales } from "../../hooks/useAuxiliosIndividuales";
 
 export const ValorConvencionalModalForm = () => {
 

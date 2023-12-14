@@ -8,11 +8,13 @@ import { AuxilioIndividualForm } from "./AuxilioIndividualForm";
 export const AuxilioIndividualModalForm = () => {
 
     const { auxiliosIndividualSelected, handlerCloseForm, onlyShow } = useAuxiliosIndividuales();
-    const { funcionarioSearch, handlerRemoveFuncionarioSearch, getFuncionarioById, getFuncionarioByIdAndNombre} = useFuncionarios();
+    const { funcionarioSearch, handlerRemoveFuncionarioSearch, getFuncionarioById,
+        getFuncionarioByIdAndNombre } = useFuncionarios();
     const { getTiposAuxiliosIndividuales, getSindicatos, getSemestres,
         getMotivosIncapacidades, getMotivosJubilaciones, getParentescos,
-        getEstudioFormales, getBeneficiariosEstudio, getGeneros, getDependencias, 
+        getEstudioFormales, getBeneficiariosEstudio, getGeneros, getDependencias,
         getVinculaciones, getCargos, getGrados, getEstadosFuncionarios, getLocalidades } = useOthersEntities();
+    const idFun = auxiliosIndividualSelected?.idFuncionario;
 
     useEffect(() => {
         getTiposAuxiliosIndividuales();
@@ -30,6 +32,7 @@ export const AuxilioIndividualModalForm = () => {
         getGrados();
         getLocalidades();
         getEstadosFuncionarios();
+        (idFun == 0 || idFun == "") || getFuncionarioByIdAndNombre(idFun, 0, 1); // id,page, showMessage
     }, [])
 
     return (
@@ -44,10 +47,9 @@ export const AuxilioIndividualModalForm = () => {
                                         {auxiliosIndividualSelected.id < 1 ? 'Agregar Auxilio' : !onlyShow ? 'Editar Auxilio' : 'Ver Detalles'}
                                     </h5>
                                 </div>
-                                <div className={onlyShow == true ? "d-none" : "w-50"}>
+                                <div className={onlyShow? "d-none" : "w-50"}>
                                     <Search
                                         placeholder={"Identificacion o Nombre del funcionario"}
-                                        valueDefault={auxiliosIndividualSelected?.idFuncionario}
                                         functionSearch={getFuncionarioByIdAndNombre}
                                     />
                                 </div>
@@ -55,7 +57,6 @@ export const AuxilioIndividualModalForm = () => {
                             <div className="rounded bg-body-tertiary modal-body p-3 m-2 pt-0">
                                 <AuxilioIndividualForm
                                     auxiliosIndividualSelected={auxiliosIndividualSelected}
-                                    funcionarioSearch={funcionarioSearch}
                                     handlerCloseForm={handlerCloseForm}
                                     handlerRemoveFuncionarioSearch={handlerRemoveFuncionarioSearch}
                                 />

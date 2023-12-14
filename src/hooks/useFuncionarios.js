@@ -11,7 +11,7 @@ import {
     addFuncionario, updateFuncionario, loadingAllFuncionarios, loadingFuncionariosExcel,
     loadingErrorList, loadingFuncionariosAndErrors, onChangeIsWithErrors, onSetIndice, removeFuncionarioAndError, setIsLoanding
 } from "../store/slices/funcionarios/funcionariosSlice"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { SwalErrorAuthentication, SwalContentDelete, SwalToastDelete, SwalToastCreateOrEdit, SwalToastNotFound, SwalToastErrorsFound } from "../components/recursos/SweetAlerts"
 
 export const useFuncionarios = () => {
@@ -20,8 +20,8 @@ export const useFuncionarios = () => {
         isLoading, initialErrors, errorsList, funcionariosAndErrors, isWithErrors, indice } = useSelector(state => state.funcionarios);
 
     const dispatch = useDispatch();
-
     const navigate = useNavigate();
+    const { page } = useParams()
 
     const { login, handlerLogout } = useAuth();
 
@@ -67,14 +67,11 @@ export const useFuncionarios = () => {
     const getFuncionarioByIdAndNombre = async (search = '', page = 0, message = 0) => {
         try {
             const result = await findFuncionarioByIdAndNombre(search, page);
+            dispatch(loadingFuncionarios(result.data));
+            dispatch(onFuncionarioSearch(result.data?.content[0]));
             if (result.data?.totalElements == 0) {
                 dispatch(onClearFuncionarioSearch());
-                message == 1 && SwalToastNotFound("error", "Funcionario no encontrado")
-                dispatch(loadingFuncionarios([]));
-                return
             }
-            dispatch(onFuncionarioSearch(result.data.content[0]));
-            dispatch(loadingFuncionarios(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) { //authenticacion reuqrida
                 SwalErrorAuthentication(handlerLogout)

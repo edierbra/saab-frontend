@@ -89,7 +89,7 @@ export const funcionariosSlices = createSlice({
             state.funcionarioSearch = action.payload;
         },
         loadingFuncionarios: (state, action) => {
-            state.funcionarios = action.payload.content;
+            state.funcionarios = action.payload.totalElements > 0 ? action.payload.content : [];
             state.paginator = action.payload;
             state.isLoading = false;
         },

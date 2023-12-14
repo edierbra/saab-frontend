@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../auth/hooks/useAuth";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Paginator } from "../components/layout/Paginator";
 import { AuxiliosIndividualesList } from "../components/manage_auxilios_individuales/AuxiliosIndividualesList";
 import { Header } from "../components/layout/Header";
@@ -13,6 +13,8 @@ import { Spinner } from "../components/layout/Spinner";
 export const ValoresConvencionalesPage = () => {
 
     const { page } = useParams()
+    const [search, setSearch] = useState('')
+    const navigate = useNavigate()
     const { getSindicatos, getNegociacionesSindicales, getTiposNegociacionesSindicales } = useOthersEntities()
     const {
         valoresConvencionales,
@@ -24,9 +26,6 @@ export const ValoresConvencionalesPage = () => {
         getValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombrePageable,
     } = useValoresConvencionales();
 
-
-    const [search, setSearch] = useState('')
-
     const {
         login
     } = useAuth()
@@ -36,14 +35,11 @@ export const ValoresConvencionalesPage = () => {
         getNegociacionesSindicales()
         getSindicatos()
         getValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombrePageable(search, page);
-    }, [])
-
-    useEffect(() => {
-        getValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombrePageable(search, page);
-    }, [page])
+    }, [, page])
 
     useEffect(() => {
         getValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombrePageable(search, 0);
+        navigate("/valores-convencionales/page/0")
     }, [search])
 
     if (isLoading) {
