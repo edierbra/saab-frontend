@@ -2,21 +2,22 @@ import Swal from "sweetalert2"
 import { useNavigate, useParams } from "react-router-dom"
 import {
     findAllAuxilioIndividualesPageable, findAuxiliosIndividualesByNombreOrIdOrTipoPageable, create, update,
-    remove
+    remove,
+    calcularValor
 } from "../services/AuxilioIndividualService"
 import { useDispatch, useSelector } from "react-redux"
 import {
     initialAuxiliosIndividualForm, addAuxilioIndividual, removeAuxilioIndividual,
     updateAuxilioIndividual, loadingAuxilioIndividuales, onAuxilioIndividualSelectedForm,
-    onOpenForm, onCloseForm, loadingError
+    onOpenForm, onCloseForm, loadingError, loadingValorTotal
 } from "../store/slices/auxiliosindividuales/auxiliosIndividualesSlice"
 import { useAuth } from "../auth/hooks/useAuth"
 import { useFuncionarios } from "./useFuncionarios"
-import { SwalErrorAuthentication, SwalContentDelete, SwalToastDelete, SwalToastCreateOrEdit, SwalToastErrorsFound } from "../components/recursos/SweetAlerts"
+import { SwalErrorAuthentication, SwalContentDelete, SwalToastDelete, SwalToastCreateOrEdit, SwalToastErrorsFound, SwalToastNotFound } from "../components/recursos/SweetAlerts"
 
 export const useAuxiliosIndividuales = () => {
     const { initialErrors, auxiliosIndividuales, auxiliosIndividualSelected, visibleForm,
-        errors, isLoading, paginator, onlyShow } = useSelector(state => state.auxiliosindividuales);
+        errors, isLoading, paginator, onlyShow, valorTotal } = useSelector(state => state.auxiliosindividuales);
 
     const { login, handlerLogout } = useAuth();
     const { handlerRemoveFuncionarioSearch } = useFuncionarios()
@@ -112,6 +113,36 @@ export const useAuxiliosIndividuales = () => {
         })
     }
 
+    const handlerCalcularAuxilioIndividual = async (auxilioIndividual) => {
+
+        if (!login.isAdmin) return;
+
+        let response;
+
+        try {
+            response = await calcularValor(auxilioIndividual);
+            console.log(response)
+            dispatch(loadingValorTotal(response.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 400) {
+                dispatch(loadingError(error.response.data));
+                console.log(error.response.data) // imprime errores
+                SwalToastErrorsFound("error", "Verifica los datos ingresados");
+            } else if (error.response && error.response?.status == 409) { // conflictos
+                dispatch(loadingError(error.response.data));
+                console.log(error.response.data) // imprime eerores
+                SwalToastErrorsFound("error", "Verifica los datos ingresados");
+            } else if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            } else if (error.response && error.response?.status == 404) {
+                SwalToastNotFound("error", error.response.data.error)
+                dispatch(loadingError(initialErrors));
+            } else {
+                throw error;
+            }
+        }
+    }
+
     const handlerAuxilioIndividualSelectedForm = (data) => {
         dispatch(onAuxilioIndividualSelectedForm({ ...data }))
     }
@@ -148,6 +179,7 @@ export const useAuxiliosIndividuales = () => {
         isLoading,
         paginator,
         onlyShow,
+        valorTotal,
 
         handlerAddAuxilioIndividual,
         handlerRemoveAuxilioIndividual,
@@ -158,6 +190,7 @@ export const useAuxiliosIndividuales = () => {
         getAuxiliosIndividualesByNombreOrIdOrTipoPageable,
         addError,
         clearErrors,
+        handlerCalcularAuxilioIndividual,
         // getUsersPage,
     }
 }

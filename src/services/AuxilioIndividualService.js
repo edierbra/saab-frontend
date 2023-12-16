@@ -97,6 +97,20 @@ export const create = async (auxilioIndividual) => {
     }
 }
 
+export const calcularValor = async (auxilioIndividual) => {
+    try {
+        return await saabApi.post(
+            `${BASE_URL}/calcularValor`,
+            {
+                ...auxilioIndividual,
+                idEstadoAuxilio: 1,
+            },
+        )
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const update = async (auxilioIndividual) => {
     try {
         return await saabApi.put(

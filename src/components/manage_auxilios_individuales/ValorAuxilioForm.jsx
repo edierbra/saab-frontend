@@ -1,7 +1,7 @@
 import { useAuxiliosIndividuales } from "../../hooks/useAuxiliosIndividuales"
 import { Divider } from "../layout/Divider"
 
-export const ValorAuxilioForm = ({ onlyShow, onInputChange, valor, fechaOpcionalCalculo }) => {
+export const ValorAuxilioForm = ({ onlyShow, onInputChange, valor, fechaOpcionalCalculo, onCalcular }) => {
 
     const { errors } = useAuxiliosIndividuales();
     
@@ -30,6 +30,7 @@ export const ValorAuxilioForm = ({ onlyShow, onInputChange, valor, fechaOpcional
                         className="btn btn-login btn-sm py-0 me-2"
                         type="button"
                         disabled={onlyShow}
+                        onClick={onCalcular}
                     >
                         Calcular:
                     </button>

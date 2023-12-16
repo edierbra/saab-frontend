@@ -13,7 +13,8 @@ import { verificarFormatoFecha } from "../recursos/Funciones";
 
 export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerCloseForm, handlerRemoveFuncionarioSearch }) => {
 
-    const { initialAuxiliosIndividualForm, handlerAddAuxilioIndividual, onlyShow, addError, errors, clearErrors } = useAuxiliosIndividuales();
+    const { initialAuxiliosIndividualForm, handlerAddAuxilioIndividual, onlyShow, addError,
+        errors, clearErrors, valorTotal, handlerCalcularAuxilioIndividual } = useAuxiliosIndividuales();
     const { initialFuncionarioForm, funcionarioSearch } = useFuncionarios();
     const { tiposAuxiliosIndividuales, tiposAuxiliosIndividualesBySindicatoId, sindicatos,
         getTiposAuxiliosIndividualesBySindicatoId, getProgramasByIdEstudioFormal } = useOthersEntities();
@@ -26,13 +27,14 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
         fechaFinIncapacidad, valorMatricula, promedio, fechaReciboMatricula, referenciaReciboMatricula,
         observacion, idFuncionario, idMotivoJubilacion, idMotivoIncapacidad, idSemestre, idEstadoAuxilio,
         idParentesco, idEstudioFormal, idPrograma, idSindicato, idTipoAuxilioIndividual, fechaOtorgamientoAnteojos,
-        diasIncapacidad, fechaOpcionalCalculo } = auxilioForm;
+        diasIncapacidad, fechaOpcionalCalculo, idBeneficiarioEstudio } = auxilioForm;
 
     useEffect(() => {
         setAuxilioForm({
             ...auxiliosIndividualSelected
         });
     }, [, auxiliosIndividualSelected])
+
 
     useEffect(() => {
         console.log(auxilioForm)
@@ -56,6 +58,16 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
     }, [funcionarioForm])
 
     useEffect(() => {
+        const result = valorTotal.total?.result;
+        console.log(result);
+        if (typeof result === 'number' && !isNaN(result))
+            setAuxilioForm(prevState => ({
+                ...prevState,
+                valor: result.toFixed(2),
+            }));
+    }, [valorTotal])
+
+    useEffect(() => {
         getTiposAuxiliosIndividualesBySindicatoId(idSindicato);
     }, [, idSindicato])
 
@@ -69,8 +81,23 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
         )
     }
 
+    const onCalcular = (event) => {
+        event.preventDefault();
+        if (!verificarFormatoFecha(fechaSolicitud) && fechaSolicitud) {
+            addError({ fechaSolicitud: 'Fecha de Solicitud debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            return
+        }
+
+        if (!verificarFormatoFecha(fechaOpcionalCalculo) && fechaOpcionalCalculo) {
+            addError({ fechaOpcionalCalculo: 'Fecha Opcional debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            return
+        }
+
+        handlerCalcularAuxilioIndividual(auxilioForm);
+    }
+
     const onSubmit = (event) => {
-        event.preventDefault(); 
+        event.preventDefault();
 
         if (!verificarFormatoFecha(fechaSolicitud) && fechaSolicitud) {
             addError({ fechaSolicitud: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
@@ -158,6 +185,7 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
                                     valor={valor}
                                     fechaOpcionalCalculo={fechaOpcionalCalculo}
                                     onlyShow={onlyShow}
+                                    onCalcular={onCalcular}
                                 />
                             </>
                         )

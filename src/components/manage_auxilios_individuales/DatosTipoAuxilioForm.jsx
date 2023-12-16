@@ -38,7 +38,6 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
         })
 
         clearErrors()
-
     }, [idTipoAuxilioIndividual])
 
     useEffect(() => {
@@ -56,19 +55,18 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
         setAuxilioForm(
             {
                 ...auxilioForm,
-                idPrograma: 0
+                diasIncapacidad: diferenceInDays
             }
         )
-    }, [idEstudioFormal])
+    }, [diferenceInDays])
 
     useEffect(() => {
         setAuxilioForm(
             {
                 ...auxilioForm,
-                diasIncapacidad: diferenceInDays
             }
         )
-    }, [diferenceInDays])
+    }, [idEstudioFormal])
 
     const selectInputs = (id) => {
         // 1 = DESPLAZAMIENTO
@@ -90,7 +88,6 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
     }, [, fechaFinIncapacidad, fechaInicioIncapacidad])
 
     const diferenceDays = (fecha1, fecha2) => {
-
         const miliseconsByDay = 1000 * 60 * 60 * 24;
         const difeInDays = Math.floor((new Date(fecha2) - new Date(fecha1)) / miliseconsByDay);
         (!difeInDays && difeInDays != 0) ? setDiferenceInDays('') : (
@@ -107,8 +104,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <input
                     type="number" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Id" name='idFuncionario' value={funcionarioForm?.id}
-                    onChange={onInputChange}
-                    disabled={onlyShow}
+                    onChange={onInputChange} disabled={onlyShow}
                 />
             </div>
 
@@ -117,8 +113,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <input
                     type="date" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Fecha de la Solicutud" name='fechaSolicitud' value={fechaSolicitud}
-                    onChange={onInputChange}
-                    disabled={onlyShow}
+                    onChange={onInputChange} disabled={onlyShow}
                 />
                 <p className="text-danger mb-0">{errors?.fechaSolicitud}</p>
             </div>
@@ -128,8 +123,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <input
                     type="number" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Valor Transporte de Regreso" name='valorTransporteRegreso' value={valorTransporteRegreso}
-                    onChange={onInputChange}
-                    disabled={onlyShow}
+                    onChange={onInputChange} disabled={onlyShow}
                 />
                 <p className="text-danger mb-0">{errors?.valorTransporteRegreso}</p>
             </div>
@@ -139,8 +133,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <input
                     type="text" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Lugar del Desplazamiento" name='lugarDesplazamiento' value={lugarDesplazamiento}
-                    onChange={onInputChange}
-                    disabled={onlyShow}
+                    onChange={onInputChange} disabled={onlyShow}
                 />
                 <p className="text-danger mb-0">{errors?.lugarDesplazamiento}</p>
             </div>
@@ -150,8 +143,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <input
                     type="number" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Dias de Desplazamiento" name='diasDesplazamiento' value={diasDesplazamiento}
-                    onChange={onInputChange}
-                    disabled={onlyShow}
+                    onChange={onInputChange} disabled={onlyShow}
                 />
                 <p className="text-danger mb-0">{errors?.diasDesplazamiento}</p>
             </div>
@@ -161,8 +153,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <input
                     type="date" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Fecha de la Renuncia" name='fechaRenuncia' value={fechaRenuncia}
-                    onChange={onInputChange}
-                    disabled={onlyShow}
+                    onChange={onInputChange} disabled={onlyShow}
                 />
                 <p className="text-danger mb-0">{errors?.fechaRenuncia}</p>
             </div>
@@ -172,8 +163,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <input
                     type="date" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Fecha Aceptacion de la Renuncia" name='fechaAceptacionRenuncia' value={fechaAceptacionRenuncia}
-                    onChange={onInputChange}
-                    disabled={onlyShow}
+                    onChange={onInputChange} disabled={onlyShow}
                 />
                 <p className="text-danger mb-0">{errors?.fechaAceptacionRenuncia}</p>
             </div>
@@ -183,8 +173,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <input
                     type="date" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Fecha Inicio Incapacidada" name='fechaInicioIncapacidad' value={fechaInicioIncapacidad}
-                    onChange={onInputChange}
-                    disabled={onlyShow}
+                    onChange={onInputChange} disabled={onlyShow}
                 />
                 <p className="text-danger mb-0">{errors?.fechaInicioIncapacidad}</p>
             </div>
@@ -194,8 +183,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <input
                     type="date" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Fecha Fin Incapacidada" name='fechaFinIncapacidad' value={fechaFinIncapacidad}
-                    onChange={onInputChange}
-                    disabled={onlyShow}
+                    onChange={onInputChange} disabled={onlyShow}
                 />
                 <p className="text-danger mb-0">{errors?.fechaFinIncapacidad}</p>
             </div>
@@ -205,8 +193,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <input
                     type="number" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Dias de incapacidad" name='diasIncapacidad' value={diasIncapacidad}
-                    onChange={onInputChange}
-                    disabled={onlyShow}
+                    onChange={onInputChange}  disabled={onlyShow}
                 />
                 <p className="text-danger mb-0">{errors?.diasIncapacidad}</p>
             </div>
@@ -216,8 +203,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <input
                     type="date" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Fecha otorgamiento anteojos" name='fechaOtorgamientoAnteojos' value={fechaOtorgamientoAnteojos}
-                    onChange={onInputChange}
-                    disabled={onlyShow}
+                    onChange={onInputChange} disabled={onlyShow}
                 />
                 <p className="text-danger mb-0">{errors?.fechaOtorgamientoAnteojos}</p>
             </div>
@@ -226,10 +212,8 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <label className="form-label fs-16px-login-label mb-0">Estudio formal</label>
                 <select
                     className="form-select rounded-pill fs-16px-login-input py-0"
-                    name="idEstudioFormal"
-                    onChange={onInputChange}
-                    disabled={onlyShow}
-                    value={idEstudioFormal}
+                    name="idEstudioFormal" onChange={onInputChange} 
+                    disabled={onlyShow}  value={idEstudioFormal}
                 >
                     {onOptionsSelect(estudiosFormales, 'Estudio formal', false)}
                 </select>
@@ -241,9 +225,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <select
                     disabled={idEstudioFormal == "0" || onlyShow}
                     className="form-select rounded-pill fs-16px-login-input py-0"
-                    name="idPrograma"
-                    onChange={onInputChange}
-                    value={idPrograma}
+                    name="idPrograma" onChange={onInputChange}  value={idPrograma}
                 >
                     {onOptionsSelect(programasbyestudioformal, "Programa", false)}
                 </select>
@@ -254,24 +236,21 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <label className="form-label fs-16px-login-label mb-0">Semestre</label>
                 <select
                     className="form-select rounded-pill fs-16px-login-input py-0"
-                    name="idSemestre"
-                    onChange={onInputChange}
-                    disabled={onlyShow}
-                    value={idSemestre}
+                    name="idSemestre" onChange={onInputChange}
+                    disabled={onlyShow} value={idSemestre}
                 >
                     {onOptionsSelect(semestres, 'Semestre', false)}
                 </select>
                 <p className="text-danger mb-0">{errors?.idSemestre}</p>
             </div>
 
-            <div className={!(funcionarioForm.vinculacion?.id == 1)? selectInputs(6) : 'd-none'}>
+            {/* !(funcionarioForm.vinculacion?.id == 1)? selectInputs(6) : 'd-none' */}
+            <div className={selectInputs(6)}>
                 <label className="form-label fs-16px-login-label mb-0">Beneficiario estudio</label>
                 <select
                     className="form-select rounded-pill fs-16px-login-input py-0"
-                    name="idBeneficiarioEstudio"
-                    onChange={onInputChange}
-                    disabled={onlyShow}
-                    value={idBeneficiarioEstudio}
+                    name="idBeneficiarioEstudio" onChange={onInputChange}
+                    disabled={onlyShow} value={idBeneficiarioEstudio}
                 >
                     {onOptionsSelect(beneficiariosEstudio, 'Beneficiario estudio', false)}
                 </select>
@@ -283,8 +262,7 @@ export const DatosTipoAuxilioForm = ({ onlyShow, funcionarioForm, auxilioForm, s
                 <input
                     type="date" className="form-control date rounded-pill fs-16px-login-input py-0"
                     placeholder="Fecha Recibo Matricula" name='fechaReciboMatricula' value={fechaReciboMatricula}
-                    onChange={onInputChange}
-                    disabled={onlyShow}
+                    onChange={onInputChange} disabled={onlyShow}
                 />
                 <p className="text-danger mb-0">{errors?.fechaReciboMatricula}</p>
             </div>

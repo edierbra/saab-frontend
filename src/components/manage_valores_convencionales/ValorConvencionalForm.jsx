@@ -29,10 +29,10 @@ export const ValorConvencionalForm = ({ valorConvencionalSelected, handlerCloseF
 
     useEffect(() => {
         console.log(valorTotal);
-        if (valorTotal || valorTotal == 0)
+        if (typeof valorTotal === 'number' && !isNaN(valorTotal))
             setValorConvencionalForm(prevState => ({
                 ...prevState,
-                valor: valorTotal
+                valor: valorTotal.toFixed(2)
             }));
     }, [valorTotal])
 
@@ -128,8 +128,6 @@ export const ValorConvencionalForm = ({ valorConvencionalSelected, handlerCloseF
             addError({ fechaOpcionalCalculo: 'Fecha Opcional debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
             return
         }
-
-
 
         const values = {
             fechaSolicitud,

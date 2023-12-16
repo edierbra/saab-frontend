@@ -41,7 +41,7 @@ export const valoresConvencionalesSlice = createSlice({
         errors: initialErrors,
         isLoading: true,
         onlyShow: false,
-        valorTotal: '',
+        valorTotal: ''
     },
 
     reducers: {

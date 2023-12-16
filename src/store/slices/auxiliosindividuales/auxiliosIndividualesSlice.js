@@ -74,6 +74,12 @@ const initialErrors = {
     idBeneficiarioEstudio: ""
 }
 
+export const initialValorTotal = {
+    total: {
+        result: ''
+    }
+}
+
 
 export const auxiliosIndividualesSlice = createSlice({
     
@@ -86,6 +92,7 @@ export const auxiliosIndividualesSlice = createSlice({
         errors: initialErrors,
         isLoading: true,
         onlyShow: false,
+        valorTotal: initialValorTotal,
     },
 
     reducers: {
@@ -140,9 +147,14 @@ export const auxiliosIndividualesSlice = createSlice({
             state.visibleForm = false;
             state.auxiliosIndividualSelected = initialAuxiliosIndividualForm;
             state.onlyShow = false;
+            state.valorTotal = initialValorTotal;
         },  
         loadingError: (state, { payload }) => {
             state.errors = payload
+        },
+        loadingValorTotal: (state, { payload }) => {
+            state.valorTotal = payload;
+            state.errors = initialErrors;
         }
     }
 });
@@ -157,4 +169,5 @@ export const {
     onOpenForm,
     onCloseForm,
     loadingError,
+    loadingValorTotal,
 } = auxiliosIndividualesSlice.actions;
