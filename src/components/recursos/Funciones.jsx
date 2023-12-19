@@ -38,7 +38,7 @@ export const onOptionsSelect = (objetoIdNombre, defaultOption, showidNombre) => 
 
 export const verificarFormatoFecha = (texto) => {
     // const regex = /^\d{4}-\d{2}-\d{2}$/;
-    const regex = /^(19[5-9]\d|20\d{2})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+    const regex = /^(19[5-9]\d|2\d{3})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
     const match = regex.test(texto);
 
     if (match) {
@@ -55,4 +55,15 @@ export const verificarFormatoFecha = (texto) => {
     } else {
         return false; // No cumple con el formato AAAA-MM-DD
     }
+}
+
+export const diferenceDays = (fecha1, fecha2) => {
+    let result = 0
+    const miliseconsByDay = 1000 * 60 * 60 * 24;
+    const difeInDays = Math.floor((new Date(fecha2) - new Date(fecha1)) / miliseconsByDay);
+    (!difeInDays && difeInDays != 0) ? result = '' :
+        result = difeInDays < 0 ? difeInDays - 1 :
+            difeInDays + 1
+
+    return result;
 }

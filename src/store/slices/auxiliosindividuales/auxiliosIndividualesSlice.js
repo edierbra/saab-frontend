@@ -82,13 +82,14 @@ export const initialValorTotal = {
 
 
 export const auxiliosIndividualesSlice = createSlice({
-    
+
     name: 'auxiliosindividuales',
     initialState: {
         auxiliosIndividuales: [],
         paginator: {},
         auxiliosIndividualSelected: initialAuxiliosIndividualForm,
         visibleForm: false,
+        visibleEstadoForm: false,
         errors: initialErrors,
         isLoading: true,
         onlyShow: false,
@@ -126,6 +127,7 @@ export const auxiliosIndividualesSlice = createSlice({
 
             state.auxiliosIndividualSelected = initialAuxiliosIndividualForm;
             state.visibleForm = false;
+            state.visibleEstadoForm = false;
             state.isLoading = false;
         },
         loadingAuxilioIndividuales: (state, action) => {
@@ -135,20 +137,27 @@ export const auxiliosIndividualesSlice = createSlice({
         },
         onAuxilioIndividualSelectedForm: (state, action) => {
             state.auxiliosIndividualSelected = {
-                ...state.auxiliosIndividuales.find(aux => aux.id==action.payload.id)
+                ...state.auxiliosIndividuales.find(aux => aux.id == action.payload.id)
             };
             state.visibleForm = true;
-            state.onlyShow = action.payload.onlyShow ;
+            state.onlyShow = action.payload.onlyShow;
+        },
+        onAuxilioSelectedFormToUpdateEstado: (state, action) => {
+            state.auxiliosIndividualSelected = {
+                ...state.auxiliosIndividuales.find(aux => aux.id == action.payload)
+            };
+            state.visibleEstadoForm = true;
         },
         onOpenForm: (state) => { // EL ACCTION SE OMITE SI NO SE USA
             state.visibleForm = true;
         },
         onCloseForm: (state) => {
             state.visibleForm = false;
+            state.visibleEstadoForm = false
             state.auxiliosIndividualSelected = initialAuxiliosIndividualForm;
             state.onlyShow = false;
             state.valorTotal = initialValorTotal;
-        },  
+        },
         loadingError: (state, { payload }) => {
             state.errors = payload
         },
@@ -166,6 +175,7 @@ export const {
     updateAuxilioIndividual,
     loadingAuxilioIndividuales,
     onAuxilioIndividualSelectedForm,
+    onAuxilioSelectedFormToUpdateEstado,
     onOpenForm,
     onCloseForm,
     loadingError,

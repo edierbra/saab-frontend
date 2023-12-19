@@ -126,7 +126,7 @@ export const FuncionarioMainForm = ({ funcionarioSelected, handlerCloseForm }) =
         <>
             <form onSubmit={onSubmit} noValidate disabled>
                 <div className=" ">
-                    <div className=" overflow-auto " style={{ height: '55vh' }}>
+                    <div className=" overflow-auto " style={{ maxHeight: '55vh' }}>
 
                         <FuncionarioForm
                             funcionarioForm={funcionarioForm}

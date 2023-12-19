@@ -10,7 +10,7 @@ export const AuxiliosIndividualesList = () => {
     return (
         <>
         <div className="m-0 mb-2 overflow-auto rounded shadow-xx " style={{ width: '100%', maxHeight:'70vh' }}>
-            <table className="table mb-0 table-hover table-striped ">
+            <table className="table mb-0 table-hover table-striped table-bordered">
                 <thead>
                     <tr className="fs-16px-login-label">
                         {/* <th>Id</th> */}

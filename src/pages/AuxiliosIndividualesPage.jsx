@@ -9,6 +9,7 @@ import { Header } from "../components/layout/Header";
 import { useFuncionarios } from "../hooks/useFuncionarios";
 import { useOthersEntities } from "../hooks/useOthersEntities";
 import { Spinner } from "../components/layout/Spinner";
+import { EstadoModalForm } from "../components/layout/EstadoModalForm";
 
 export const AuxiliosIndividualesPage = () => {
     const { page } = useParams()
@@ -19,12 +20,22 @@ export const AuxiliosIndividualesPage = () => {
     const {
         auxiliosIndividuales,
         visibleForm,
+        visibleEstadoForm,
         isLoading,
         paginator,
 
         handlerOpenForm,
-        getAuxiliosIndividualesByNombreOrIdOrTipoPageable
+        getAuxiliosIndividualesByNombreOrIdOrTipoPageable,
+        // Estado
+        initialAuxiliosIndividualForm,
+        errors,
+        handlerUpdateEstadoAuxilio,
+        addError,
+        auxiliosIndividualSelected,
+        handlerCloseForm,
     } = useAuxiliosIndividuales();
+
+
     const {
         login
     } = useAuth()
@@ -51,6 +62,18 @@ export const AuxiliosIndividualesPage = () => {
             {!visibleForm ||
                 <AuxilioIndividualModalForm />
             }
+
+            {!visibleEstadoForm ||
+                <EstadoModalForm
+                    initialAuxilioForm={initialAuxiliosIndividualForm}
+                    errors={errors}
+                    handlerUpdateEstadoAuxilio={handlerUpdateEstadoAuxilio}
+                    addError={addError}
+                    auxilioSelected={auxiliosIndividualSelected}
+                    handlerCloseForm={handlerCloseForm}
+                />
+            }
+            
             <div className="">
 
                 <Header

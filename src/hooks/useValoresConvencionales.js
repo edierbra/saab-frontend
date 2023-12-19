@@ -3,20 +3,20 @@ import { useNavigate } from "react-router-dom"
 import {
     calcularValor,
     create,
-    findAllValoresConvencionalesPageable, findValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombre, remove, update
+    findAllValoresConvencionalesPageable, findValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombre, remove, update, updateEstado
 } from "../services/ValorConvencionalService"
 import { useDispatch, useSelector } from "react-redux"
 import {
     initialValorConvencionalForm, initialValuesCalculo, addValorConvencional, removeValorConvencional,
     updateValorConvencional, loadingValoresConvencionales, onValorConvencionalSelectedForm,
-    onOpenForm, onCloseForm, loadingError, loadingValorTotal
+    onOpenForm, onCloseForm, loadingError, loadingValorTotal, onValorSelectedFormToUpdateEstado
 } from "../store/slices/valoresconvencionales/valoresConvencionalesSlice"
 import { useAuth } from "../auth/hooks/useAuth"
 import { SwalErrorAuthentication, SwalContentDelete, SwalToastDelete, SwalToastCreateOrEdit, SwalToastNotFound, SwalToastErrorsFound } from "../components/recursos/SweetAlerts"
 
 export const useValoresConvencionales = () => {
     const { initialErrors, valoresConvencionales, valorConvencionalSelected, visibleForm,
-        errors, isLoading, paginator, onlyShow, valorTotal } = useSelector(state => state.valoresconvencionales);
+        errors, isLoading, paginator, onlyShow, valorTotal, visibleEstadoForm } = useSelector(state => state.valoresconvencionales);
 
     const dispatch = useDispatch();
 
@@ -140,8 +140,47 @@ export const useValoresConvencionales = () => {
         }
     }
 
+    const handlerUpdateEstadoAuxilio = async (valorConvencional) => {
+
+        if (!login.isAdmin) return;
+
+        let response;
+
+        try {
+
+            response = await updateEstado(valorConvencional);
+            dispatch(updateValorConvencional(response.data));
+
+            SwalToastCreateOrEdit("success", "Valor Convencional", valorConvencional?.id)
+
+            handlerCloseForm();
+            navigate(`/valores-convencionales/page/${page}`)
+        } catch (error) {
+            if (error.response && error.response?.status == 400) {
+                dispatch(loadingError(error.response.data));
+                console.log(error.response.data) // imprime eerores
+                SwalToastErrorsFound("error", "Verifica los datos ingresados");
+            } else if (error.response && error.response?.status == 409) { // conflictos
+                dispatch(loadingError(error.response.data));
+                console.log(error.response.data) // imprime eerores
+                SwalToastErrorsFound("error", "Verifica los datos ingresados");
+            } else if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            } else if (error.response && error.response?.status == 404) {
+                SwalToastNotFound("error", error.response.data.error)
+                dispatch(loadingError(initialErrors));
+            } else {
+                throw error;
+            }
+        }
+    }
+
     const handlerValorConvencionalSelectedForm = (data) => {
         dispatch(onValorConvencionalSelectedForm({ ...data }))
+    }
+
+    const handlerValorSelectedFormToUpdateEstado = (id) => {
+        dispatch(onValorSelectedFormToUpdateEstado(id))
     }
 
     const handlerOpenForm = () => {
@@ -167,6 +206,7 @@ export const useValoresConvencionales = () => {
         initialValorConvencionalForm,
         initialValuesCalculo,
         visibleForm,
+        visibleEstadoForm,
         errors,
         isLoading,
         paginator,
@@ -174,7 +214,9 @@ export const useValoresConvencionales = () => {
         valorTotal,
 
         handlerValorConvencionalSelectedForm,
+        handlerValorSelectedFormToUpdateEstado,
         handlerAddValorConvencional,
+        handlerUpdateEstadoAuxilio,
         handlerRemoveValorConvencional,
         handlerOpenForm,
         handlerCloseForm,

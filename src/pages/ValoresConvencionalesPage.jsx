@@ -9,6 +9,7 @@ import { ValoresConvencionalesList } from "../components/manage_valores_convenci
 import { useOthersEntities } from "../hooks/useOthersEntities";
 import { ValorConvencionalModalForm } from "../components/manage_valores_convencionales/ValorConvencionalModalForm";
 import { Spinner } from "../components/layout/Spinner";
+import { EstadoModalForm } from "../components/layout/EstadoModalForm";
 
 export const ValoresConvencionalesPage = () => {
 
@@ -19,11 +20,20 @@ export const ValoresConvencionalesPage = () => {
     const {
         valoresConvencionales,
         visibleForm,
+        visibleEstadoForm,
         isLoading,
         paginator,
 
         handlerOpenForm,
         getValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombrePageable,
+
+        // Estado Auxilio Form
+        initialValorConvencionalForm,
+        errors,
+        handlerUpdateEstadoAuxilio,
+        addError,
+        valorConvencionalSelected,
+        handlerCloseForm
     } = useValoresConvencionales();
 
     const {
@@ -44,7 +54,7 @@ export const ValoresConvencionalesPage = () => {
 
     if (isLoading) {
         return (
-            <Spinner/>
+            <Spinner />
         )
     }
 
@@ -52,6 +62,17 @@ export const ValoresConvencionalesPage = () => {
         <>
             {!visibleForm ||
                 <ValorConvencionalModalForm />
+            }
+
+            {!visibleEstadoForm ||
+                <EstadoModalForm
+                    initialAuxilioForm={initialValorConvencionalForm}
+                    errors={errors}
+                    handlerUpdateEstadoAuxilio={handlerUpdateEstadoAuxilio}
+                    addError={addError}
+                    auxilioSelected={valorConvencionalSelected}
+                    handlerCloseForm={handlerCloseForm}
+                />
             }
 
             <div className="">

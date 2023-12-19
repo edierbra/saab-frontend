@@ -86,14 +86,14 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
     }
 
     const onCloseForm = () => {
-        handlerCloseForm();
         setUserForm(initialUserForm);
+        handlerCloseForm();
     }
 
     return (
         <>
-            <form className="" onSubmit={onSubmit}>
-                <div className="overflow-auto" style={{ height: "52vh" }}>
+            <form className="" onSubmit={onSubmit} noValidate >
+                <div className="overflow-auto" style={{ maxHeight: "52vh" }}>
                     <div className=" mx-2">
 
                         {userSelected?.id == "" && (

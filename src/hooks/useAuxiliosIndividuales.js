@@ -3,13 +3,14 @@ import { useNavigate, useParams } from "react-router-dom"
 import {
     findAllAuxilioIndividualesPageable, findAuxiliosIndividualesByNombreOrIdOrTipoPageable, create, update,
     remove,
-    calcularValor
+    calcularValor,
+    updateEstado
 } from "../services/AuxilioIndividualService"
 import { useDispatch, useSelector } from "react-redux"
 import {
     initialAuxiliosIndividualForm, addAuxilioIndividual, removeAuxilioIndividual,
     updateAuxilioIndividual, loadingAuxilioIndividuales, onAuxilioIndividualSelectedForm,
-    onOpenForm, onCloseForm, loadingError, loadingValorTotal
+    onOpenForm, onCloseForm, loadingError, loadingValorTotal, onAuxilioSelectedFormToUpdateEstado
 } from "../store/slices/auxiliosindividuales/auxiliosIndividualesSlice"
 import { useAuth } from "../auth/hooks/useAuth"
 import { useFuncionarios } from "./useFuncionarios"
@@ -17,7 +18,7 @@ import { SwalErrorAuthentication, SwalContentDelete, SwalToastDelete, SwalToastC
 
 export const useAuxiliosIndividuales = () => {
     const { initialErrors, auxiliosIndividuales, auxiliosIndividualSelected, visibleForm,
-        errors, isLoading, paginator, onlyShow, valorTotal } = useSelector(state => state.auxiliosindividuales);
+        errors, isLoading, paginator, onlyShow, valorTotal, visibleEstadoForm } = useSelector(state => state.auxiliosindividuales);
 
     const { login, handlerLogout } = useAuth();
     const { handlerRemoveFuncionarioSearch } = useFuncionarios()
@@ -84,6 +85,9 @@ export const useAuxiliosIndividuales = () => {
                 SwalToastErrorsFound("error", "Verifica los datos ingresados");
             } else if (error.response && error.response?.status == 401) {
                 SwalErrorAuthentication(handlerLogout)
+            } else if (error.response && error.response?.status == 404) {
+                SwalToastNotFound("error", error.response.data.error)
+                dispatch(loadingError(initialErrors));
             } else {
                 throw error;
             }
@@ -143,8 +147,47 @@ export const useAuxiliosIndividuales = () => {
         }
     }
 
+    const handlerUpdateEstadoAuxilio = async (auxilioIndividual) => {
+
+        if (!login.isAdmin) return;
+
+        let response;
+
+        try {
+
+            response = await updateEstado(auxilioIndividual);
+            dispatch(updateAuxilioIndividual(response.data));
+
+            SwalToastCreateOrEdit("success", "Auxilio Individual", auxilioIndividual?.id)
+
+            handlerCloseForm();
+            navigate(`/auxilios-individuales/page/${page}`)
+        } catch (error) {
+            if (error.response && error.response?.status == 400) {
+                dispatch(loadingError(error.response.data));
+                console.log(error.response.data) // imprime eerores
+                SwalToastErrorsFound("error", "Verifica los datos ingresados");
+            } else if (error.response && error.response?.status == 409) { // conflictos
+                dispatch(loadingError(error.response.data));
+                console.log(error.response.data) // imprime eerores
+                SwalToastErrorsFound("error", "Verifica los datos ingresados");
+            } else if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            } else if (error.response && error.response?.status == 404) {
+                SwalToastNotFound("error", error.response.data.error)
+                dispatch(loadingError(initialErrors));
+            } else {
+                throw error;
+            }
+        }
+    }
+
     const handlerAuxilioIndividualSelectedForm = (data) => {
         dispatch(onAuxilioIndividualSelectedForm({ ...data }))
+    }
+    
+    const handlerAuxilioSelectedFormToUpdateEstado = (id) => {
+        dispatch(onAuxilioSelectedFormToUpdateEstado(id))
     }
 
     const handlerOpenForm = () => {
@@ -180,10 +223,13 @@ export const useAuxiliosIndividuales = () => {
         paginator,
         onlyShow,
         valorTotal,
+        visibleEstadoForm,
 
         handlerAddAuxilioIndividual,
+        handlerUpdateEstadoAuxilio,
         handlerRemoveAuxilioIndividual,
         handlerAuxilioIndividualSelectedForm,
+        handlerAuxilioSelectedFormToUpdateEstado,
         handlerOpenForm,
         handlerCloseForm,
         getAuxiliosIndividuales,

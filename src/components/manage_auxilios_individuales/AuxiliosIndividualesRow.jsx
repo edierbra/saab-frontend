@@ -6,7 +6,7 @@ import { Btn } from "../layout/Btn";
 
 export const AuxiliosIndividualesRow = ({ auxilio }) => {
 
-    const { handlerRemoveAuxilioIndividual, handlerAuxilioIndividualSelectedForm } = useAuxiliosIndividuales();
+    const { handlerRemoveAuxilioIndividual, handlerAuxilioIndividualSelectedForm, handlerAuxilioSelectedFormToUpdateEstado } = useAuxiliosIndividuales();
     const { login } = useAuth()
     const { allFuncionarios } = useFuncionarios()
     const { tiposAuxiliosIndividuales } = useOthersEntities()
@@ -48,6 +48,14 @@ export const AuxiliosIndividualesRow = ({ auxilio }) => {
                                     onClick={handlerAuxilioIndividualSelectedForm}
                                     dataOnClick={{ onlyShow: false, id: auxilio.id }}
                                     icon={"bi bi-pencil-square"}
+                                    style={"btn btn-mybotton btn-color-blue"}
+                                    text={''}
+                                />
+
+                                <Btn
+                                    onClick={handlerAuxilioSelectedFormToUpdateEstado}
+                                    dataOnClick={auxilio?.id}
+                                    icon={"bi bi-gear-fill"}
                                     style={"btn btn-mybotton btn-color-blue"}
                                     text={''}
                                 />

@@ -158,10 +158,14 @@ export const useFuncionarios = () => {
             result = await uploadData(file);
 
             dispatch(loadingFuncionariosAndErrors(result.data));
+            console.log(result.data.length==0)
             dispatch(setIsLoanding(false));
+            if(result.data.length==0){
+                SwalToastErrorsFound("success", "Todos los Funcionarios se cargaron correctamente");
+            }else{
+                SwalToastErrorsFound("error", `Verifica los datos, ${result.data.length} Funcionario(s) con error(es)`);
+            }
             navigate('/upload-data')
-
-
         } catch (error) {
             dispatch(setIsLoanding(false));
             if (error.response && error.response?.status == 400) { //Bad Request

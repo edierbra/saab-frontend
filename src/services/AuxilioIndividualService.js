@@ -116,9 +116,27 @@ export const update = async (auxilioIndividual) => {
         return await saabApi.put(
             `${BASE_URL}/${auxilioIndividual?.id}`,
             {
-                ...auxilioIndividual
+                ...auxilioIndividual,
             },
             // config()
+        );
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const updateEstado = async (auxilioIndividual) => {
+    const {id, fechaViabilidad, resolucion, fechaResolucion, rdp, fechaRdp } = auxilioIndividual;
+    try {
+        return await saabApi.put(
+            `${BASE_URL}/estado/${id}`,
+            {
+                fechaViabilidad,
+                resolucion,
+                fechaResolucion,
+                rdp,
+                fechaRdp,
+            },
         );
     } catch (error) {
         throw error;

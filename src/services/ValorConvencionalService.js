@@ -88,6 +88,24 @@ export const update = async (valorConvencional) => {
     }
 }
 
+export const updateEstado = async (valorConvencional) => {
+    const {id, fechaViabilidad, resolucion, fechaResolucion, rdp, fechaRdp } = valorConvencional;
+    try {
+        return await saabApi.put(
+            `${BASE_URL}/estado/${id}`,
+            {
+                fechaViabilidad,
+                resolucion,
+                fechaResolucion,
+                rdp,
+                fechaRdp,
+            },
+        );
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const remove = async (id) => {
     try {
         await saabApi.delete(

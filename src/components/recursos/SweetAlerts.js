@@ -108,7 +108,7 @@ export const SwalToastErrorsFound = (icon, title) => {
         position: 'top-end',
         showConfirmButton: true,
         confirmButtonColor: colorBlue,
-        timer: 3000,
+        timer: 4000,
         timerProgressBar: true,
         didOpen: (toast) => {
             toast.addEventListener('mouseenter', Swal.stopTimer)
@@ -118,7 +118,7 @@ export const SwalToastErrorsFound = (icon, title) => {
 
     Toast.fire({
         icon: icon,
-        iconColor: colorRed,
+        iconColor: icon == "success" ? colorGreen : colorRed,
         title: `${title}`,
         position: 'center',
     })
@@ -138,7 +138,7 @@ export const SwalSelectedFile = (title, text, icon) => {
         confirmButtonText: 'Aceptar'
     }).then((result) => {
         if (result.isConfirmed) {
-            
+
         }
     })
 }

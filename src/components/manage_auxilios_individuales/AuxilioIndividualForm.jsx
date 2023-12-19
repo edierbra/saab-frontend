@@ -6,21 +6,17 @@ import { FuncionarioForm } from "../manage_funcionarios/FuncionarioForm";
 import { TipoAuxilioForm } from "./TipoAuxilioForm";
 import { DatosTipoAuxilioForm } from "./DatosTipoAuxilioForm";
 import { ValorAuxilioForm } from "./ValorAuxilioForm";
-import Swal from "sweetalert2";
 import { Divider } from "../layout/Divider";
-import { SwalToastNotFound } from "../recursos/SweetAlerts";
 import { verificarFormatoFecha } from "../recursos/Funciones";
 
-export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerCloseForm, handlerRemoveFuncionarioSearch }) => {
+export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerCloseForm }) => {
 
     const { initialAuxiliosIndividualForm, handlerAddAuxilioIndividual, onlyShow, addError,
-        errors, clearErrors, valorTotal, handlerCalcularAuxilioIndividual } = useAuxiliosIndividuales();
-    const { initialFuncionarioForm, funcionarioSearch } = useFuncionarios();
-    const { tiposAuxiliosIndividuales, tiposAuxiliosIndividualesBySindicatoId, sindicatos,
-        getTiposAuxiliosIndividualesBySindicatoId, getProgramasByIdEstudioFormal } = useOthersEntities();
+        errors, valorTotal, handlerCalcularAuxilioIndividual } = useAuxiliosIndividuales();
+    const { funcionarioSearch } = useFuncionarios();
+    const { getTiposAuxiliosIndividualesBySindicatoId, getProgramasByIdEstudioFormal } = useOthersEntities();
 
     const [auxilioForm, setAuxilioForm] = useState({ initialAuxiliosIndividualForm });
-    const [funcionarioForm, setFuncionarioForm] = useState({ initialFuncionarioForm });
 
     const { id, fechaSolicitud, fechaViabilidad, resolucion, fechaResolucion, rdp, fechaRdp, valor, valorTransporteRegreso,
         diasDesplazamiento, lugarDesplazamiento, fechaRenuncia, fechaAceptacionRenuncia, fechaInicioIncapacidad,
@@ -35,27 +31,16 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
         });
     }, [, auxiliosIndividualSelected])
 
+    useEffect(() => {
+        setAuxilioForm(prevState => ({
+            ...prevState,
+            idFuncionario: funcionarioSearch?.id
+        }));
+    }, [funcionarioSearch])
 
     useEffect(() => {
         console.log(auxilioForm)
     }, [auxilioForm])
-
-    useEffect(() => {
-        getProgramasByIdEstudioFormal(idEstudioFormal);
-    }, [, idEstudioFormal])
-
-    useEffect(() => {
-        setFuncionarioForm({ // guarda el usuario buscado
-            ...funcionarioSearch
-        })
-    }, [funcionarioSearch])
-
-    useEffect(() => {
-        setAuxilioForm(prevState => ({
-            ...prevState,
-            idFuncionario: funcionarioForm?.id
-        }));
-    }, [funcionarioForm])
 
     useEffect(() => {
         const result = valorTotal.total?.result;
@@ -66,6 +51,10 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
                 valor: result.toFixed(2),
             }));
     }, [valorTotal])
+
+    useEffect(() => {
+        getProgramasByIdEstudioFormal(idEstudioFormal);
+    }, [, idEstudioFormal])
 
     useEffect(() => {
         getTiposAuxiliosIndividualesBySindicatoId(idSindicato);
@@ -140,7 +129,6 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
 
     const onCloseForm = () => {
         setAuxilioForm(initialAuxiliosIndividualForm);
-        setFuncionarioForm(initialFuncionarioForm);
         handlerCloseForm();
     }
 
@@ -148,24 +136,18 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
         <>
             <form onSubmit={onSubmit} noValidate disabled>
                 <div className="row ">
-                    <div className="col mb-0 overflow-auto " style={{ height: '55vh' }}>
+                    <div className="col mb-0 overflow-auto " style={{ maxHeight: '55vh' }}>
                         <Divider content={'Datos del Funcionario'} />
                         <p className="text-danger mb-0">{errors?.idFuncionario}</p>
                         <FuncionarioForm
-                            funcionarioForm={funcionarioForm}
+                            funcionarioForm={funcionarioSearch}
                             disabled={true}
                         />
                     </div>
-                    <div className="col mb-0 overflow-auto " style={{ height: '55vh' }}>
+                    <div className="col mb-0 overflow-auto " style={{ maxHeight: '55vh' }}>
                         <TipoAuxilioForm
                             auxilioForm={auxilioForm}
-                            setAuxilioForm={setAuxilioForm}
-                            tiposAuxiliosIndividuales={tiposAuxiliosIndividuales}
-                            tiposAuxiliosIndividualesBySindicatoId={tiposAuxiliosIndividualesBySindicatoId}
                             onInputChange={onInputChange}
-                            sindicatos={sindicatos}
-                            idSindicato={idSindicato}
-                            idTipoAuxilioIndividual={idTipoAuxilioIndividual}
                             onlyShow={onlyShow}
                         />
 
@@ -176,7 +158,7 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
                                     setAuxilioForm={setAuxilioForm}
                                     onInputChange={onInputChange}
                                     initialAuxiliosIndividualForm={initialAuxiliosIndividualForm}
-                                    funcionarioForm={funcionarioForm}
+                                    funcionarioForm={funcionarioSearch}
                                     onlyShow={onlyShow}
                                 />
 
@@ -188,8 +170,7 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
                                     onCalcular={onCalcular}
                                 />
                             </>
-                        )
-                        }
+                        )}
 
                     </div>
                 </div>

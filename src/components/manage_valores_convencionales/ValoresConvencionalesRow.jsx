@@ -5,7 +5,8 @@ import { useOthersEntities } from "../../hooks/useOthersEntities";
 
 export const ValoresConvencionalesRow = ({ valorCon }) => {
 
-    const { handlerValorConvencionalSelectedForm, handlerRemoveValorConvencional } = useValoresConvencionales();
+    const { handlerValorConvencionalSelectedForm, handlerRemoveValorConvencional,
+        handlerValorSelectedFormToUpdateEstado } = useValoresConvencionales();
     const { login } = useAuth()
     const { sindicatos, negociacionesSindicales, tiposNegociacionesSindicales } = useOthersEntities()
 
@@ -40,6 +41,14 @@ export const ValoresConvencionalesRow = ({ valorCon }) => {
                                     onClick={handlerValorConvencionalSelectedForm}
                                     dataOnClick={{ onlyShow: false, id: valorCon.id }}
                                     icon={"bi bi-pencil-square"}
+                                    style={"btn btn-mybotton btn-color-blue"}
+                                    text={''}
+                                />
+
+                                <Btn
+                                    onClick={handlerValorSelectedFormToUpdateEstado}
+                                    dataOnClick={valorCon?.id}
+                                    icon={"bi bi-gear-fill"}
                                     style={"btn btn-mybotton btn-color-blue"}
                                     text={''}
                                 />

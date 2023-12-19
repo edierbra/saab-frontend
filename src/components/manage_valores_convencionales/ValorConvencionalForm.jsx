@@ -144,9 +144,9 @@ export const ValorConvencionalForm = ({ valorConvencionalSelected, handlerCloseF
 
     return (
         <>
-            <form className="" onSubmit={onSubmit} noValidate disabled>
-                <div className="row">
-                    <div className="col px-2">
+            <form className="" onSubmit={onSubmit} noValidate >
+                <div className="row" >
+                    <div className="col px-2" style={{ maxHeight: "55vh" }}>
 
                         <Divider content={'Sindicato'} />
 
@@ -195,7 +195,7 @@ export const ValorConvencionalForm = ({ valorConvencionalSelected, handlerCloseF
                         </div>
 
                     </div>
-                    <div className="col px-2 overflow-auto" style={{ height: "55vh" }}>
+                    <div className="col px-2 overflow-auto" style={{ maxHeight: "55vh" }}>
 
                         <Divider content={'Datos del Auxilio'} />
                         {(idNegociacionSindical != 0 && idTipoNegociacionSindical != 0 && idSindicato != 0) &&

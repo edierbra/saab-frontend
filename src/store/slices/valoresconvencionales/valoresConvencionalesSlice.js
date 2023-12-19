@@ -38,6 +38,7 @@ export const valoresConvencionalesSlice = createSlice({
         paginator: {},
         valorConvencionalSelected: initialValorConvencionalForm,
         visibleForm: false,
+        visibleEstadoForm: false,
         errors: initialErrors,
         isLoading: true,
         onlyShow: false,
@@ -72,6 +73,7 @@ export const valoresConvencionalesSlice = createSlice({
 
             state.valorConvencionalSelected = initialValorConvencionalForm;
             state.visibleForm = false;
+            state.visibleEstadoForm = false
             state.isLoading = false;
         },
         loadingValoresConvencionales: (state, action) => {
@@ -87,11 +89,18 @@ export const valoresConvencionalesSlice = createSlice({
             state.visibleForm = true;
             state.onlyShow = action.payload.onlyShow;
         },
+        onValorSelectedFormToUpdateEstado: (state, action) => {
+            state.valorConvencionalSelected = {
+                ...state.valoresConvencionales.find(aux => aux.id==action.payload)
+            };
+            state.visibleEstadoForm = true;
+        },
         onOpenForm: (state) => { // EL ACCTION SE OMITE SI NO SE USA
             state.visibleForm = true;
         },
         onCloseForm: (state) => {
             state.visibleForm = false;
+            state.visibleEstadoForm = false;
             state.valorConvencionalSelected = initialValorConvencionalForm;
             state.onlyShow = false;
             state.valorTotal = '';
@@ -116,4 +125,5 @@ export const {
     onCloseForm,
     loadingError,
     loadingValorTotal,
+    onValorSelectedFormToUpdateEstado,
 } = valoresConvencionalesSlice.actions;
