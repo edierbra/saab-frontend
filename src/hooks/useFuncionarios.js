@@ -158,11 +158,11 @@ export const useFuncionarios = () => {
             result = await uploadData(file);
 
             dispatch(loadingFuncionariosAndErrors(result.data));
-            console.log(result.data.length==0)
+            console.log(result.data.length == 0)
             dispatch(setIsLoanding(false));
-            if(result.data.length==0){
+            if (result.data.length == 0) {
                 SwalToastErrorsFound("success", "Todos los Funcionarios se cargaron correctamente");
-            }else{
+            } else {
                 SwalToastErrorsFound("error", `Verifica los datos, ${result.data.length} Funcionario(s) con error(es)`);
             }
             navigate('/upload-data')
@@ -219,6 +219,10 @@ export const useFuncionarios = () => {
         dispatch(onChangeIsWithErrors(value));
     }
 
+    const handlerIsLoanding = (value) => {
+        dispatch(setIsLoanding(value));
+    }
+
     return {
         funcionarios,
         allFuncionarios,
@@ -249,5 +253,6 @@ export const useFuncionarios = () => {
         handlerUploadData,
         handlerChangeIsWithErrors,
         handlerDeleteFuncionarioAndError,
+        handlerIsLoanding,
     }
 }

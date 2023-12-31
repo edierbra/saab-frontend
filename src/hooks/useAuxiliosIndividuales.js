@@ -40,8 +40,7 @@ export const useAuxiliosIndividuales = () => {
 
     const getAuxiliosIndividualesByNombreOrIdOrTipoPageable = async (search = "", page = 0) => {
         try {
-            const result = await findAuxiliosIndividualesByNombreOrIdOrTipoPageable(search, page); // findAllUsers()
-            console.log("getAuxiliosIndividualesByNombreOrIdOrTipoPageable", result)
+            const result = await findAuxiliosIndividualesByNombreOrIdOrTipoPageable(search, page);
             dispatch(loadingAuxilioIndividuales(result.data));
         } catch (error) {
             if (error.response && error.response?.status == 401) {
@@ -125,7 +124,6 @@ export const useAuxiliosIndividuales = () => {
 
         try {
             response = await calcularValor(auxilioIndividual);
-            console.log(response)
             dispatch(loadingValorTotal(response.data));
         } catch (error) {
             if (error.response && error.response?.status == 400) {
@@ -181,6 +179,8 @@ export const useAuxiliosIndividuales = () => {
             }
         }
     }
+
+    
 
     const handlerAuxilioIndividualSelectedForm = (data) => {
         dispatch(onAuxilioIndividualSelectedForm({ ...data }))

@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState } from "react"
 import { useUsers } from "../../hooks/useUsers";
+import { BtnSubmit } from "../layout/BtnSubmit";
+import { Btn } from "../layout/Btn";
+import { DividerSimple } from "../layout/DividerSimple";
 
 export const UserForm = ({ userSelected, handlerCloseForm }) => {
 
@@ -59,27 +62,7 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
     }
 
     const onSubmit = (event) => {
-        event.preventDefault(); // permite que no se recargue la pagina cundo se envia el formulario
-        // if (!username || (!password && id === 0) || !email) {
-        //     Swal.fire(
-        //         'Error de Validacion',
-        //         'Todos los campos son obligatorios!',
-        //         'error'
-        //     )
-
-        //     return;
-        // }
-
-        // if (!email.includes('@')) {
-
-        //     Swal.fire(
-        //         'Error de Validacion',
-        //         'El Email debe incluir un @!',
-        //         'error'
-        //     )
-
-        //     return;
-        // }
+        event.preventDefault();
         console.log(userForm)
 
         handlerAddUser(userForm) // Guardar el userFrom en userList
@@ -94,7 +77,7 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
         <>
             <form className="" onSubmit={onSubmit} noValidate >
                 <div className="overflow-auto" style={{ maxHeight: "52vh" }}>
-                    <div className=" mx-2">
+                    <div className=" mx-0">
 
                         {userSelected?.id == "" && (
                             <div className="mb-1">
@@ -188,21 +171,26 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
                     </div>
                 </div>
 
-                <hr />
+                <DividerSimple />
+
                 <div className="">
-                    <button
-                        className={"btn btn-mybotton btn-color-blue my-2 p-2"}
-                        type="submit">
-                        {userSelected?.id == '' ? 'Agregar' : 'Editar'}
-                    </button>
+                    <BtnSubmit
+                        icon={"bi bi-floppy-fill"}
+                        style={"btn btn-mybotton btn-color-blue"}
+                        text={userSelected?.id == '' ? 'Agregar' : 'Editar'}
+                        type={"submit"}
+                    />
 
                     {!handlerCloseForm ||
-                        <button
-                            className="btn btn-mybotton btn-color-red my-2 p-2"
-                            type="button"
-                            onClick={onCloseForm}>
-                            Cerrar
-                        </button>
+
+                        <Btn
+                            onClick={onCloseForm}
+                            dataOnClick={''}
+                            icon={"bi bi-x-lg"}
+                            style={"btn btn-mybotton btn-color-red"}
+                            text={'Cerrar'}
+                            type={"button"}
+                        />
                     }
                 </div>
 

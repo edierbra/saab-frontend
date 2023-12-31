@@ -9,6 +9,7 @@ import { AuxiliosIndividualesPage } from "../pages/AuxiliosIndividualesPage";
 import { FuncionariosPage } from "../pages/FuncionariosPage";
 import { ValoresConvencionalesPage } from "../pages/ValoresConvencionalesPage";
 import { UploadDataPage } from "../pages/UploadDataPage";
+import { ReportesPage } from "../pages/ReportesPage";
 
 export const SaabRoutes = ({ handlerHideSideBar, value1, value2 }) => {
     const { isAdmin } = useSelector(state => state.auth);
@@ -60,6 +61,8 @@ export const SaabRoutes = ({ handlerHideSideBar, value1, value2 }) => {
                             <Route path="/valores-convencionales/page/:page" element={<ValoresConvencionalesPage />} />
 
                             <Route path="/upload-data" element={<UploadDataPage />} />
+
+                            <Route path="/reportes" element={<ReportesPage />} />
 
                             {/* <Route path="/register-user" element={<RegisterPage />} /> */}
                             {/* <Route path="/users/edit/:id" element={<RegisterPage />} /> */}

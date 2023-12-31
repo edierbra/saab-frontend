@@ -19,6 +19,7 @@ export const othersEntitiesSlice = createSlice({
         semestres: [],
         beneficiariosEstudio: [],
         generos: [],
+        allEstadosAuxilios: [],
         cargos:[],
         grados:[],
         estadosFuncionarios:[],
@@ -30,9 +31,20 @@ export const othersEntitiesSlice = createSlice({
         tiposNegociacionesSindicalesBySindicatoId:[],
         negociacionesSindicalesByTipoNegociacionSindicalId: [],
         distinctNameSalariosConfig: [],
+        tiposNegociacionesBySindicatosIds: [],
+        negociacionesByTiposNegociacionesIds: [],
     },
 
     reducers: {
+        loadingTiposNegociacionesBySindicatosIds: (state, action) => {
+            state.tiposNegociacionesBySindicatosIds = action.payload;
+        },
+        loadingAllEstadosAuxilios: (state, action) => {
+            state.allEstadosAuxilios = action.payload;
+        },
+        loadingNegociacionesByTiposNegociacionesIds: (state, action) => {
+            state.negociacionesByTiposNegociacionesIds = action.payload;
+        },
         loadingTiposAuxiliosIndividuales: (state, action) => {
             state.tiposAuxiliosIndividuales = action.payload;
         },
@@ -125,4 +137,7 @@ export const {
     loadingTiposNegociacionesSindicalesBySindicatoId,
     loadingNegociacionesSindicalesByTipoNegociacionSindicalId,
     loadingDistinctNameSalariosConfig,
+    loadingNegociacionesByTiposNegociacionesIds,
+    loadingTiposNegociacionesBySindicatosIds,
+    loadingAllEstadosAuxilios,
 } = othersEntitiesSlice.actions;

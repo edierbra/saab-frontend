@@ -23,12 +23,22 @@ export const initialValuesCalculo = {
     factor: ''
 }
 
-const initialErrors = {
-    username: '',
-    password: '',
-    email: '',
+export const initialErrors = {
+    id: '',
+    fechaSolicitud: "",
+    fechaViabilidad: "",
+    resolucion: "",
+    fechaResolucion: "",
+    rdp: "",
+    fechaRdp: "",
+    valor: "",
+    observacion: "",
+    fechaOpcionalCalculo: "",
+    idEstadoAuxilio: '',
+    idSindicato: '',
+    idTipoNegociacionSindical: '',
+    idNegociacionSindical: '',
 }
-
 
 export const valoresConvencionalesSlice = createSlice({
 
@@ -42,7 +52,8 @@ export const valoresConvencionalesSlice = createSlice({
         errors: initialErrors,
         isLoading: true,
         onlyShow: false,
-        valorTotal: ''
+        valorTotal: '',
+
     },
 
     reducers: {
@@ -91,7 +102,7 @@ export const valoresConvencionalesSlice = createSlice({
         },
         onValorSelectedFormToUpdateEstado: (state, action) => {
             state.valorConvencionalSelected = {
-                ...state.valoresConvencionales.find(aux => aux.id==action.payload)
+                ...state.valoresConvencionales.find(aux => aux.id == action.payload)
             };
             state.visibleEstadoForm = true;
         },
@@ -111,9 +122,14 @@ export const valoresConvencionalesSlice = createSlice({
         loadingValorTotal: (state, { payload }) => {
             state.valorTotal = payload;
             state.errors = initialErrors;
-        }
+        },
+        setIsLoanding: (state, { payload }) => {
+            state.isLoading = payload;
+        },
     }
 });
+
+
 
 export const {
     addValorConvencional,
@@ -125,5 +141,6 @@ export const {
     onCloseForm,
     loadingError,
     loadingValorTotal,
+    setIsLoanding,
     onValorSelectedFormToUpdateEstado,
 } = valoresConvencionalesSlice.actions;

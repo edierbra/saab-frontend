@@ -1,4 +1,6 @@
 import saabApi from "../apis/saabApi";
+import saabApiReportesExcel from "../apis/saabApiReportesExcel";
+import { dateToString, generarStringConComas } from "../components/recursos/Funciones";
 
 const BASE_URL = '/valores/convencionales';
 
@@ -89,7 +91,7 @@ export const update = async (valorConvencional) => {
 }
 
 export const updateEstado = async (valorConvencional) => {
-    const {id, fechaViabilidad, resolucion, fechaResolucion, rdp, fechaRdp } = valorConvencional;
+    const { id, fechaViabilidad, resolucion, fechaResolucion, rdp, fechaRdp } = valorConvencional;
     try {
         return await saabApi.put(
             `${BASE_URL}/estado/${id}`,
@@ -117,11 +119,41 @@ export const remove = async (id) => {
     }
 }
 
+export const generarReporteValorConvencional = async (formReporte) => {
+    const { idReporte, idFuncionario, sindicatos, tiposNegociaciones, negociaciones,
+        estados, campos, startDate, endDate } = formReporte;
+    console.log("Services: ........", formReporte)
+    try {
+        const response = await saabApiReportesExcel.get(
+            `${BASE_URL}/exportarExcel`,
+            {
+                params: {
+                    sindicatos: generarStringConComas([...sindicatos]), // 1
+                    tiposNegociaciones: generarStringConComas([...tiposNegociaciones]), // 2
+                    negociaciones: generarStringConComas([...negociaciones]), // 3
+                    estados: generarStringConComas([...estados]), // 4
+                    campos: generarStringConComas([...campos]), // 5
+                    startDate,
+                    endDate
+                    // sindicatos: generarStringConComas([]), // 1
+                    // tiposNegociaciones: generarStringConComas([]), // 2
+                    // negociaciones: generarStringConComas([]), // 3
+                    // estados: generarStringConComas([]), // 4
+                    // campos: generarStringConComas([1]), // 5
+                },
+            }
+        )
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const calcularValor = async (valuesCalculo) => {
     const { fechaSolicitud, fechaOpcionalCalculo, concepto, factor } = valuesCalculo;
     try {
         return await saabApi.post(
-            `${BASE_URL}/calcularValor`, 
+            `${BASE_URL}/calcularValor`,
             {
                 fechaSolicitud,
                 fechaOpcionalCalculo,

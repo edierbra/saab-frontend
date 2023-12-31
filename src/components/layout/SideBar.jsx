@@ -85,6 +85,13 @@ export const SideBar = ({ handlerHideSideBar }) => {
                                     </li>
 
                                     <li className="nav-item rounded-3 mb-1">
+                                        <NavLink to='/reportes' className="nav-link text-sidebar py-1 px-2 text-sidebar d-flex align-items-center justify-content-center justify-content-md-start" activeclassname="active">
+                                            <i className="bi bi-pie-chart-fill"></i>
+                                            <span className={openSideBar ? "ms-2 d-none d-md-inline fs-7 fs_custom p-0" : "d-none"}>Reportes</span>
+                                        </NavLink>
+                                    </li>
+
+                                    <li className="nav-item rounded-3 mb-1">
                                         <NavLink to='/upload-data' className="nav-link text-sidebar py-1 px-2 text-sidebar d-flex align-items-center justify-content-center justify-content-md-start" activeclassname="active">
                                             <i className="bi bi-upload"></i>
                                             <span className={openSideBar ? "ms-2 d-none d-md-inline fs-7 fs_custom p-0" : "d-none"}>Carga de Datos</span>

@@ -16,7 +16,7 @@ export const AuxiliosIndividualesPage = () => {
     const { getAllFuncionarios } = useFuncionarios()
     const [search, setSearch] = useState('')
     const navigate = useNavigate()
-    const { getTiposAuxiliosIndividuales } = useOthersEntities()
+    const { getTiposAuxiliosIndividuales, getSindicatos } = useOthersEntities()
     const {
         auxiliosIndividuales,
         visibleForm,
@@ -41,6 +41,7 @@ export const AuxiliosIndividualesPage = () => {
     } = useAuth()
 
     useEffect(() => {
+        getSindicatos()
         getAllFuncionarios();
         getTiposAuxiliosIndividuales();
         getAuxiliosIndividualesByNombreOrIdOrTipoPageable(search, page);

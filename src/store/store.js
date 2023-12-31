@@ -5,6 +5,7 @@ import { auxiliosIndividualesSlice } from "./slices/auxiliosindividuales/auxilio
 import { funcionariosSlices } from "./slices/funcionarios/funcionariosSlice";
 import { othersEntitiesSlice } from "./slices/othersEntities/othersEntitiesSlice";
 import { valoresConvencionalesSlice } from "./slices/valoresconvencionales/valoresConvencionalesSlice";
+import { reportesSlice } from "./slices/reportes/reportesSlice";
 
 export const store = configureStore({
     reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
         funcionarios: funcionariosSlices.reducer,
         othersEntities: othersEntitiesSlice.reducer,
         valoresconvencionales: valoresConvencionalesSlice.reducer,
+        reportes: reportesSlice.reducer,
     }
 })

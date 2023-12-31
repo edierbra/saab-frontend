@@ -43,6 +43,7 @@ export const FuncionarioRow = ({ funcionario, openSideBar, position }) => {
                                     icon={"bi bi-pencil-square"}
                                     style={"btn btn-mybotton btn-color-blue"}
                                     text={''}
+                                    type={"button"}
                                 />
 
                                 <Btn
@@ -51,6 +52,7 @@ export const FuncionarioRow = ({ funcionario, openSideBar, position }) => {
                                     icon={"bi bi-x-lg"}
                                     style={"btn btn-mybotton btn-color-red"}
                                     text={''}
+                                    type={"button"}
                                 />
                             </>
                             :
@@ -61,6 +63,7 @@ export const FuncionarioRow = ({ funcionario, openSideBar, position }) => {
                                     icon={"bi bi-pencil-square"}
                                     style={"btn btn-mybotton btn-color-blue"}
                                     text={''}
+                                    type={"button"}
                                 />
 
                                 <Btn
@@ -69,6 +72,7 @@ export const FuncionarioRow = ({ funcionario, openSideBar, position }) => {
                                     icon={"bi bi-trash-fill"}
                                     style={"btn btn-mybotton btn-color-red"}
                                     text={''}
+                                    type={"button"}
                                 />
 
                                 {/* <Btn
@@ -77,6 +81,7 @@ export const FuncionarioRow = ({ funcionario, openSideBar, position }) => {
                                     icon={funcionario?.activo == "true" ? "bi bi-toggle-on": "bi bi-toggle-off"}
                                     style={funcionario?.activo == "true"? "btn btn-mybotton btn-color-green": ' btn btn-mybotton btn-color-gray'}
                                     text={''}
+                                    type={"button"}
                                 /> */}
                             </>
                         }

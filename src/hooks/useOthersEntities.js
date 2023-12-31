@@ -17,7 +17,10 @@ import {
     loadingGrados,
     loadingLocalidades,
     loadingEstadosFuncionarios,
-    loadingDistinctNameSalariosConfig
+    loadingDistinctNameSalariosConfig,
+    loadingTiposNegociacionesBySindicatosIds,
+    loadingNegociacionesByTiposNegociacionesIds,
+    loadingAllEstadosAuxilios
 } from "../store/slices/othersEntities/othersEntitiesSlice"
 import {
     findAllTiposAuxiliosIndividuales, findAllTiposAuxiliosIndividualesBySindicatoId,
@@ -31,7 +34,10 @@ import {
     findAllGrados,
     findAllLocalidades,
     findAllEstadosFuncionarios,
-    findDistinctNameConfigurationsByTipo
+    findDistinctNameConfigurationsByTipo,
+    findTiposNegociacionesBySindicatosIds,
+    findNegociacionesByTiposNegociacionesIds,
+    findAllEstadosAuxilios,
 } from "../services/othersEntitiesService"
 import { SwalErrorAuthentication } from "../components/recursos/SweetAlerts"
 
@@ -41,7 +47,8 @@ export const useOthersEntities = () => {
         motivosJubilaciones, motivosIncapacidades, parentescos, estudiosFormales, programasbyestudioformal,
         beneficiariosEstudio, generos, vinculaciones, dependencias, cargos, grados, localidades, estadosFuncionarios, negociacionesSindicales,
         tiposNegociacionesSindicales, negociacionesSindicalesByTipoNegociacionSindicalId,
-        tiposNegociacionesSindicalesBySindicatoId, distinctNameSalariosConfig
+        tiposNegociacionesSindicalesBySindicatoId, distinctNameSalariosConfig, tiposNegociacionesBySindicatosIds,
+        negociacionesByTiposNegociacionesIds, allEstadosAuxilios
     } = useSelector(state => state.othersEntities);
     const dispatch = useDispatch();
     const { login, handlerLogout } = useAuth();
@@ -288,7 +295,42 @@ export const useOthersEntities = () => {
         }
     }
 
+    const getAllTiposNegociacionesBySindicatosIds = async (tipos) => {
+        try {
+            const result = await findTiposNegociacionesBySindicatosIds(tipos);
+            dispatch(loadingTiposNegociacionesBySindicatosIds(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getAllNegociacionesByTiposNegociacionesIds = async (tipos) => {
+        try {
+            const result = await findNegociacionesByTiposNegociacionesIds(tipos);
+            dispatch(loadingNegociacionesByTiposNegociacionesIds(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
+    const getAllEstadosAuxilios = async () => {
+        try {
+            const result = await findAllEstadosAuxilios();
+            dispatch(loadingAllEstadosAuxilios(result.data));
+        } catch (error) {
+            if (error.response && error.response?.status == 401) {
+                SwalErrorAuthentication(handlerLogout)
+            }
+        }
+    }
+
     return {
+        getAllNegociacionesByTiposNegociacionesIds,
+        getAllTiposNegociacionesBySindicatosIds,
         getTiposAuxiliosIndividuales,
         getTiposAuxiliosIndividualesBySindicatoId,
         getSindicatos,
@@ -311,8 +353,10 @@ export const useOthersEntities = () => {
         getAllTiposNegociacionesSindicalesBySindicatoId,
         getAllNegociacionesSindicalesByTipoNegociacionSindicalId,
         getDistinctNameConfigurationsByTipo,
+        getAllEstadosAuxilios,
 
         tiposAuxiliosIndividuales,
+        allEstadosAuxilios,
         generos,
         vinculaciones,
         dependencias,
@@ -335,5 +379,7 @@ export const useOthersEntities = () => {
         negociacionesSindicalesByTipoNegociacionSindicalId,
         tiposNegociacionesSindicalesBySindicatoId,
         distinctNameSalariosConfig,
+        tiposNegociacionesBySindicatosIds,
+        negociacionesByTiposNegociacionesIds,
     }
 }

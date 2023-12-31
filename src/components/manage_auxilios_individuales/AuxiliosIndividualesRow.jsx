@@ -9,10 +9,11 @@ export const AuxiliosIndividualesRow = ({ auxilio }) => {
     const { handlerRemoveAuxilioIndividual, handlerAuxilioIndividualSelectedForm, handlerAuxilioSelectedFormToUpdateEstado } = useAuxiliosIndividuales();
     const { login } = useAuth()
     const { allFuncionarios } = useFuncionarios()
-    const { tiposAuxiliosIndividuales } = useOthersEntities()
+    const { tiposAuxiliosIndividuales, sindicatos } = useOthersEntities()
 
     const funcionario = allFuncionarios.find(f => f.id == auxilio.idFuncionario)
     const tipoAuxilio = tiposAuxiliosIndividuales.find(tAux => tAux.id == auxilio.idTipoAuxilioIndividual)
+    const sindicato = sindicatos.find(s => s.id == auxilio.idSindicato)
 
     const setEstado = () => {
         return auxilio.idEstadoAuxilio == 1 ? "w-33 bg-red"
@@ -27,9 +28,11 @@ export const AuxiliosIndividualesRow = ({ auxilio }) => {
                 {/* <td className="">{auxilio.id}</td> */}
                 <td className="">{funcionario?.id}</td>
                 <td className="">{funcionario?.nombre}</td>
+                <td className="">{sindicato?.nombre}</td>
+                <td className="">{funcionario.vinculacion?.nombre}</td>
+                <td className="">{tipoAuxilio?.nombre}</td>
                 <td className="">{auxilio?.fechaSolicitud}</td>
                 <td className="">{auxilio?.fechaViabilidad}</td>
-                <td className="">{tipoAuxilio?.nombre}</td>
                 <td className="">{auxilio?.valor}</td>
 
                 <td className="py-1">
@@ -40,6 +43,7 @@ export const AuxiliosIndividualesRow = ({ auxilio }) => {
                             icon={"bi bi-eye"}
                             style={"btn btn-mybotton btn-color-green"}
                             text={''}
+                            type={"button"}
                         />
 
                         {!login.isAdmin ||
@@ -50,6 +54,7 @@ export const AuxiliosIndividualesRow = ({ auxilio }) => {
                                     icon={"bi bi-pencil-square"}
                                     style={"btn btn-mybotton btn-color-blue"}
                                     text={''}
+                                    type={"button"}
                                 />
 
                                 <Btn
@@ -58,6 +63,7 @@ export const AuxiliosIndividualesRow = ({ auxilio }) => {
                                     icon={"bi bi-gear-fill"}
                                     style={"btn btn-mybotton btn-color-blue"}
                                     text={''}
+                                    type={"button"}
                                 />
 
                                 <Btn
@@ -66,6 +72,7 @@ export const AuxiliosIndividualesRow = ({ auxilio }) => {
                                     icon={"bi bi-trash-fill"}
                                     style={"btn btn-mybotton btn-color-red"}
                                     text={''}
+                                    type={"button"}
                                 />
                             </>
                         }

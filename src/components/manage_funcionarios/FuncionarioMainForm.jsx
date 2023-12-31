@@ -105,12 +105,12 @@ export const FuncionarioMainForm = ({ funcionarioSelected, handlerCloseForm }) =
     const onSubmit = (event) => {
         event.preventDefault();
         if (!verificarFormatoFecha(funcionarioForm?.fechaIngreso) && funcionarioForm?.fechaIngreso) {
-            addError({ fechaIngreso: 'Fecha de Ingreso debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            addError({ fechaIngreso: 'Fecha de Ingreso debe tener el formato: MM/DD/AAAA' })
             return
         }
 
         if (!verificarFormatoFecha(funcionarioForm?.fechaRetiro) && funcionarioForm?.fechaRetiro) {
-            addError({ fechaRetiro: 'Fecha de Retiro debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            addError({ fechaRetiro: 'Fecha de Retiro debe tener el formato: MM/DD/AAAA' })
             return
         }
 

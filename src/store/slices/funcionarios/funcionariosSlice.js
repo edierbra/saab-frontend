@@ -136,7 +136,7 @@ export const funcionariosSlices = createSlice({
             state.funcionariosAndErrors.splice(payload, 1)
         },
         onChangeIsWithErrors: (state, { payload }) => {
-            state.isWithErrors = payload
+            state.isWithErrors = payload;
         },
         setIsLoanding: (state, { payload }) => {
             state.isLoading = payload;

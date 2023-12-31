@@ -1,21 +1,26 @@
 import Swal from "sweetalert2"
 import { useNavigate } from "react-router-dom"
 import {
-    calcularValor,
-    create,
-    findAllValoresConvencionalesPageable, findValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombre, remove, update, updateEstado
+    calcularValor, create, findAllValoresConvencionalesPageable,
+    findValoresConvencionalesByTipoNegociacionNombreOrNegociacionNombre, remove,
+    update, updateEstado
 } from "../services/ValorConvencionalService"
 import { useDispatch, useSelector } from "react-redux"
 import {
     initialValorConvencionalForm, initialValuesCalculo, addValorConvencional, removeValorConvencional,
     updateValorConvencional, loadingValoresConvencionales, onValorConvencionalSelectedForm,
-    onOpenForm, onCloseForm, loadingError, loadingValorTotal, onValorSelectedFormToUpdateEstado
+    onOpenForm, onCloseForm, loadingError, loadingValorTotal, onValorSelectedFormToUpdateEstado,
+    setIsLoanding, initialErrors
 } from "../store/slices/valoresconvencionales/valoresConvencionalesSlice"
 import { useAuth } from "../auth/hooks/useAuth"
-import { SwalErrorAuthentication, SwalContentDelete, SwalToastDelete, SwalToastCreateOrEdit, SwalToastNotFound, SwalToastErrorsFound } from "../components/recursos/SweetAlerts"
+import {
+    SwalErrorAuthentication, SwalContentDelete, SwalToastDelete, SwalToastCreateOrEdit,
+    SwalToastNotFound, SwalToastErrorsFound
+} from "../components/recursos/SweetAlerts"
+import { base64ToByteArray, byteArrayToBase64, convertBlobToBase64, dateToString } from "../components/recursos/Funciones"
 
 export const useValoresConvencionales = () => {
-    const { initialErrors, valoresConvencionales, valorConvencionalSelected, visibleForm,
+    const { valoresConvencionales, valorConvencionalSelected, visibleForm,
         errors, isLoading, paginator, onlyShow, valorTotal, visibleEstadoForm } = useSelector(state => state.valoresconvencionales);
 
     const dispatch = useDispatch();
@@ -175,6 +180,36 @@ export const useValoresConvencionales = () => {
         }
     }
 
+    // const handlerGenerarReporteConvencional = async () => {
+    //     try {
+
+    //         if (!login.isAdmin) return;
+    //         dispatch(setIsLoanding(true));
+    //         const response = await generarReporte()
+    //         const filename = `ValoresConvencionales_${dateToString(new Date)}.xlsx`;
+    //         console.log("reporte use", response.data)
+
+    //         convertBlobToBase64(response.data)
+    //             .then(base64String => {
+    //                 console.log(base64String);
+    //                 dispatch(loadingReporte({ data: base64String, filename }))
+    //             })
+    //             .catch(error => {
+    //                 console.log(error)
+    //             });
+
+    //         SwalToastDelete("success", "Reporte Generado")
+    //     } catch (error) {
+    //         dispatch(setIsLoanding(false));
+    //         if (error.response && error.response?.status == 401) {
+    //             SwalErrorAuthentication(handlerLogout)
+    //         } else {
+    //             throw error
+    //         }
+    //     }
+
+    // }
+
     const handlerValorConvencionalSelectedForm = (data) => {
         dispatch(onValorConvencionalSelectedForm({ ...data }))
     }
@@ -200,6 +235,10 @@ export const useValoresConvencionales = () => {
         dispatch(loadingError(initialErrors)) // limpia los errors
     }
 
+    const handlerIsLoanding = (value) => {
+        dispatch(setIsLoanding(value));
+    }
+
     return {
         valoresConvencionales,
         valorConvencionalSelected,
@@ -219,6 +258,7 @@ export const useValoresConvencionales = () => {
         handlerUpdateEstadoAuxilio,
         handlerRemoveValorConvencional,
         handlerOpenForm,
+        handlerIsLoanding,
         handlerCloseForm,
         handlerCalcularValorConvencional,
         getValoresConvencionales,

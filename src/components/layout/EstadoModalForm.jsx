@@ -1,4 +1,3 @@
-import { useAuxiliosIndividuales } from "../../hooks/useAuxiliosIndividuales";
 import { EstadoForm } from "./EstadoForm";
 
 export const EstadoModalForm = ({ initialAuxilioForm, errors, handlerUpdateEstadoAuxilio, addError,

@@ -164,7 +164,7 @@ export const auxiliosIndividualesSlice = createSlice({
         loadingValorTotal: (state, { payload }) => {
             state.valorTotal = payload;
             state.errors = initialErrors;
-        }
+        },
     }
 });
 

@@ -1,4 +1,5 @@
 import saabApi from "../apis/saabApi";
+import { generarStringConComas } from "../components/recursos/Funciones";
 
 const BASE_URL = '/others';
 
@@ -164,6 +165,16 @@ export const findAllTiposNegociacionesSindicales = async () => {
     }
 }
 
+export const findAllEstadosAuxilios = async () => {
+    try {
+        const response = await saabApi.get(`${BASE_URL}/estadosauxilios`);
+        console.log("Estados auxiliso service", response)
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const findAllNegociacionesSindicales = async () => {
     try {
         const response = await saabApi.get(`${BASE_URL}/negociacionesSindicales`);
@@ -200,6 +211,39 @@ export const findDistinctNameConfigurationsByTipo = async (tipo='') => {
                 }
             }
         );
+        
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const findTiposNegociacionesBySindicatosIds = async (tipos) => {
+    try {
+        const response = await saabApi.get(`${BASE_URL}/tiposNegociacionesBySindicatosIds`
+            , {
+                params: {
+                    sindicatosIds: generarStringConComas(tipos),
+                }
+            }
+        );
+        console.log("tiposNegociacionesBySindicatosIds", response)
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const findNegociacionesByTiposNegociacionesIds = async (tipos) => {
+    try {
+        const response = await saabApi.get(`${BASE_URL}/negociacionesByTiposNegociacionesIds`
+            , {
+                params: {
+                    tiposNegociacionesIds: generarStringConComas(tipos),
+                }
+            }
+        );
+        console.log("negociacionesByTiposNegociacionesIds", response)
         return response;
     } catch (error) {
         throw error;

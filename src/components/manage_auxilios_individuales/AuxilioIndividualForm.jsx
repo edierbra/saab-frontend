@@ -73,12 +73,12 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
     const onCalcular = (event) => {
         event.preventDefault();
         if (!verificarFormatoFecha(fechaSolicitud) && fechaSolicitud) {
-            addError({ fechaSolicitud: 'Fecha de Solicitud debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            addError({ fechaSolicitud: 'Fecha de Solicitud debe tener el formato: MM/DD/AAAA' })
             return
         }
 
         if (!verificarFormatoFecha(fechaOpcionalCalculo) && fechaOpcionalCalculo) {
-            addError({ fechaOpcionalCalculo: 'Fecha Opcional debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            addError({ fechaOpcionalCalculo: 'Fecha Opcional debe tener el formato: MM/DD/AAAA' })
             return
         }
 
@@ -89,37 +89,37 @@ export const AuxilioIndividualForm = ({ auxiliosIndividualSelected, handlerClose
         event.preventDefault();
 
         if (!verificarFormatoFecha(fechaSolicitud) && fechaSolicitud) {
-            addError({ fechaSolicitud: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            addError({ fechaSolicitud: 'La Fecha debe tener el formato: MM/DD/AAAA' })
             return
         }
 
         if (!verificarFormatoFecha(fechaOpcionalCalculo) && fechaOpcionalCalculo) {
-            addError({ fechaOpcionalCalculo: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            addError({ fechaOpcionalCalculo: 'La Fecha debe tener el formato: MM/DD/AAAA' })
             return
         }
 
         if (!verificarFormatoFecha(fechaAceptacionRenuncia) && fechaAceptacionRenuncia) {
-            addError({ fechaAceptacionRenuncia: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            addError({ fechaAceptacionRenuncia: 'La Fecha debe el formato: MM/DD/AAAA' })
             return
         }
 
         if (!verificarFormatoFecha(fechaFinIncapacidad) && fechaFinIncapacidad) {
-            addError({ fechaFinIncapacidad: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            addError({ fechaFinIncapacidad: 'La Fecha debe tener el formato: MM/DD/AAAA' })
             return
         }
 
         if (!verificarFormatoFecha(fechaInicioIncapacidad) && fechaInicioIncapacidad) {
-            addError({ fechaInicioIncapacidad: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            addError({ fechaInicioIncapacidad: 'La Fecha debe tener el formato: MM/DD/AAAA' })
             return
         }
 
         if (!verificarFormatoFecha(fechaOtorgamientoAnteojos) && fechaOtorgamientoAnteojos) {
-            addError({ fechaOtorgamientoAnteojos: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            addError({ fechaOtorgamientoAnteojos: 'La Fecha debe tener el formato: MM/DD/AAAA' })
             return
         }
 
         if (!verificarFormatoFecha(fechaReciboMatricula) && fechaReciboMatricula) {
-            addError({ fechaReciboMatricula: 'La Fecha debe ser posterior a 1950 y tener el formato: MM/DD/AAAA' })
+            addError({ fechaReciboMatricula: 'La Fecha debe tener el formato: MM/DD/AAAA' })
             return
         }
 

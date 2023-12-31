@@ -1,4 +1,6 @@
 import saabApi from "../apis/saabApi";
+import saabApiReportesExcel from "../apis/saabApiReportesExcel";
+import { generarStringConComas } from "../components/recursos/Funciones";
 
 const BASE_URL = '/auxilios/individuales';
 
@@ -63,7 +65,7 @@ export const findAuxiliosIndividualesByNombreOrIdOrTipoPageable = async (search 
         default:
             break;
     }
-    
+
     try {
         const response = await saabApi.get(`${BASE_URL}/nombreidtipo`
             , {
@@ -126,7 +128,7 @@ export const update = async (auxilioIndividual) => {
 }
 
 export const updateEstado = async (auxilioIndividual) => {
-    const {id, fechaViabilidad, resolucion, fechaResolucion, rdp, fechaRdp } = auxilioIndividual;
+    const { id, fechaViabilidad, resolucion, fechaResolucion, rdp, fechaRdp } = auxilioIndividual;
     try {
         return await saabApi.put(
             `${BASE_URL}/estado/${id}`,
@@ -149,6 +151,38 @@ export const remove = async (id) => {
             `${BASE_URL}/${id}`,
             // config()
         )
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const generarReporteAuxilioIndividual = async (formReporte) => {
+    const { idReporte, idFuncionario, sindicatos, tiposNegociaciones, negociaciones, estados, 
+        campos, startDate, endDate } = formReporte;
+    console.log("Services: ........", formReporte)
+    try {
+        const response = await saabApiReportesExcel.get(
+            `${BASE_URL}/exportarExcel`,
+            {
+                params: {
+                    idFuncionario, // 1
+                    sindicatos: generarStringConComas([...sindicatos]), // 2
+                    tiposNegociaciones: generarStringConComas([...tiposNegociaciones]), // 3
+                    negociaciones: generarStringConComas([...negociaciones]), // 4
+                    estados: generarStringConComas([...estados]), // 5
+                    campos: generarStringConComas([...campos]), // 6
+                    startDate,
+                    endDate 
+                    // idFuncionario: '', // 1
+                    // sindicatos: generarStringConComas([]), // 2
+                    // tiposNegociaciones: generarStringConComas([]), // 3
+                    // negociaciones: generarStringConComas([]), // 4
+                    // estados: generarStringConComas([]), // 5
+                    // campos: generarStringConComas([1]), // 6
+                },
+            }
+        )
+        return response;
     } catch (error) {
         throw error;
     }
